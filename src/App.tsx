@@ -1,5 +1,9 @@
+import Admin from "./Admin/admin";
+
 function App() {
-  return <div className="text-clight-blue">Hello world</div>;
+  return (
+    <Admin />
+  )
 }
 
 export default App;
