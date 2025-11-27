@@ -57,3 +57,17 @@
   --tracking-tight: -0.01em;
   --tracking-default: 0em;
 }
+
+html,
+body,
+#root,
+.app {
+  height: 100%;
+  width: 100%;
+  @apply text-cextra-dark-gray;
+  @apply bg-clight-gray;
+}
+
+html {
+  scroll-behavior: smooth;
+}
