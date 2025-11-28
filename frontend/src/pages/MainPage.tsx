@@ -1,10 +1,10 @@
-import Navbar from "../Components/Navbar/Navbar";
+import Navbar from "../Components/UserComponents/Navbar/Navbar";
 import Container from "../Shared/Container";
-import Hero from "./Hero/Hero";
-import History from "./History/History";
-import Major from "./Major/Major";
-import UserManual from "./UserManual/UserManual";
-import Memory from "./Memory/Memory";
+import Hero from "./UserPages/Hero/Hero";
+import History from "./UserPages/History/History";
+import Major from "./UserPages/Major/Major";
+import UserManual from "./UserPages/UserManual/UserManual";
+import Memory from "./UserPages/Memory/Memory";
 
 const MainPage = () => {
   return (

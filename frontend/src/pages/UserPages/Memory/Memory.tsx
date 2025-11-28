@@ -1,5 +1,4 @@
-import React from "react";
-import Accordion from "../../Components/Utils/accordion";
+import Accordion from "../../../Components/UserComponents/Utils/Accordion";
 
 const Memory = () => {
   const accordionGpName = "memory";

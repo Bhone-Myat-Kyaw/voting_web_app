@@ -1,9 +1,8 @@
-import React from "react";
 import { Element } from "react-scroll";
-import Card from "../../Components/Utils/Card";
+import Card from "../../../Components/UserComponents/Utils/Card";
 
 const History = () => {
-  const flexCol = "flex flex-col items-center";
+  //const flexCol = "flex flex-col items-center";
   const schoolHistory = [
     {
       id: 0,

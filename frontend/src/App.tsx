@@ -1,19 +1,20 @@
-import Navbar from "./Components/Navbar/Navbar";
-// import Hero from "./pages/Hero/Hero";
-// import History from "./pages/History/History";
-// import Major from "./pages/Major/Major";
-// import Memory from "./pages/Memory/Memory";
-// import UserManual from "./pages/UserManual/UserManual";
-// import Container from "./Shared/Container";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import MainPage from "./pages/MainPage";
-import Login from "./pages/Login/Login";
+import Login from "./pages/UserPages/Login/Login";
+import AdminLayout from "./Components/AdminComponents/AdminLayout";
+import VotesPage from "./pages/AdminPages/VotesPage";
+import UserManagementPage from "./pages/AdminPages/UserManagementPage";
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<MainPage />} />
       <Route path="/login" element={<Login />} />
+
+      <Route path="/admin" element={<AdminLayout />}>
+        <Route index element={<VotesPage />} />
+        <Route path="userManagement" element={<UserManagementPage />} />
+      </Route>
     </Routes>
   );
 }

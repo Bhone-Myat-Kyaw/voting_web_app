@@ -1,5 +1,5 @@
 import React from "react";
-import { firstSemSubjects, secondSemSubjects } from "../Texts/subject";
+import { firstSemSubjects, secondSemSubjects } from "../UserComponents/Texts/subject";
 import TableDataRow from "./TableDataRow";
 
 type Props = {

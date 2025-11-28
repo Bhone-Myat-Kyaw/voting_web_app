@@ -1,16 +1,12 @@
-import React from "react";
 import {
   firstSemSubjects,
   secondSemSubjects,
-} from "../../Components/Texts/subject";
-import TableDataRow from "../../Components/Utils/TableDataRow";
-import CurriculumTable from "../../Components/Utils/CurriculumTable";
+} from "../../../Components/UserComponents/Texts/subject";
+import TableDataRow from "../../../Components/UserComponents/Utils/TableDataRow";
 
-type Props = {};
-
-const Major = (props: Props) => {
+const Major = () => {
   const thStyle = "p-4 border-b border-gray-300 bg-blue-gray-50";
-  const tdStyle = "p-4 border-b border-gray-300";
+  //const tdStyle = "p-4 border-b border-gray-300";
 
   return (
     <section>
