@@ -1,6 +1,7 @@
 import React from "react";
 import { Element } from "react-scroll";
 import Card from "../../Components/Utils/Card";
+import { SelectedPage } from "../../Components/Texts/pages";
 
 const History = () => {
   const flexCol = "flex flex-col items-center";
@@ -43,7 +44,7 @@ const History = () => {
   ];
 
   return (
-    <Element name="historyName">
+    <Element name={SelectedPage.History}>
       <section id="history" className="w-full  gap-10 py-3 ">
         <div className="w-full mb-10">
           <div className="flex flex-col items-center gap-2">

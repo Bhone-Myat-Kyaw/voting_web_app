@@ -5,11 +5,14 @@ import History from "./History/History";
 import Major from "./Major/Major";
 import UserManual from "./UserManual/UserManual";
 import Memory from "./Memory/Memory";
+import { useState } from "react";
+import { SelectedPage } from "../Components/Texts/pages";
 
 const MainPage = () => {
+    const [selectedPage, setSelectedPage] = useState<SelectedPage>(SelectedPage.Home)
   return (
     <div className="app bg-cwhite">
-      <Navbar />
+      <Navbar selectedPage={selectedPage} setSelectedPage={setSelectedPage} />
       <Container>
         <Hero />
         <History />

@@ -78,8 +78,8 @@ const Accordion = ({ name, title, children, imgPath }: Props) => {
           </svg>
         </span>
       </summary>
-
-      <div className="p-5 rounded-lg border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
+{/* dark:bg-gray-900 dark:border-gray-700 */}
+      <div className="p-5 rounded-lg border-t border-gray-200  bg-gray-50 ">
         <div className="w-full flex justify-around bg-red-300n h-52">
           <img src={imgPath} alt="" className="flex-1 w-10 object-fit" />
           <p className="text-gray-500 dark:text-gray-400 flex-2">{children}</p>
