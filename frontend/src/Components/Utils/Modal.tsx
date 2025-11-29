@@ -10,15 +10,14 @@ const Modal = ({ hasVoted}: Props) => {
     console.log("Modal is rendered and hasVoted=",hasVoted)
     const navigate = useNavigate()
 
-    const redirectHome = () => {
-        navigate('/')
-    }
+    const redirectHome = () => navigate('/');
+    
 
     
   return (
     <div>
         {!!hasVoted && (
-         <div className='fixed inset-0 bg-clight-gray backdrop-blur-xl flex items-center justify-center z-50' >
+         <div className='fixed inset-0 bg-transparent backdrop-blur-2xl flex items-center justify-center z-50' >
         <div className='bg-cwhite rounded-xl shadow-light py-7 px-9 w-[25%] min-w-80 '>
             <div className='flex flex-col gap-2 mb-5'>
                 <h2 className='text-section font-heading text-primary text-center'>name</h2>

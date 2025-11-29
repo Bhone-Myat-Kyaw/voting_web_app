@@ -9,6 +9,8 @@ import type { Candidate } from "../../Components/Texts/candidatesInfo";
 import type { voter } from "../../Components/Texts/voterInfo";
 import { useState } from "react";
 import Modal from "../../Components/Utils/Modal";
+import type { Variants } from "framer-motion";
+import {motion} from "framer-motion"
 
 // type Props = {
 //     admissionID: string;
@@ -17,6 +19,26 @@ import Modal from "../../Components/Utils/Modal";
 
 
 const Vote = () => {
+
+    // framer motion
+    const containerVariants: Variants = {
+        hidden: {opacity: 0, y: 40},
+        visible: {opacity: 1, y: 0, 
+            transition: {
+                staggerChildren: 0.4,
+            }
+        }, 
+    }
+
+    const childVariants: Variants = {
+        hidden: {opacity: 0, y: 40},
+        visible: {opacity: 1, y: 0, 
+            transition: {
+                duration: 0.6,
+                ease: "easeInOut",
+            }
+        }
+    }
 
     // props from login
     const location =useLocation();
@@ -43,24 +65,33 @@ const Vote = () => {
     
     
   return ( !voter.hasVoted ?
-    <div className="w-full h-screen bg-cwhite py-10">
+    <motion.div className="w-full h-screen bg-cwhite py-10"
+    variants={containerVariants}
+    initial="hidden"
+    whileInView={"visible"}
+    viewport={{once: true, amount: 0.5}}
+    >
         <Container>
             {/* title */}
-            <div className="mb-3" >
+            <motion.div className="mb-3" 
+            variants={childVariants}
+            >
                 <h1 className="text-h1-lg font-heading-bold
                 mb-2">King & Queen Selection 2025</h1>
                 <h2>Cast your vote for next representative</h2>
-            </div>
+            </motion.div>
             {/* carousel */}
-            <div className="h-[400px] sm:h-[500px] lg:h-[600px] mx-auto">
+            <motion.div className="h-[400px] sm:h-[500px] lg:h-[600px] mx-auto"
+            variants={childVariants}
+            >
                 
                 <CandidateCarousel candidates={sex==="male"? femaleCandidates: maleCandidates }  onVoteClick={handleVoteClick}  />
-            </div>
+            </motion.div>
 
         </Container>
         
         
-    </div> : <Modal hasVoted={voter.hasVoted} />
+    </motion.div> : <Modal hasVoted={voter.hasVoted} />
   )
 }
 

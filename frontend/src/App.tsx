@@ -12,6 +12,7 @@ import Vote from "./pages/Vote/Vote";
 import Modal from "./Components/Utils/Modal";
 import { SelectedPage } from "./Components/Texts/pages";
 import { useState } from "react";
+import OnboardingModal from "./Components/Utils/onBoardingModal";
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
       <Route path="/" element={<MainPage />} />
       <Route path="/login" element={<Login />} />
       <Route path="/vote" element={<Vote  />} />
+      <Route path="/onBoarding" element={<OnboardingModal/>}/>
       {/* <Route path="/modal" element={<Modal />} /> */}
     </Routes>
   );

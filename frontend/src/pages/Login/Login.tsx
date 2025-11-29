@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { voters } from "../../Components/Texts/voterInfo";
 import React, { useRef, useState } from "react";
+import type { Variants } from "framer-motion";
+import {motion} from "framer-motion"
 
 interface FormError {
   general?: string;
@@ -9,6 +11,29 @@ interface FormError {
 }
 
 const Login = () => {
+  // framer motion
+  const containerVariants: Variants = {
+    hidden: {opacity: 0, y: 40},
+    visible: {opacity: 1, y: 0,
+      transition: {
+        staggerChildren: 0,
+      }
+    },
+  }
+
+  const formVariants: Variants = {
+    hidden: {opacity: 0, y: 40},
+    visible: {opacity: 1, y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeInOut",
+      }
+    },
+    
+  }
+
+
+
 // type InputEvent = React.ChangeEvent<HTMLInputElement>;
 type FormEvent = React.FormEvent<HTMLFormElement>;
 
@@ -61,33 +86,42 @@ type FormEvent = React.FormEvent<HTMLFormElement>;
   
 
   return (
-    <section className="w-full h-screen bg-clight-gray flex items-center justify-center  text-center">
+    <motion.section className="w-full h-screen bg-clight-gray flex items-center justify-center  text-center"
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{once: true, amount: 0.9}}
+    >
       
-      <div className="p-8 w-[25%] lg:w-[30%]  h-3/5 bg-cwhite rounded-3xl shadow-normal space-y-4">
-      <h2 className="text-h1-lg font-heading-bold mt-3">Login</h2>
-      <form ref={formRef} onSubmit={handleSubmit} className="space-y-5 w-[95%] m-auto ">
-        <div className="flex flex-col items-start justify-center gap-2
-        ">
-        <label htmlFor="name" className="font-heading-bold ">Admission ID</label>
-        <input ref={admissionRef} type="text" name="admissionId" id="admissionId" required placeholder="Enter your admission ID" className="border rounded-3xl p-3   placeholder:text-cmedium-gray w-full"
-         />
-         <span className="text-small ml-2 text-red-400">{errorMsg.admissionID}</span>
-        </div>
+      <motion.div className="p-8 min-w-sm w-md max-w-lg  h-3/5 bg-cwhite rounded-3xl shadow-normal space-y-4"
+      variants={formVariants}
+      >
+        <motion.h2 className="text-h1-lg font-heading-bold mt-3"
+        >Login</motion.h2>
+        <motion.form ref={formRef} onSubmit={handleSubmit} className="space-y-5 w-[95%] m-auto "
+        >
+          <div className="flex flex-col items-start justify-center gap-2
+          ">
+          <label htmlFor="name" className="font-heading-bold ">Admission ID</label>
+          <input ref={admissionRef} type="text" name="admissionId" id="admissionId" required placeholder="Enter your admission ID" className="border rounded-3xl p-3   placeholder:text-cmedium-gray w-full"
+          />
+          <span className="text-small ml-2 text-red-400">{errorMsg.admissionID}</span>
+          </div>
 
-        <div className="flex flex-col items-start justify-center gap-2">
-          <label htmlFor="password" className="font-heading-bold">Password</label>
-          <input ref={passwordRef} type="password" required name="password" id="password" placeholder="Enter your password" className="border rounded-3xl p-3 w-full" />
-          <span className="text-small ml-2 text-red-400">{errorMsg.password}</span>
-        </div>
+          <div className="flex flex-col items-start justify-center gap-2">
+            <label htmlFor="password" className="font-heading-bold">Password</label>
+            <input ref={passwordRef} type="password" required name="password" id="password" placeholder="Enter your password" className="border rounded-3xl p-3 w-full" />
+            <span className="text-small ml-2 text-red-400">{errorMsg.password}</span>
+          </div>
 
-        
-        <button type="submit" className="bg-primary p-3 w-full rounded-3xl text-cwhite font-button-bold mt-3 cursor-pointer">
-          Login
-        </button>
-        
-      </form>
-      </div>
-    </section>
+          
+          <button type="submit" className="bg-primary p-3 w-full rounded-3xl text-cwhite font-button-bold mt-3 cursor-pointer">
+            Login
+          </button>
+          
+        </motion.form>
+      </motion.div>
+    </motion.section>
   );
 };
 

@@ -44,6 +44,8 @@
 }
 
 import React from "react";
+import { motion } from "framer-motion";
+import type { Variants } from "framer-motion";
 
 type Props = {
   name: string;
@@ -53,10 +55,20 @@ type Props = {
 };
 
 const Accordion = ({ name, title, children, imgPath }: Props) => {
+  const accordionVariants: Variants = {
+    hidden: {opacity: 0, y: 40},
+    visible: {opacity: 1, y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeInOut",
+      }
+    }
+  }
   return (
-    <details
+    <motion.details
       name={name}
       className="group border-b border-gray-200 bg-white rounded-lg "
+      variants={accordionVariants}
     >
       <summary className="flex items-center justify-between p-5 font-medium cursor-pointer list-none">
         <span>{title}</span>
@@ -85,7 +97,7 @@ const Accordion = ({ name, title, children, imgPath }: Props) => {
           <p className="text-gray-500 dark:text-gray-400 flex-2">{children}</p>
         </div>
       </div>
-    </details>
+    </motion.details>
   );
 };
 

@@ -6,6 +6,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import { SelectedPage } from "../Texts/pages";
 import CustomLink from "./CustomLink";
+import {motion} from "framer-motion"
 
 type Props = {
   selectedPage: SelectedPage;
@@ -14,7 +15,7 @@ type Props = {
 
 export default function Navbar({selectedPage, setSelectedPage}:Props) {
   const navigate = useNavigate();
-  const isAboveMediumScreen = useMediaQuery("(min-width: 1060px)");
+  const isAboveMediumScreen = useMediaQuery("(min-width: 1024px)");
   const sliderAnimation = "transition-transform duration-700 ease-in-out"
   const [isToggle, setIsToggle] = useState(false);
 
@@ -78,29 +79,32 @@ export default function Navbar({selectedPage, setSelectedPage}:Props) {
                 <CustomLink page="Memorable Moments" selectedPage={selectedPage} setSelectedPage={setSelectedPage} />
               </li>
             </ul>
-            <button
+            <motion.button
               className="bg-primary text-cwhite py-3 px-5 rounded-2xl font-button-bold text-button cursor-pointer"
               onClick={() => {
                 navigate("/login");
               }}
+              whileTap={{scale: 1.5}}
             >
               Log in
-            </button>
+            </motion.button>
           </div>): (
-            <button className="bg-primary text-cwhite py-3 px-5 rounded-2xl font-button-bold text-button cursor-pointer shadow-normal backdrop-blur-md"
+            <motion.button className="bg-primary text-cwhite py-3 px-5 rounded-2xl font-button-bold text-button cursor-pointer shadow-normal backdrop-blur-md"
             onClick={handleToggle}
+            whileTap={{scale: 1.5}}
             >
               <Bars3Icon className="h-6 w-6" />
-            </button>
+            </motion.button>
           )}
-
           {!isAboveMediumScreen && (
-            <div className={`w-[300px] fixed right-0 top-0 bottom-0 z-50 h-screen rounded-tl-3xl rounded-bl-3xl shadow-normal  bg-cwhite ${sliderAnimation} transform ${isToggle ? "translate-x-[300px] ": ""}`}>
+            <div className={`w-[300px] fixed h-screen right-0 top-0  bottom-0 z-70  rounded-tl-3xl rounded-bl-3xl shadow-normal  bg-cwhite ${sliderAnimation} transform ${isToggle ? "": "translate-x-[300px] "}`}>
                 <div className="flex flex-col gap-4 pl-10 w-full h-screen">
                   <div className="flex justify-end pt-10 pr-20 mb-6">
-                    <button onClick={handleToggle}>
+                    <motion.button onClick={handleToggle}
+                    whileTap={{scale: 1.5}}
+                    >
                       <XMarkIcon className="w-6 h-6 right-0"  />
-                    </button>
+                    </motion.button>
                   </div>
                   <ul className="list-none cursor-pointer flex flex-col gap-10 ">
                     <li>
@@ -137,11 +141,13 @@ export default function Navbar({selectedPage, setSelectedPage}:Props) {
                     </li>
                   </ul>
 
-                  <button className="bg-primary text-cwhite py-3 px-5 rounded-2xl font-button-bold text-button cursor-pointer shadow-normal backdrop-blur-md max-w-[80%]"
+                  <motion.button className="bg-primary text-cwhite py-3 px-5 rounded-2xl font-button-bold text-button cursor-pointer shadow-normal backdrop-blur-md max-w-[80%]"
                   onClick={()=> navigate('/login')}
+                  whileTap={{scale: 0.9}}
+                  whileHover={{scale: 1.1}}
                   >
                     Login
-                  </button>
+                  </motion.button>
 
                 </div>
             </div>

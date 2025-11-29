@@ -4,46 +4,88 @@ import {
   secondSemSubjects,
 } from "../../Components/Texts/subject";
 import TableDataRow from "../../Components/Utils/TableDataRow";
-import CurriculumTable from "../../Components/Utils/CurriculumTable";
+// import CurriculumTable from "../../Components/Utils/CurriculumTable";
 import { Element } from "react-scroll";
 import { SelectedPage } from "../../Components/Texts/pages";
 import SectionTitle from "../../Components/Texts/SectionTitle";
+import { motion } from "framer-motion";
+import type {Variants} from "framer-motion"
 
-type Props = {};
+type Props = {
+  setSelectedPage: (value: SelectedPage) => void
+}
 
-const Major = (props: Props) => {
+const Major = ({setSelectedPage}: Props) => {
   const thStyle = "p-4 border-b border-gray-300 bg-blue-gray-50";
   const tdStyle = "p-4 border-b border-gray-300";
 
+  const containerVariants: Variants = {
+    hidden: {opacity: 0, y: 40},
+    visible: {opacity: 1, y: 0,
+      transition: {
+        staggerChildren: 0.4,
+      }
+    },
+  }
+
+  const tableVariants: Variants = {
+    hidden: {opacity: 0 , y: 40},
+    visible: {opacity: 1, y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeInOut"
+      }
+    }
+
+  }
+
   return (
     <Element name={SelectedPage.Curriculum}>
-        <section>
-          {/* title */}
-           <SectionTitle customize title="Computer Engineering and Information Technology" subTitle="A brief, engaging paragraph defining the Computer Engineering major, its significance, and the fusion of hardware and software principles that prepares students for the future of technology. This field is at the heart of innovation, powering everything from smartphones to spacecraft." />
+        <motion.section
+        onViewportEnter={()=>setSelectedPage(SelectedPage.Curriculum)}
+        viewport={{once: false, amount: 0.9}}
+        >
+          
+            {/* title */}
+            <SectionTitle customize title="Computer Engineering and Information Technology" subTitle="A brief, engaging paragraph defining the Computer Engineering major, its significance, and the fusion of hardware and software principles that prepares students for the future of technology. This field is at the heart of innovation, powering everything from smartphones to spacecraft." />
 
-          {/* description */}
+            {/* description */}
 
-          <table className="table-auto w-full text-left border border-gray-300">
-            <thead>
-              <tr>
-                <th className={`${thStyle} border-r`}>Code</th>
-                <th className={`${thStyle} border-r`}>First Semester</th>
-                <th className={`${thStyle} border-r`}>Code</th>
-                <th className={`${thStyle}`}>Second Semester</th>
-              </tr>
-            </thead>
-            <tbody>
-              {firstSemSubjects.map((item, index) => (
-                <tr key={item.id}>
-                  <TableDataRow code={firstSemSubjects[index].code} />
-                  <TableDataRow subject={firstSemSubjects[index].subject} />
-                  <TableDataRow code={secondSemSubjects[index].code} />
-                  <TableDataRow subject={secondSemSubjects[index].subject} />
+            
+            <motion.table className="table-auto w-full md:table-fixed  text-left border border-gray-300 md:max-w-5xl md:mx-auto"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{once: true, amount: 0.8}}
+            >
+              <motion.thead
+              variants={tableVariants}
+              >
+                <tr>
+                  <th className={`${thStyle} border-r`}>Code</th>
+                  <th className={`${thStyle} border-r`}>First Semester</th>
+                  <th className={`${thStyle} border-r`}>Code</th>
+                  <th className={`${thStyle}`}>Second Semester</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </section>
+              </motion.thead>
+              <motion.tbody
+              variants={tableVariants}
+              >
+                {firstSemSubjects.map((item, index) => (
+                  <tr key={item.id}>
+                    <TableDataRow code={firstSemSubjects[index].code} />
+                    <TableDataRow subject={firstSemSubjects[index].subject} />
+                    <TableDataRow code={secondSemSubjects[index].code} />
+                    <TableDataRow subject={secondSemSubjects[index].subject} />
+                  </tr>
+                ))}
+              </motion.tbody>
+            </motion.table>
+            
+            
+          
+          
+        </motion.section>
     </Element>
     
   );

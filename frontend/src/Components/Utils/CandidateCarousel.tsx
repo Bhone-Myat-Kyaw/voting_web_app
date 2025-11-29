@@ -47,13 +47,12 @@ const CandidateCarousel = ({candidates, onVoteClick}: CandidateProps) => {
 
       <div className='overflow-hidden'>
 
-        <div className={`flex  transition-transform duration-500 px-10 ${candidates.length < 3? lessThan3 : ""}`} style={{
+        <div className={`flex  transition-transform duration-500 px-10 ${candidates.length < 3? lessThan3 : "justify-start"}`} style={{
             transform: `translateX(-${(index * 100) / itemsPerSlide}%)`,
           }}>
 
           {candidates.map((candidate) => (
-<div key={candidate.id}
-            
+          <div key={candidate.id}
             className="flex justify-center px-4 py-6"
           >
              
