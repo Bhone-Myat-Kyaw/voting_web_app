@@ -27,9 +27,12 @@ const Login = () => {
         if (response.statusText == "OK") {
           //console.log(response.data.redirectUrl);
           navigate(response.data.redirectUrl);
+        } else {
+          setError(response.data);
         }
       } catch (error: any) {
-        console.error(error.response?.data || error.message);
+        setError("Invalid credentials");
+        //console.error(error.response?.data || error.message);
       } finally {
         setIsLoading(false);
       }
@@ -38,17 +41,6 @@ const Login = () => {
       setError("Please enter valid admission id.");
     }
   }
-
-  /*
-  async function getFunction() {
-    axios.get(`${import.meta.env.VITE_SERVER}/auth/students`)
-      .then((res) => {
-        console.log(res);
-      }).catch((error) => {
-        console.error(error);
-      })
-  }
-  */
 
   return (
     <section className="w-full h-screen bg-clight-gray flex items-center justify-center text-center">
@@ -151,5 +143,10 @@ const Login = () => {
     </section>
   );
 };
+
+
+
+
+
 
 export default Login;

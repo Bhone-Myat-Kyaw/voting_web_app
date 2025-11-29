@@ -2,20 +2,24 @@ const supabase = require("../config/supabase");
 
 async function changeRole(req, res) {
   try {
-    const { admissionid, newRole } = req.body;
+    const { admissionid, role } = req.body;
 
-    const changeTo = newRole.toLowerCase();
+    const newRole = role.toLowerCase();
     // Validate role
-    if (!["student", "admin"].includes(changeTo)) {
+    if (!["student", "admin"].includes(newRole)) {
       return res.status(400).json({ error: "Invalid role" });
     }
 
     // Update role
     const { data, error } = await supabase
       .from("students")
-      .update({ role: changeTo })
+      .update({ role: newRole })
       .eq("admissionid", admissionid)
       .select();
+
+    if (data.status == 200) {
+      // we gotta reload the page, but it is expensive
+    }
 
     if (error) {
       return res.status(400).json({ error: error.message });
@@ -45,4 +49,27 @@ async function selectaAllData(req, res) {
   }
 }
 
-module.exports = { changeRole, selectaAllData };
+async function selectCandidates(req, res) {
+  try {
+    const { data, error } = await supabase
+      .from("candidates")
+      .select(`
+        studentid,
+        students (
+          name,
+          year,
+          rollnum,
+          gender
+        )  
+      `)
+
+    if (error) return res.status(400).json({ message: error.message });
+
+    return res.status(200).json({ message: "Selected candidates", data });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+}
+
+
+module.exports = { changeRole, selectaAllData, selectCandidates };

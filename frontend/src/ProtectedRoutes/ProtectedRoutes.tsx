@@ -1,10 +1,9 @@
 // Components/ProtectedRoute.jsx
 import { Navigate } from "react-router-dom";
-import { useAuth } from "../pages/AdminPages/Context/AuthContext";
+import { useUser } from "../hooks/useUser";
 
 const ProtectedRoute = ({ children } : { children: React.ReactNode }) => {
-  const { user, isLoading } = useAuth();
-
+  const { data: user, isLoading } = useUser();
   // Show loading while checking authentication
   if (isLoading) {
     return (

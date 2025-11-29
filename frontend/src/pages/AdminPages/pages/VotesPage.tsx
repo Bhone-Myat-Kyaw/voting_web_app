@@ -1,92 +1,35 @@
 //import { useEffect } from "react";
-//import axios from "axios";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 
 
 function VotesPage() {
-  const kingCandidates =[
-    { 
-      id: 1, 
-      name: "Kyaw Gyi", 
-      rollNum: 1, 
-      image: "./images/image0.jpg", 
-      votes: 1247,
-      trend: "up"
-    },
-    { 
-      id: 2, 
-      name: "Zaw Gyi", 
-      rollNum: 2, 
-      image: "./images/image1.jpg", 
-      votes: 892,
-      trend: "up"
-    },
-    { 
-      id: 3, 
-      name: "Maw Gyi", 
-      rollNum: 3, 
-      image: "./images/image2.jpg", 
-      votes: 756,
-      trend: "down"
-    },
-    { 
-      id: 4, 
-      name: "Htaw Gyi", 
-      rollNum: 4, 
-      image: "./images/image3.jpg", 
-      votes: 543,
-      trend: "up"
-    }
-  ];
-
-  const queenCandidates = [
-    { 
-      id: 11, 
-      name: "Kyaw Lay", 
-      rollNum: 11, 
-      image: "./images/image4.jpg", 
-      votes: 1342,
-      trend: "up"
-    },
-    { 
-      id: 21, 
-      name: "Zaw Lay", 
-      rollNum: 21, 
-      image: "./images/image5.jpg", 
-      votes: 987,
-      trend: "up"
-    },
-    { 
-      id: 31, 
-      name: "Maw Lay", 
-      rollNum: 31, 
-      image: "./images/image6.jpg", 
-      votes: 765,
-      trend: "down"
-    },
-    { 
-      id: 41, 
-      name: "Htaw Lay", 
-      rollNum: 41, 
-      image: "./images/image7.jpg", 
-      votes: 621,
-      trend: "up"
-    }
-  ];
-
   const totalVoters = 5234;
-  const kingCandidatesCount = kingCandidates.length;
-  const queenCandidatesCount = queenCandidates.length;
+  const { data:candidates, isLoading } = useQuery({
+    queryKey: ["candidates"],
+    queryFn: async () => {
+      const res = await axios.get(`${import.meta.env.VITE_SERVER}/admin/selectCandidates`, { withCredentials: true });
+      return res.data.data;
+    },
+    staleTime: 10 * 60 * 1000
+  });
 
-  /*
-  useEffect(() => {
-    const serverUrl = import.meta.env.VITE_SERVER;
-    axios.get(serverUrl).then(() => {
-      console.log("Server is responding");
-    }).catch(() => {
-      console.log("Server doesn't respond");
-    })
-  }, []);
-  */
+  if (isLoading) {
+    return <div className="flex items-center justify-center">Loading...</div>
+  }
+
+  let kingCandidates: any = [], queenCandidates: any = [];
+  let kingCandidatesCount = 0, queenCandidatesCount = 0;
+
+  candidates.forEach((candidate: any) => {
+    if (candidate.students.gender == 'male') {
+      kingCandidates.push(candidate);
+      kingCandidatesCount++;
+    } else {
+      queenCandidates.push(candidate);
+      queenCandidatesCount++;
+    }
+  })
 
   return (
     <section className="space-y-6">
@@ -145,9 +88,9 @@ function VotesPage() {
             </div>
             
             <div className="space-y-4">
-              {kingCandidates.map((candidate, index) => (
+              {kingCandidates.map((candidate: any, index:number) => (
                 <div 
-                  key={candidate.id}
+                  key={candidate.studentid}
                   className="flex items-center gap-4 p-4 rounded-lg border border-gray-200 hover:border-blue-300 transition-colors hover:shadow-light"
                 >
                   <div className="shrink-0">
@@ -179,7 +122,7 @@ function VotesPage() {
                   
                   <div className="text-right">
                     <p className="text-lg sm:text-xl font-bold text-gray-900">
-                      {candidate.votes.toLocaleString()}
+                      18
                     </p>
                     <p className="text-cdark-gray text-sm">Votes</p>
                   </div>
@@ -196,9 +139,9 @@ function VotesPage() {
             </div>
             
             <div className="space-y-4">
-              {queenCandidates.map((candidate, index) => (
+              {queenCandidates.map((candidate: any, index: number) => (
                 <div 
-                  key={candidate.id}
+                  key={candidate.studentid}
                   className="flex items-center gap-4 p-4 rounded-lg border border-gray-200 hover:border-pink-300 transition-colors hover:shadow-light"
                 >
                   <div className="shrink-0">
@@ -230,7 +173,7 @@ function VotesPage() {
                   
                   <div className="text-right">
                     <p className="text-lg sm:text-xl font-bold text-gray-900">
-                      {candidate.votes.toLocaleString()}
+                      18
                     </p>
                     <p className="text-gray-500 text-sm">Votes</p>
                   </div>

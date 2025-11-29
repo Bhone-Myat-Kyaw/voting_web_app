@@ -1,55 +1,58 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
-
-type User = {
-  admissionid: string;
-  gender: string;
-  name: string;
-  rollnum: number;
-  year: number;
-  role: string;
-  status: string;
-};
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 function UserManagementPage() {
-  const [users, setUsers] = useState<User[]>([]);
-
   const [searchTerm, setSearchTerm] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    async function fetchStudents() {
-      try {
-        const res = await axios.get(`${import.meta.env.VITE_SERVER}/admin/selectAll`, { withCredentials: true });
+  const { data: students, isLoading, isError, error } = useQuery({
+    queryKey: ["students"],
+    queryFn: async () => {
+      const res = await axios.get(`${import.meta.env.VITE_SERVER}/admin/selectAll`, {
+        withCredentials: true,
+      });
+      return res.data.data;
+    },
+    staleTime: 10 * 60 * 1000,
+  });
 
-        if (res.status === 200) {
-          setUsers(res.data.data);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    }
+  const roleMutation = useMutation({
+    mutationFn: ({ admissionid, role }: { admissionid: string; role: string }) => axios.post(`${import.meta.env.VITE_SERVER}/admin/changeRole`, { admissionid, role }, { withCredentials: true }),
+    
+    // optimistic update
+    onMutate: async ({ admissionid, role }) => {
+      // cancel any outgoing refetches (so they don’t overwrite our optimistic update)
+      await queryClient.cancelQueries({ queryKey: ["students"] });
 
-    fetchStudents();
-  }, []);
+      // snapshot previous value
+      const previousStudents = queryClient.getQueryData(["students"]);
+
+      // optimistically update the cached students
+      queryClient.setQueryData(["students"], (old: any) =>
+        old.map((u: any) => (u.admissionid === admissionid ? { ...u, role } : u))
+      );
+
+      return { previousStudents }; // for rollback
+    },
+    onError: (context: any) => {
+      // rollback to previous value if mutation fails
+      queryClient.setQueryData(["students"], context.previousStudents);
+    },
+    onSettled: () => {
+      // optionally refetch to ensure data is synced with backend
+      queryClient.invalidateQueries({ queryKey: ["students"] });
+    },
+  });
 
   const changeUserRole = async (admissionid: string, newRole: string) => {
     try {
-      const res = await axios.post(`${import.meta.env.VITE_SERVER}/admin/changeRole`, { admissionid, newRole }, { withCredentials: true });
-
-      if (res.status != 200) {
-        console.log(res);
-      }
+      roleMutation.mutate({ admissionid, role: newRole})
     } catch (error) {
       console.error(error);
     }
   };
-
-  const filteredUsers = users.filter((user) => {
-    const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesRole = roleFilter === "all" || user.role === roleFilter;
-    return matchesSearch && matchesRole;
-  });
 
   const getRoleBadgeColor = (role: string) => {
     switch (role) {
@@ -65,6 +68,20 @@ function UserManagementPage() {
   const getStatusBadgeColor = (status: string) => {
     return status === "active" ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800";
   };
+
+  if (isLoading) {
+    return <div className="flex items-center justify-center">Loading...</div>
+  }
+
+  if (isError) {
+    return <div className="flex items-center justify-center">{error.message}</div>
+  }
+
+  const filteredUsers = students.filter((user: any) => {
+    const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesRole = roleFilter === "all" || user.role === roleFilter;
+    return matchesSearch && matchesRole;
+  });
 
   return (
     <section className="space-y-6">
@@ -120,7 +137,7 @@ function UserManagementPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {filteredUsers.map((user) => (
+              {filteredUsers.map((user:any) => (
                 <tr key={user.admissionid} className="hover:bg-gray-50 transition-colors">
                   <td className="px-4 py-4">
                     <div>

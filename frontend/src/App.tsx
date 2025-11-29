@@ -2,9 +2,8 @@ import { Routes, Route } from "react-router-dom";
 import MainPage from "./pages/MainPage";
 import Login from "./pages/UserPages/Login/Login";
 import AdminLayout from "./pages/AdminPages/AdminLayout";
-import VotesPage from "./pages/AdminPages/VotesPage";
-import UserManagementPage from "./pages/AdminPages/UserManagementPage";
-import { AuthProvider } from "./pages/AdminPages/Context/AuthContext";
+import VotesPage from "./pages/AdminPages/pages/VotesPage";
+import UserManagementPage from "./pages/AdminPages/pages/UserManagementPage";
 import ProtectedRoute from "./ProtectedRoutes/ProtectedRoutes";
 
 function App() {
@@ -17,11 +16,9 @@ function App() {
       <Route
         path="/admin"
         element={
-          <AuthProvider>
-            <ProtectedRoute> {/* Wrap with protection */}
-              <AdminLayout />
-            </ProtectedRoute>
-          </AuthProvider>
+          <ProtectedRoute> {/* Wrap with protection */}
+            <AdminLayout />
+          </ProtectedRoute>
         }
       >
         <Route index element={<VotesPage />} />

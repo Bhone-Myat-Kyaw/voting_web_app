@@ -1,10 +1,10 @@
 import { Outlet } from "react-router-dom";
 import Sidebar from "../../Components/AdminComponents/sidebar";
 import { SunIcon } from "@heroicons/react/24/solid";
-import { useAuth } from "./Context/AuthContext";
+import { useUser } from "../../hooks/useUser";
 
 export default function AdminLayout() {
-  const { user, isLoading } = useAuth();
+  const { data: user, isLoading } = useUser();
 
   // This component will only render if user is authenticated and is admin
   // due to the ProtectedRoute wrapper
