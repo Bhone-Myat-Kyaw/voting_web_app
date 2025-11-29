@@ -10,7 +10,7 @@ async function login(req, res) {
     // Fetch student
     const { data, error } = await supabase
       .from("students")
-      .select("name, gender, admissionid, passwordhash")
+      .select("name, gender, admissionid, passwordhash, role")
       .eq("admissionid", admissionid);
 
     if (error) return res.status(400).json({ error: error.message });
@@ -29,17 +29,32 @@ async function login(req, res) {
 
     // JWT payload should identify the user
     const accessToken = jwt.sign(
-      { admissionid: student.admissionid },
+      { admissionid: student.admissionid, role: student.role },
       process.env.JWT_SECRET_KEY,
-      { expiresIn: '1h' }
+      { expiresIn: '15m' }
+    );
+
+    const refreshToken = jwt.sign(
+      { admissionid: student.admissionid, role: student.role },
+      process.env.JWT_SECRET_KEY,
+      { expiresIn: '7d' }
     );
 
     // Set cookie
     return res
       .cookie("access_token", accessToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
+        secure: false,
+        sameSite: "lax",
+        path: "/",
+        maxAge: 15 * 60 * 1000
+      })
+      .cookie("refresh_token", refreshToken, {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax",
+        path: "/",
+        maxAge: 7 * 24 * 60 * 60 * 1000
       })
       .json({
         message: "Login successful",
@@ -47,7 +62,8 @@ async function login(req, res) {
           name: student.name,
           gender: student.gender,
           admissionid: student.admissionid
-        }
+        },
+        redirectUrl: student.role == 'student' ? '/vote' : '/admin'
       });
 
   } catch (err) {
@@ -55,21 +71,49 @@ async function login(req, res) {
   }
 }
 
-
-
-// List students
-async function getStudents(req, res) {
+async function checkToken(req, res) {
   try {
-    const { data, error } = await supabase
-      .from("students")
-      .select("name, gender");
+    const accessToken = req.cookies.access_token;
+    const refreshToken = req.cookies.refresh_token;
 
-    if (error) return res.status(400).json({ error: error.message });
+    // 1. No access token
+    if (!accessToken) {
+      if (!refreshToken) {
+        return res.status(401).json({ error: "No tokens, please login." });
+      }
 
-    return res.json({ message: "Students fetched", data });
+      try {
+        const refreshPayload = jwt.verify(refreshToken, process.env.JWT_SECRET_KEY);
+
+        const newAccessToken = jwt.sign(
+          { admissionid: refreshPayload.admissionid, role: refreshPayload.role },
+          process.env.JWT_SECRET_KEY,
+          { expiresIn: "15m" }
+        );
+
+        res.cookie("access_token", newAccessToken, {
+          httpOnly: true,
+          secure: false,
+          sameSite: "lax",
+          path: "/",
+          maxAge: 15 * 60 * 1000
+        });
+
+        return res.status(200).json({ message: "New access token issued", payload: refreshPayload });
+      } catch (err) {
+        return res.status(401).json({ error: "Refresh token expired, login again" });
+      }
+    }
+
+    // 2. Access token exists
+    const accessPayload = jwt.verify(accessToken, process.env.JWT_SECRET_KEY);
+    return res.status(200).json({ message: "success", payload: accessPayload });
+
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return res.status(401).json({ error: "Token invalid or expired" });
   }
 }
 
-module.exports = { login, getStudents };
+
+
+module.exports = { login, checkToken };

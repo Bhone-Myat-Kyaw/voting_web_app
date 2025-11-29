@@ -11,13 +11,13 @@ export default function Sidebar() {
   const navigationItems = [
     {
       name: "Vote Counts",
-      path: "/",
+      path: "/admin",
       icon: FolderIcon,
       description: "Live voting results"
     },
     {
       name: "User Management",
-      path: "/userManagement",
+      path: "/admin/userManagement",
       icon: UserGroupIcon,
       description: "Manage users & roles"
     }

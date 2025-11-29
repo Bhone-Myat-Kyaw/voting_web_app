@@ -1,7 +1,8 @@
 //import { useEffect } from "react";
 //import axios from "axios";
 
-export default function VotesPage() {
+
+function VotesPage() {
   const kingCandidates =[
     { 
       id: 1, 
@@ -242,3 +243,5 @@ export default function VotesPage() {
     </section>
   );
 }
+
+export default VotesPage;

@@ -1,8 +1,22 @@
 import { Outlet } from "react-router-dom";
-import Sidebar from "./sidebar";
+import Sidebar from "../../Components/AdminComponents/sidebar";
 import { SunIcon } from "@heroicons/react/24/solid";
+import { useAuth } from "./Context/AuthContext";
 
 export default function AdminLayout() {
+  const { user, isLoading } = useAuth();
+
+  // This component will only render if user is authenticated and is admin
+  // due to the ProtectedRoute wrapper
+  
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="text-lg">Loading admin panel...</div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex min-h-screen relative">
       {/* Sidebar */}
@@ -14,8 +28,12 @@ export default function AdminLayout() {
       <main className="flex-1 p-6 bg-clight-gray max-lg:ml-20 ml-64">
         <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
           <div className="flex flex-col items-start justify-center">
-            <h1 className="text-cextra-dark-gray text-3xl sm:text-4xl font-black leading-tight tracking-[-0.033em]">Admin Dashboard</h1>
-            <p className="text-cdark-gray text-base font-normal leading-normal">Real-time monitoring and management</p>
+            <h1 className="text-cextra-dark-gray text-3xl sm:text-4xl font-black leading-tight tracking-[-0.033em]">
+              Admin Dashboard
+            </h1>
+            <p className="text-cdark-gray text-base font-normal leading-normal">
+              Welcome, {user?.name} {/* Now safe to access user */}
+            </p>
           </div>
           <div className="items-center hidden gap-4 lg:flex">
             <button className="p-2 rounded-lg bg-white border border-gray-200 hover:bg-gray-50 transition-colors shadow-sm">
@@ -24,7 +42,7 @@ export default function AdminLayout() {
           </div>
         </div>
 
-        <Outlet /> {/* Admin pages appear here */}
+        <Outlet />
       </main>
     </div>
   );

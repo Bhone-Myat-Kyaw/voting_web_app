@@ -18,13 +18,15 @@ const Login = () => {
     const id = admissionid.split('/');
     if (id.length == 2 && !Number.isNaN(id[0]) && id[0].length == 2 && !Number.isNaN(id[1]) && id[1].length == 5) {
       try {
-        const response = await axios.post(`${import.meta.env.VITE_SERVER}/auth/login`, {
-          admissionid,
-          password
-        });
+        const response = await axios.post(
+          `${import.meta.env.VITE_SERVER}/auth/login`,
+          { admissionid, password },
+          { withCredentials: true }
+        );
         
         if (response.statusText == "OK") {
-          navigate("/admin");
+          //console.log(response.data.redirectUrl);
+          navigate(response.data.redirectUrl);
         }
       } catch (error: any) {
         console.error(error.response?.data || error.message);

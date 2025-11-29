@@ -2,13 +2,22 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 const authRouter = require("./routes/authRoute");
+const adminRouter = require("./routes/adminRoute");
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173", // React app URL
+    credentials: true,               // allows sending cookies
+  })
+);
 app.use(express.json());
+app.use(cookieParser());
 
 app.use("/auth", authRouter);
+app.use("/admin", adminRouter);
 
-app.listen(process.env.PORT || 3000, () => {
-  console.log(`Server running on http://localhost:${process.env.PORT || 3000}`);
+app.listen(process.env.PORT || 5000, () => {
+  console.log(`Server running on http://localhost:${process.env.PORT || 5000}`);
 });
