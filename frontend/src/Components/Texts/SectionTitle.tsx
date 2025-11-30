@@ -39,11 +39,11 @@ const SectionTitle = ({title, subTitle, customize}: Props) => {
           whileInView="visible"
           viewport={{once: true, amount: 0.9}}
           >
-            <motion.h1 className="text-h1 font-heading-bold"
+            <motion.h1 className="text-h1 font-heading-bold dark:text-dark-text-primary"
             variants={childVariants}
             
             >{title}</motion.h1>
-            <motion.h2 className={`text-section font-heading text-cdark-gray max-w-[800px] text-center ${customize? customStyle: ""}`}
+            <motion.h2 className={`text-section font-heading text-cdark-gray max-w-[800px] text-center ${customize? customStyle: ""} dark:text-dark-text-secondary`}
             variants={childVariants}
             >
               {subTitle}

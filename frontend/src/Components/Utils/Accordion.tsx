@@ -67,11 +67,12 @@ const Accordion = ({ name, title, children, imgPath }: Props) => {
   return (
     <motion.details
       name={name}
-      className="group border-b border-gray-200 bg-white rounded-lg "
+      open={undefined}
+      className="group border-b border-dark-card-border rounded-lg dark:bg-dark-card-bg dark:border-dark-card-border shadow-normal "
       variants={accordionVariants}
     >
       <summary className="flex items-center justify-between p-5 font-medium cursor-pointer list-none">
-        <span>{title}</span>
+        <span className="dark:text-dark-text-primary font-heading">{title}</span>
         <span className="text-gray-900 dark:text-white">
           <svg
             className="w-3 h-3 text-gray-400 dark:text-gray-500 transform group-open:rotate-180 transition-transform duration-300"
@@ -90,8 +91,7 @@ const Accordion = ({ name, title, children, imgPath }: Props) => {
           </svg>
         </span>
       </summary>
-{/* dark:bg-gray-900 dark:border-gray-700 */}
-      <div className="p-5 rounded-lg border-t border-gray-200  bg-gray-50 ">
+      <div className="p-5 rounded-lg border-t border-gray-50  dark:bg-dark-card-bg dark:border-dark-card-border ">
         <div className="w-full flex justify-around bg-red-300n h-52">
           <img src={imgPath} alt="" className="flex-1 w-10 object-fit" />
           <p className="text-gray-500 dark:text-gray-400 flex-2">{children}</p>
@@ -100,5 +100,10 @@ const Accordion = ({ name, title, children, imgPath }: Props) => {
     </motion.details>
   );
 };
+
+{/* dark:bg-gray-900 dark:border-gray-700 */}
+
+// div after summary
+
 
 export default Accordion;

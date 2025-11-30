@@ -33,7 +33,8 @@ const CandidateCarousel = ({candidates, onVoteClick}: CandidateProps) => {
       {/* Buttons */}
       <button
         onClick={prev}
-        className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-white shadow-lg rounded-full p-3 hover:bg-gray-100"
+        className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-white shadow-lg rounded-full p-3 hover:bg-gray-100 dark:bg-dark-card-bg
+        "
       >
         ◀
       </button>
@@ -45,7 +46,7 @@ const CandidateCarousel = ({candidates, onVoteClick}: CandidateProps) => {
         ▶
       </button>
 
-      <div className='overflow-hidden'>
+      <div className='overflow-hidden '>
 
         <div className={`flex  transition-transform duration-500 px-10 ${candidates.length < 3? lessThan3 : "justify-start"}`} style={{
             transform: `translateX(-${(index * 100) / itemsPerSlide}%)`,
@@ -56,16 +57,16 @@ const CandidateCarousel = ({candidates, onVoteClick}: CandidateProps) => {
             className="flex justify-center px-4 py-6"
           >
              
-            <div className="bg-white rounded-2xl shadow-md w-80 overflow-hidden">
+            <div className="bg-white rounded-2xl shadow-md w-80 overflow-hidden dark:bg-dark-login-form-bg">
               <img
-                src={"../../assets/STILLNESS.png"}
+                src={"../assets/STILLNESS.png"}
                 alt={"name"}
                 className="w-full h-72 object-cover"
               />
 
               <div className="p-5">
-                <h3 className="text-lg font-semibold">{candidate.name}</h3>
-                <p className="text-sm text-gray-600 mt-1">
+                <h3 className="text-lg font-semibold dark:bg-dark-text-primary">{candidate.name}</h3>
+                <p className="text-sm text-gray-600 mt-1 font-heading dark:text-dark-placeholder">
                   {"Engineering"} | {"electronic engineer"}
                 </p>
 

@@ -52,7 +52,7 @@ const Major = ({setSelectedPage}: Props) => {
             {/* description */}
 
             
-            <motion.table className="table-auto w-full md:table-fixed  text-left border border-gray-300 md:max-w-5xl md:mx-auto"
+            <motion.table className="table-auto w-full md:table-fixed  text-left border border-gray-300 md:max-w-5xl md:mx-auto dark:border-dark-table-border dark:odd:bg-dark-table-row dark:even:bg-dark-table-row-alt dark:text-dark-text-primary"
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"

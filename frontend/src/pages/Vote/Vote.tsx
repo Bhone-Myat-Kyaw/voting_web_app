@@ -6,11 +6,13 @@ import CandidateCarousel from "../../Components/Utils/CandidateCarousel";
 // import CandidateCarousel from "../../Components/Utils/CandidateCarousel1";
 import { candidates } from "../../Components/Texts/candidatesInfo";
 import type { Candidate } from "../../Components/Texts/candidatesInfo";
-import type { voter } from "../../Components/Texts/voterInfo";
+import type { Voter } from "../../Components/Texts/voterInfo";
 import { useState } from "react";
 import Modal from "../../Components/Utils/Modal";
 import type { Variants } from "framer-motion";
 import {motion} from "framer-motion"
+import { getWithExpiry } from "../../helpers/storage";
+import { useAuthContext } from "../../Shared/Context/AuthConstant";
 
 // type Props = {
 //     admissionID: string;
@@ -19,6 +21,8 @@ import {motion} from "framer-motion"
 
 
 const Vote = () => {
+    // authContext 
+    // const {voter} = useAuthContext();
 
     // framer motion
     const containerVariants: Variants = {
@@ -41,9 +45,18 @@ const Vote = () => {
     }
 
     // props from login
-    const location =useLocation();
-    const voterData: voter = location.state;
-    const sex = voterData.sex;
+    // const location =useLocation();
+    // const voterData: Voter = location.state;
+    // console.log("voterData=",voterData)
+    // const sex = voterData.sex;
+
+    // rather than props, retrieve from local storage
+    const voterDataParsed = getWithExpiry("voter");
+    //================== 
+    // TODO: userDataParsed null -> 500 internal server error or something like that
+    //===================
+    const sex = voterDataParsed?.sex;
+
 
     const maleCandidates: Candidate[] = candidates.filter(candidate => (candidate.sex == "male"));
     const femaleCandidates: Candidate[] = candidates.filter(candidate => (candidate.sex == "female"))
@@ -53,32 +66,33 @@ const Vote = () => {
     //     return <Modal isOpen={modalOpen} />
     // }, [modalOpen])
 
-    const [voter, setVoter] = useState<voter>(voterData);
+    const [voter, setVoter] = useState<Voter | null>(voterDataParsed);
 
     const handleVoteClick = () => {
         setVoter(voter => ({...voter, hasVoted: true}))
+        // error refers to line 56
     }
 
     
 
 
     
-    
+    // if voter null -> show error page.
   return ( !voter.hasVoted ?
-    <motion.div className="w-full h-screen bg-cwhite py-10"
+    <motion.div className="w-full h-screen bg-cwhite py-10 dark:bg-dark-bg-base "
     variants={containerVariants}
     initial="hidden"
     whileInView={"visible"}
-    viewport={{once: true, amount: 0.5}}
+    viewport={{once: true, amount: 0.2}}
     >
         <Container>
             {/* title */}
-            <motion.div className="mb-3" 
+            <motion.div className="mb-3 dark:text-dark-text-primary" 
             variants={childVariants}
             >
                 <h1 className="text-h1-lg font-heading-bold
-                mb-2">King & Queen Selection 2025</h1>
-                <h2>Cast your vote for next representative</h2>
+                mb-2">{`${voter?.sex == 'male'? "Queen": "King" }`} Selection 2025</h1>
+                <h2>Cast your vote for 13th batch queen</h2>
             </motion.div>
             {/* carousel */}
             <motion.div className="h-[400px] sm:h-[500px] lg:h-[600px] mx-auto"

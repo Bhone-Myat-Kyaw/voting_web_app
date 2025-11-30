@@ -7,6 +7,7 @@ import { useState } from "react";
 import { SelectedPage } from "../Texts/pages";
 import CustomLink from "./CustomLink";
 import {motion} from "framer-motion"
+import { voters, type Voter } from "../Texts/voterInfo";
 
 type Props = {
   selectedPage: SelectedPage;
@@ -26,10 +27,34 @@ export default function Navbar({selectedPage, setSelectedPage}:Props) {
     console.log("isToggle=",isToggle)
   }
 
+  const handleLogin = () => {
+    const voterJSON = localStorage.getItem("voter")
+    console.log("Voter from loacl storage=",voterJSON)
+
+    if(!voterJSON) {
+    
+      return navigate('/login')
+    }
+
+    const voter: Voter = JSON.parse(voterJSON);
+    console.log("Parsed voter=",voter)
+
+    const foundVoter = voters.filter(item=> {
+      console.log(`Item${item.id}`,item)
+      return item.admissionID === voter.admissionID;
+    });
+    console.log("foundVoter=", foundVoter);
+    // TODO: check with voters from db 
+    if(foundVoter) {
+      return navigate('/vote', {state: foundVoter[0]})
+    }
+    
+  }
+
 
   return (
     <nav>
-      <div className=" w-full  fixed top-0 z-30 backdrop-blur-lg  py-5">
+      <div className=" w-full  fixed top-0 z-30 backdrop-blur-lg  py-5 dark:text-dark-text-primary">
         <div className="w-5/6 m-auto flex justify-between items-center">
           {/* left  */}
           <img src={logo} alt="" className="h-14 w-auto"/>
@@ -81,9 +106,7 @@ export default function Navbar({selectedPage, setSelectedPage}:Props) {
             </ul>
             <motion.button
               className="bg-primary text-cwhite py-3 px-5 rounded-2xl font-button-bold text-button cursor-pointer"
-              onClick={() => {
-                navigate("/login");
-              }}
+              onClick={handleLogin}
               whileTap={{scale: 1.5}}
             >
               Log in
@@ -142,7 +165,7 @@ export default function Navbar({selectedPage, setSelectedPage}:Props) {
                   </ul>
 
                   <motion.button className="bg-primary text-cwhite py-3 px-5 rounded-2xl font-button-bold text-button cursor-pointer shadow-normal backdrop-blur-md max-w-[80%]"
-                  onClick={()=> navigate('/login')}
+                  onClick={handleLogin}
                   whileTap={{scale: 0.9}}
                   whileHover={{scale: 1.1}}
                   >

@@ -1,4 +1,4 @@
-import Navbar from "./Components/Navbar/Navbar";
+// import Navbar from "./Components/Navbar/Navbar";
 // import Hero from "./pages/Hero/Hero";
 // import History from "./pages/History/History";
 // import Major from "./pages/Major/Major";
@@ -9,10 +9,11 @@ import {  Routes, Route } from "react-router-dom";
 import MainPage from "./pages/MainPage";
 import Login from "./pages/Login/Login";
 import Vote from "./pages/Vote/Vote";
-import Modal from "./Components/Utils/Modal";
-import { SelectedPage } from "./Components/Texts/pages";
-import { useState } from "react";
-import OnboardingModal from "./Components/Utils/onBoardingModal";
+// import Modal from "./Components/Utils/Modal";
+import ProtectedRoute from "./Components/Utils/ProtectedRoute";
+// import { SelectedPage } from "./Components/Texts/pages";
+// import { useState } from "react";
+// import OnboardingModal from "./Components/Utils/onBoardingModal";
 
 function App() {
 
@@ -20,8 +21,12 @@ function App() {
     <Routes>
       <Route path="/" element={<MainPage />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/vote" element={<Vote  />} />
-      <Route path="/onBoarding" element={<OnboardingModal/>}/>
+      <Route path="/vote" element={
+        <ProtectedRoute>
+          <Vote />
+        </ProtectedRoute>
+      } />
+      {/* <Route path="/onBoarding" element={<OnboardingModal/>}/> */}
       {/* <Route path="/modal" element={<Modal />} /> */}
     </Routes>
   );

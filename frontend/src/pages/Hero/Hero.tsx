@@ -11,6 +11,8 @@ type Props = {
 }
 
 export default function Hero({setSelectedPage}: Props) {
+  // localStorage.clear()
+  // framer motion
   const containerVariants: Variants = {
     hidden: {opacity: 0},
     visible: {
@@ -46,11 +48,14 @@ export default function Hero({setSelectedPage}: Props) {
     const selectedText: WelcomeText[] = welcomeTexts.filter((item)=> item.status === personStatus);
     displayText = selectedText[0];
   }
+
   
 
+
   return (
+    
     <Element name={SelectedPage.Home}>
-      <motion.section className="w-full h-screen flex flex-col items-center justify-center"
+      <motion.section className="w-full h-screen flex flex-col items-center justify-center dark:bg-dark-bg-base"
       onViewportEnter={()=>setSelectedPage(SelectedPage.Home)}
       viewport={{once: false, amount: 0.8}}
       
@@ -62,10 +67,10 @@ export default function Hero({setSelectedPage}: Props) {
         whileInView="visible"
         viewport={{once: true, amount:0.2}}
         >
-          <motion.h1 className="text-5xl font-heading-bold"
+          <motion.h1 className="text-5xl font-heading-bold dark:text-dark-text-primary"
           variants={childVariants}
           >{displayText.title}</motion.h1>
-          <motion.p className="text-section-lg font-body max-w-3xl"
+          <motion.p className="text-section-lg font-body max-w-3xl dark:text-dark-text-secondary"
           variants={childVariants}
           >
             {displayText.body}

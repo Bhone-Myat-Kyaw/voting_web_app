@@ -5,22 +5,40 @@ import History from "./History/History";
 import Major from "./Major/Major";
 import UserManual from "./UserManual/UserManual";
 import Memory from "./Memory/Memory";
-import { useEffect, useState, useLayoutEffect } from "react";
+import { useEffect, useState } from "react";
 import { SelectedPage } from "../Components/Texts/pages";
-import OnBoardingModal from "../Components/Utils/onBoardingModal";
+import OnBoardingModal from "../Components/Utils/OnBoardingModal";
 
 const MainPage = () => {
     const [selectedPage, setSelectedPage] = useState<SelectedPage>(SelectedPage.Home)
-    const [showOnboardingModal, setShowOnboardingModal] = useState(false);
+    const [showOnboardingModal, setShowOnboardingModal] = useState<boolean>(()=> {
+      return !localStorage.getItem("status");
+    });
 
-    useEffect(()=>{
-      const t = setTimeout(()=>{
-        setShowOnboardingModal(true);
-      },0)
-      return () => clearTimeout(t);
-    },[]);
+
+
+    // useEffect(()=>{
+    //   const t = setTimeout(()=>{
+    //     if(localStorage.getItem("status")){
+    //       setShowOnboardingModal(false);
+    //     } else {
+    //       setShowOnboardingModal(true);
+    //     }
+
+    //     return () => clearTimeout(t)
+    //   },0)
+      
+    // },[])
+    
+    //  Display Like An Onboarding Modal
+    // useEffect(()=>{
+    //   const t = setTimeout(()=>{
+    //     setShowOnboardingModal(true);
+    //   },0)
+    //   return () => clearTimeout(t);
+    // },[]);
   return (
-    <div className="app bg-cwhite">
+    <div className="app bg-cwhite dark:bg-dark-bg-base w-full">
       <OnBoardingModal isOpen={showOnboardingModal} setShowOnboardingModal={setShowOnboardingModal} />
       <Navbar selectedPage={selectedPage} setSelectedPage={setSelectedPage} />
       <Container>

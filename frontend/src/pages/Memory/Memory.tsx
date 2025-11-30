@@ -1,5 +1,5 @@
 import {motion} from "framer-motion";
-import Accordion from "../../Components/Utils/accordion";
+import Accordion from "../../Components/Utils/Accordion";
 import { Element } from "react-scroll";
 import { SelectedPage } from "../../Components/Texts/pages";
 import SectionTitle from "../../Components/Texts/SectionTitle";
@@ -40,9 +40,9 @@ const Memory = ({setSelectedPage}: Props) => {
           <Accordion
             name={accordionGpName}
             title="Gathering"
-            imgPath="../../assets/STILLNESS.png"
+            imgPath="../assets/STILLNESS.png"
           >
-            Details here
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime obcaecati, alias laboriosam dolorem pariatur assumenda vitae dolores blanditiis nisi? Deserunt obcaecati necessitatibus soluta, iure pariatur, asperiores rem perferendis porro fugiat, delectus ratione suscipit! Laudantium aut obcaecati distinctio beatae officiis debitis.
           </Accordion>
           <Accordion
             name={accordionGpName}
