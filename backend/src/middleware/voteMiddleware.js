@@ -1,14 +1,12 @@
 const jwt = require("jsonwebtoken");
 
-function adminMiddleware(req, res, next) {
+function voteMiddleware(req, res, next) {
   const accessToken = req.cookies.access_token;
   const refreshToken = req.cookies.refresh_token;
 
   try {
     const payload = jwt.verify(accessToken, process.env.JWT_SECRET_KEY);
-    if (payload.role != 'admin') {
-      return res.status(403).json({ message: "Forbidden: Only admin" });
-    }
+    req.user = payload;
     return next();
   } catch (error) { // Fixed: should be 'error' not 'err'
     if (error.name === "JsonWebTokenError" && refreshToken) { // Fixed: error.name
@@ -30,9 +28,6 @@ function adminMiddleware(req, res, next) {
         });
 
         req.user = payload;
-        if (payload.role != "admin") {
-          return res.status(403).json({ message: "Forbidden: Only admin" });
-        }
         return next();
       } catch {
         return res.status(401).json({ error: "Refresh token expired, login again" });
@@ -43,4 +38,4 @@ function adminMiddleware(req, res, next) {
   }
 }
 
-module.exports = adminMiddleware;
+module.exports = voteMiddleware;

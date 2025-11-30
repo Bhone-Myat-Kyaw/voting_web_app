@@ -49,27 +49,7 @@ async function selectaAllData(req, res) {
   }
 }
 
-async function selectCandidates(req, res) {
-  try {
-    const { data, error } = await supabase
-      .from("candidates")
-      .select(`
-        studentid,
-        students (
-          name,
-          year,
-          rollnum,
-          gender
-        )  
-      `)
-
-    if (error) return res.status(400).json({ message: error.message });
-
-    return res.status(200).json({ message: "Selected candidates", data });
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
-}
 
 
-module.exports = { changeRole, selectaAllData, selectCandidates };
+
+module.exports = { changeRole, selectaAllData };

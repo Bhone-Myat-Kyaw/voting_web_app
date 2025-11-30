@@ -1,10 +1,10 @@
 export interface voter {
     id: number;
     name: string;
-    sex: string;
+    gender: string;
     role: string;
-    roll: number;
-    admissionID: string;
-    hasVoted: boolean;
-    password: number;
+    year: number;
+    rollnum: number;
+    admissionid: string;
+    hasvoted: boolean;
 }

@@ -5,18 +5,20 @@ import AdminLayout from "./pages/AdminPages/AdminLayout";
 import VotesPage from "./pages/AdminPages/pages/VotesPage";
 import UserManagementPage from "./pages/AdminPages/pages/UserManagementPage";
 import ProtectedRoute from "./ProtectedRoutes/ProtectedRoutes";
+import Vote from "./pages/UserPages/Vote/Vote";
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<MainPage />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/vote" element={<Vote />} />
 
       {/* Admin Protected Pages */}
       <Route
         path="/admin"
         element={
-          <ProtectedRoute> {/* Wrap with protection */}
+          <ProtectedRoute role="admin"> {/* Wrap with protection */}
             <AdminLayout />
           </ProtectedRoute>
         }

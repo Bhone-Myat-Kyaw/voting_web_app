@@ -2,8 +2,9 @@
 import { Navigate } from "react-router-dom";
 import { useUser } from "../hooks/useUser";
 
-const ProtectedRoute = ({ children } : { children: React.ReactNode }) => {
+const ProtectedRoute = ({ children, role } : { children: React.ReactNode, role: "admin" | "student" }) => {
   const { data: user, isLoading } = useUser();
+
   // Show loading while checking authentication
   if (isLoading) {
     return (
@@ -13,8 +14,10 @@ const ProtectedRoute = ({ children } : { children: React.ReactNode }) => {
     );
   }
 
+  if (user && user.role == "admin") return children;
+
   // Redirect to login if not authenticated or not admin
-  if (!user || user.role !== "admin") {
+  if (!user || user.role !== role) {
     return <Navigate to="/login" replace />;
   }
 

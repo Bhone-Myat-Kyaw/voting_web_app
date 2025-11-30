@@ -1,10 +1,29 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import Sidebar from "../../Components/AdminComponents/sidebar";
-import { SunIcon } from "@heroicons/react/24/solid";
+import { ArrowRightEndOnRectangleIcon, SunIcon } from "@heroicons/react/24/solid";
 import { useUser } from "../../hooks/useUser";
+import axios from "axios";
+import { useQueryClient } from "@tanstack/react-query";
+
 
 export default function AdminLayout() {
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const { data: user, isLoading } = useUser();
+
+  async function logoutFunction() {
+    queryClient.clear();
+
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_SERVER}/auth/logout`, {}, { withCredentials: true });
+
+      if (res.status == 200) {
+        navigate('/');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   // This component will only render if user is authenticated and is admin
   // due to the ProtectedRoute wrapper
@@ -36,6 +55,9 @@ export default function AdminLayout() {
             </p>
           </div>
           <div className="items-center hidden gap-4 lg:flex">
+            <button className="p-2 rounded-lg bg-white border border-gray-200 hover:bg-gray-50 transition-colors shadow-sm">
+              <ArrowRightEndOnRectangleIcon className="size-6 sm:size-7 text-cdark-gray" onClick={logoutFunction}/>
+            </button>
             <button className="p-2 rounded-lg bg-white border border-gray-200 hover:bg-gray-50 transition-colors shadow-sm">
               <SunIcon className='size-6 sm:size-7 text-cdark-gray'/>
             </button>

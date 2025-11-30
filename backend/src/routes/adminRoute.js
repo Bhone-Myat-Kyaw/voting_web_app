@@ -1,10 +1,8 @@
 const express = require("express");
 const adminRouter = express.Router();
-const { changeRole, selectaAllData, selectCandidates } = require("../controllers/adminController");
-const adminMiddleware = require("../middleware/adminMiddleware");
+const { changeRole, selectaAllData } = require("../controllers/adminController");
 
-adminRouter.post("/changeRole", adminMiddleware, changeRole);
-adminRouter.get("/selectAll", adminMiddleware, selectaAllData);
-adminRouter.get("/selectCandidates", adminMiddleware, selectCandidates);
+adminRouter.post("/changeRole", changeRole);
+adminRouter.get("/selectAll", selectaAllData);
 
 module.exports = adminRouter;

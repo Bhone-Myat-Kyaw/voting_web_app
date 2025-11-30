@@ -2,10 +2,11 @@ import { useState } from "react";
 import axios from "axios";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
+
 function UserManagementPage() {
+  const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
-  const queryClient = useQueryClient();
 
   const { data: students, isLoading, isError, error } = useQuery({
     queryKey: ["students"],
@@ -15,7 +16,7 @@ function UserManagementPage() {
       });
       return res.data.data;
     },
-    staleTime: 10 * 60 * 1000,
+    staleTime: 12 * 60 * 60 * 1000,
   });
 
   const roleMutation = useMutation({

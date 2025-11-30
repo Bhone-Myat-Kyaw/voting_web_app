@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const supabase = require("../config/supabase");
 const jwt = require("jsonwebtoken");
+const getUserData = require("../utils/getUserData");
 
 // Register student
 async function login(req, res) {
@@ -71,6 +72,17 @@ async function login(req, res) {
   }
 }
 
+async function logout(req, res) {
+  try {
+    return res.clearCookie("access_token", { httpOnly: true, secure: true, sameSite: "none" })
+              .clearCookie("refresh_token", { httpOnly: true, secure: true, sameSite: "none" })
+              .status(200)
+              .json({ message: "Logged out successfully" });
+  } catch(error) {
+    return res.status(500).json({ error: error.message });
+  }
+}
+
 async function checkToken(req, res) {
   try {
     const accessToken = req.cookies.access_token;
@@ -99,7 +111,9 @@ async function checkToken(req, res) {
           maxAge: 15 * 60 * 1000
         });
 
-        return res.status(200).json({ message: "New access token issued", payload: refreshPayload });
+        const payload = await getUserData(refreshPayload.admissionid);
+
+        return res.status(200).json({ message: "New access token issued", payload });
       } catch (err) {
         return res.status(401).json({ error: "Refresh token expired, login again" });
       }
@@ -107,7 +121,9 @@ async function checkToken(req, res) {
 
     // 2. Access token exists
     const accessPayload = jwt.verify(accessToken, process.env.JWT_SECRET_KEY);
-    return res.status(200).json({ message: "success", payload: accessPayload });
+    const payload = await getUserData(accessPayload.admissionid);
+
+    return res.status(200).json({ message: "success", payload });
 
   } catch (err) {
     return res.status(401).json({ error: "Token invalid or expired" });
@@ -116,4 +132,4 @@ async function checkToken(req, res) {
 
 
 
-module.exports = { login, checkToken };
+module.exports = { login, logout, checkToken };

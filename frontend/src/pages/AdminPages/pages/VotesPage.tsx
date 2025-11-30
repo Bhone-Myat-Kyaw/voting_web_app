@@ -2,34 +2,51 @@
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 
-
 function VotesPage() {
-  const totalVoters = 5234;
-  const { data:candidates, isLoading } = useQuery({
+  const { data: candidates, isLoading: candidateIsLoading } = useQuery({
     queryKey: ["candidates"],
     queryFn: async () => {
-      const res = await axios.get(`${import.meta.env.VITE_SERVER}/admin/selectCandidates`, { withCredentials: true });
+      const res = await axios.get(`${import.meta.env.VITE_SERVER}/vote/selectCandidates`, { withCredentials: true });
       return res.data.data;
     },
-    staleTime: 10 * 60 * 1000
+    staleTime: Infinity
   });
 
-  if (isLoading) {
+  const { data: votes, isLoading: votesIsLoading} = useQuery({
+    queryKey: ["votes"],
+    queryFn: async () => {
+      const res = await axios.get(`${import.meta.env.VITE_SERVER}/vote/countVotes`, { withCredentials: true });
+      return res.data.votes;
+    },
+    refetchInterval: 10 * 1000 // 10 seconds
+  });
+
+  if (candidateIsLoading || votesIsLoading) {
     return <div className="flex items-center justify-center">Loading...</div>
   }
 
-  let kingCandidates: any = [], queenCandidates: any = [];
-  let kingCandidatesCount = 0, queenCandidatesCount = 0;
+  let totalVoters = 0;
+  const voteMap = new Map();
+  votes.forEach((v: any) => {
+    totalVoters += v.vote_count;
+    voteMap.set(v.candidateid, v.vote_count);
+  });
 
-  candidates.forEach((candidate: any) => {
-    if (candidate.students.gender == 'male') {
-      kingCandidates.push(candidate);
-      kingCandidatesCount++;
-    } else {
-      queenCandidates.push(candidate);
-      queenCandidatesCount++;
-    }
-  })
+  // Step 2: Combine
+  const combinedCandidates = candidates.map((candidate: any) => ({
+    ...candidate,
+    voteCount: voteMap.get(candidate.id) || 0,
+  }));
+
+  // Step 3: Separate king/queen
+  const kingCandidates = combinedCandidates
+    .filter((c: any) => c.students.gender === "male")
+    .sort((a: any, b: any) => b.voteCount - a.voteCount);
+
+  const queenCandidates = combinedCandidates
+    .filter((c: any) => c.students.gender === "female")
+    .sort((a:any, b:any) => b.voteCount - a.voteCount);
+
 
   return (
     <section className="space-y-6">
@@ -51,7 +68,7 @@ function VotesPage() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-cdark-gray text-sm font-medium">King Candidates</p>
-              <p className="text-cextra-dark-gray text-2xl sm:text-3xl font-bold mt-1">{kingCandidatesCount}</p>
+              <p className="text-cextra-dark-gray text-2xl sm:text-3xl font-bold mt-1">{kingCandidates.length}</p>
             </div>
             <div className="text-primary bg-blue-50 p-2 rounded-lg">
               <span className="text-sm font-semibold">Active</span>
@@ -63,7 +80,7 @@ function VotesPage() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-cdark-gray text-sm font-medium">Queen Candidates</p>
-              <p className="text-cextra-dark-gray text-2xl sm:text-3xl font-bold mt-1">{queenCandidatesCount}</p>
+              <p className="text-cextra-dark-gray text-2xl sm:text-3xl font-bold mt-1">{queenCandidates.length}</p>
             </div>
             <div className="text-purple-500 bg-purple-50 p-2 rounded-lg">
               <span className="text-sm font-semibold">Active</span>
@@ -76,7 +93,7 @@ function VotesPage() {
       <div className="bg-white rounded-2xl border border-gray-200 shadow-light overflow-hidden">
         <div className="p-5 sm:p-6 border-b border-gray-200">
           <h2 className="text-xl sm:text-2xl font-bold text-cextra-dark-gray">Live Vote Counts</h2>
-          <p className="text-cdark-gray text-sm mt-1">Real-time updates every 3 seconds</p>
+          <p className="text-cdark-gray text-sm mt-1">Real-time updates every 10 seconds</p>
         </div>
 
         <div className="grid grid-cols-1 xl:grid-cols-2 divide-x-0 xl:divide-x divide-y xl:divide-y-0 divide-gray-200">
@@ -96,8 +113,8 @@ function VotesPage() {
                   <div className="shrink-0">
                     <div className="relative">
                       <img 
-                        src={candidate.image} 
-                        alt={candidate.name}
+                        src={candidate.students.image} 
+                        alt={candidate.students.name}
                         className="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover border-2 border-white shadow-light"
                       />
                       <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-primary rounded-full border-2 border-white flex items-center justify-center">
@@ -109,7 +126,7 @@ function VotesPage() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
                       <p className="text-base sm:text-lg font-semibold text-gray-900 truncate">
-                        {candidate.name}
+                        {candidate.students.name}
                       </p>
                       {candidate.trend === "up" ? (
                         <span className="text-green-500 text-sm">↑</span>
@@ -117,12 +134,12 @@ function VotesPage() {
                         <span className="text-red-500 text-sm">↓</span>
                       )}
                     </div>
-                    <p className="text-cdark-gray text-sm">Roll No: {candidate.rollNum}</p>
+                    <p className="text-cdark-gray text-sm">Roll No: {candidate.students.rollnum}</p>
                   </div>
                   
                   <div className="text-right">
                     <p className="text-lg sm:text-xl font-bold text-gray-900">
-                      18
+                      {candidate.voteCount}
                     </p>
                     <p className="text-cdark-gray text-sm">Votes</p>
                   </div>
@@ -147,8 +164,8 @@ function VotesPage() {
                   <div className="shrink-0">
                     <div className="relative">
                       <img 
-                        src={candidate.image} 
-                        alt={candidate.name}
+                        src={candidate.students.image} 
+                        alt={candidate.students.name}
                         className="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover border-2 border-white shadow-light"
                       />
                       <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-pink-500 rounded-full border-2 border-white flex items-center justify-center">
@@ -160,7 +177,7 @@ function VotesPage() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
                       <p className="text-base sm:text-lg font-semibold text-gray-900 truncate">
-                        {candidate.name}
+                        {candidate.students.name}
                       </p>
                       {candidate.trend === "up" ? (
                         <span className="text-green-500 text-sm">↑</span>
@@ -168,12 +185,12 @@ function VotesPage() {
                         <span className="text-red-500 text-sm">↓</span>
                       )}
                     </div>
-                    <p className="text-gray-500 text-sm">Roll No: {candidate.rollNum}</p>
+                    <p className="text-gray-500 text-sm">Roll No: {candidate.students.rollnum}</p>
                   </div>
                   
                   <div className="text-right">
                     <p className="text-lg sm:text-xl font-bold text-gray-900">
-                      18
+                      {candidate.voteCount}
                     </p>
                     <p className="text-gray-500 text-sm">Votes</p>
                   </div>

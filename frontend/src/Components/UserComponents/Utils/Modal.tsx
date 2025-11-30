@@ -1,15 +1,18 @@
 import { useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 
 type Props = {
     hasVoted: boolean;
 }
 
 const Modal = ({ hasVoted}: Props) => {
+    const queryClient = useQueryClient();
     if(!hasVoted) return  ;
-    console.log("Modal is rendered and hasVoted=",hasVoted)
+    //console.log("Modal is rendered and hasVoted=",hasVoted)
     const navigate = useNavigate()
 
     const redirectHome = () => {
+        queryClient.clear();
         navigate('/')
     }
 
