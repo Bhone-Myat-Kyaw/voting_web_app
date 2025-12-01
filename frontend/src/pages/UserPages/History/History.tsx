@@ -1,15 +1,20 @@
 import {motion} from "framer-motion";
 import type { Variants } from "framer-motion";
 import { Element } from "react-scroll";
-import Card from "../../Components/Utils/Card";
-import { SelectedPage } from "../../Components/Texts/pages";
-import SectionTitle from "../../Components/Texts/SectionTitle";import { useMediaQuery } from "../../helpers/useMediaQuery";
+import Card from "../../../Components/Utils/Card";
+import { SelectedPage } from "../../../Components/Texts/pages";
+import SectionTitle from "../../../Components/Texts/SectionTitle";import { useMediaQuery } from "../../../helpers/useMediaQuery";
+import { useAuthContext } from "../../../Shared/Context/AuthConstant";
 
 type Props = {
   setSelectedPage: (value: SelectedPage) => void
 }
 const History = ({setSelectedPage}: Props) => {
   // const flexCol = "flex flex-col items-center";
+
+
+
+  // media query
   const isAboveMediumScreen = useMediaQuery("(min-width: 1127px)");
   const schoolHistory = [
     {
@@ -126,9 +131,6 @@ const History = ({setSelectedPage}: Props) => {
             })}
           </motion.div>
 
-          
-
-          {/* <div className="bg-clight-blue w-px"></div> */}
         </div>
       </motion.section>
     </Element>

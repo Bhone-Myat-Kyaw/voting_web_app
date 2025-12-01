@@ -1,8 +1,8 @@
 import {motion} from "framer-motion";
-import Accordion from "../../Components/Utils/Accordion";
+import Accordion from "../../../Components/Utils/Accordion";
 import { Element } from "react-scroll";
-import { SelectedPage } from "../../Components/Texts/pages";
-import SectionTitle from "../../Components/Texts/SectionTitle";
+import { SelectedPage } from "../../../Components/Texts/pages";
+import SectionTitle from "../../../Components/Texts/SectionTitle";
 import type { Variants } from "framer-motion";
 
 type Props = {

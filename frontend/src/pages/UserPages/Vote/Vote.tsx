@@ -1,18 +1,19 @@
 import { useLocation } from "react-router-dom";
 // import {voters} from "../../Components/Texts/voterInfo";
-import Container from "../../Shared/Container";
+import Container from "../../../Shared/Container";
 // import {Button, Carousel} from "flowbite-react"
-import CandidateCarousel from "../../Components/Utils/CandidateCarousel";
+import CandidateCarousel from "../../../Components/Utils/CandidateCarousel";
 // import CandidateCarousel from "../../Components/Utils/CandidateCarousel1";
-import { candidates } from "../../Components/Texts/candidatesInfo";
-import type { Candidate } from "../../Components/Texts/candidatesInfo";
-import type { Voter } from "../../Components/Texts/voterInfo";
+import { candidates } from "../../../Components/Texts/candidatesInfo";
+import type { Candidate } from "../../../Components/Texts/candidatesInfo";
+import type { Voter } from "../../../Components/Texts/voterInfo";
 import { useState } from "react";
-import Modal from "../../Components/Utils/Modal";
+import Modal from "../../../Components/Utils/Modal/Modal";
 import type { Variants } from "framer-motion";
 import {motion} from "framer-motion"
-import { getWithExpiry } from "../../helpers/storage";
-import { useAuthContext } from "../../Shared/Context/AuthConstant";
+import { getWithExpiry } from "../../../helpers/storage"; 
+import { useAuthContext } from "../../../Shared/Context/AuthConstant";
+import ConfirmationModal from "../../../Components/Utils/Modal/ConfirmationModal";
 
 // type Props = {
 //     admissionID: string;
@@ -22,7 +23,8 @@ import { useAuthContext } from "../../Shared/Context/AuthConstant";
 
 const Vote = () => {
     // authContext 
-    // const {voter} = useAuthContext();
+    
+    //   const {confirm, setConfirm} = useAuthContext()
 
     // framer motion
     const containerVariants: Variants = {
@@ -68,18 +70,23 @@ const Vote = () => {
 
     const [voter, setVoter] = useState<Voter | null>(voterDataParsed);
 
+    const [showModal, setShowModal] = useState(false)
+
     const handleVoteClick = () => {
-        setVoter(voter => ({...voter, hasVoted: true}))
-        // error refers to line 56
+        // TODO: alter database hasVoted value
+
+        setShowModal(true) 
     }
 
     
 
-
+    // custom styles
+    const darkContainer = "dark:bg-dark-bg-base";
+    const darkTile = "dark:text-dark-text-primary";
     
     // if voter null -> show error page.
   return ( !voter.hasVoted ?
-    <motion.div className="w-full h-screen bg-cwhite py-10 dark:bg-dark-bg-base "
+    <motion.div className="w-full h-screen bg-cwhite py-10  "
     variants={containerVariants}
     initial="hidden"
     whileInView={"visible"}
@@ -87,7 +94,7 @@ const Vote = () => {
     >
         <Container>
             {/* title */}
-            <motion.div className="mb-3 dark:text-dark-text-primary" 
+            <motion.div className="mb-3 " 
             variants={childVariants}
             >
                 <h1 className="text-h1-lg font-heading-bold
@@ -102,7 +109,10 @@ const Vote = () => {
                 <CandidateCarousel candidates={sex==="male"? femaleCandidates: maleCandidates }  onVoteClick={handleVoteClick}  />
             </motion.div>
 
+
         </Container>
+
+        <ConfirmationModal isOpen={showModal} setShowModal={setShowModal} />
         
         
     </motion.div> : <Modal hasVoted={voter.hasVoted} />

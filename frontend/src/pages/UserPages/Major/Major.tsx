@@ -2,12 +2,12 @@ import React from "react";
 import {
   firstSemSubjects,
   secondSemSubjects,
-} from "../../Components/Texts/subject";
-import TableDataRow from "../../Components/Utils/TableDataRow";
+} from "../../../Components/Texts/subject";
+import TableDataRow from "../../../Components/Utils/TableDataRow";
 // import CurriculumTable from "../../Components/Utils/CurriculumTable";
 import { Element } from "react-scroll";
-import { SelectedPage } from "../../Components/Texts/pages";
-import SectionTitle from "../../Components/Texts/SectionTitle";
+import { SelectedPage } from "../../../Components/Texts/pages";
+import SectionTitle from "../../../Components/Texts/SectionTitle";
 import { motion } from "framer-motion";
 import type {Variants} from "framer-motion"
 
@@ -39,6 +39,9 @@ const Major = ({setSelectedPage}: Props) => {
 
   }
 
+  // custom styles 
+  const darkTable = "dark:border-dark-table-border dark:odd:bg-dark-table-row dark:even:bg-dark-table-row-alt dark:text-dark-text-primary";
+
   return (
     <Element name={SelectedPage.Curriculum}>
         <motion.section
@@ -52,7 +55,7 @@ const Major = ({setSelectedPage}: Props) => {
             {/* description */}
 
             
-            <motion.table className="table-auto w-full md:table-fixed  text-left border border-gray-300 md:max-w-5xl md:mx-auto dark:border-dark-table-border dark:odd:bg-dark-table-row dark:even:bg-dark-table-row-alt dark:text-dark-text-primary"
+            <motion.table className="table-auto w-full md:table-fixed  text-left border border-gray-300 md:max-w-5xl md:mx-auto "
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"

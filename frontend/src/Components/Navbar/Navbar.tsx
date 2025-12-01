@@ -2,12 +2,14 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-scroll";
 import logo from "/src/assets/logo.png"
 import { useMediaQuery } from "../../helpers/useMediaQuery";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
+import { Bars3Icon, XMarkIcon, MoonIcon, SunIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import { SelectedPage } from "../Texts/pages";
 import CustomLink from "./CustomLink";
 import {motion} from "framer-motion"
 import { voters, type Voter } from "../Texts/voterInfo";
+import { useTheme } from "../../helpers/useTheme";
+import { isLightMode } from "../../helpers/checkTheme";
 
 type Props = {
   selectedPage: SelectedPage;
@@ -15,9 +17,15 @@ type Props = {
 }
 
 export default function Navbar({selectedPage, setSelectedPage}:Props) {
+  // hooks
   const navigate = useNavigate();
+  const {theme, toggleTheme} = useTheme()
+
+  // media queries
   const isAboveMediumScreen = useMediaQuery("(min-width: 1024px)");
   const sliderAnimation = "transition-transform duration-700 ease-in-out"
+
+  // slider functionalities
   const [isToggle, setIsToggle] = useState(false);
 
   const handleToggle = () => {
@@ -51,10 +59,16 @@ export default function Navbar({selectedPage, setSelectedPage}:Props) {
     
   }
 
+  // custom styles variables
+  const themeSwitchButton = `${isLightMode? "bg-clight-gray text-cextra-dark": "bg-dark-bg-surface-1 text-clight-gray" } p-2 rounded-full `;
+  const buttonStyle = "bg-primary text-cwhite py-3 px-5 rounded-2xl font-button-bold text-button cursor-pointer shadow-normal backdrop-blur-md  ";
+
+  const darkTextPrimary = "dark:text-dark-text-primary";
+
 
   return (
     <nav>
-      <div className=" w-full  fixed top-0 z-30 backdrop-blur-lg  py-5 dark:text-dark-text-primary">
+      <div className={`w-full  fixed top-0 z-30 backdrop-blur-lg  py-5 ${darkTextPrimary} `}>
         <div className="w-5/6 m-auto flex justify-between items-center">
           {/* left  */}
           <img src={logo} alt="" className="h-14 w-auto"/>
@@ -105,14 +119,20 @@ export default function Navbar({selectedPage, setSelectedPage}:Props) {
               </li>
             </ul>
             <motion.button
-              className="bg-primary text-cwhite py-3 px-5 rounded-2xl font-button-bold text-button cursor-pointer"
+              className={`${buttonStyle} hover:bg-dark-bg-base`}
               onClick={handleLogin}
               whileTap={{scale: 1.5}}
             >
               Log in
             </motion.button>
+            <button className={themeSwitchButton}
+            onClick={toggleTheme}
+            >
+              {theme === "light" ? <MoonIcon className="h-5 w-5" /> : <SunIcon className="h-5 w-5 text-white " />}
+              
+            </button>
           </div>): (
-            <motion.button className="bg-primary text-cwhite py-3 px-5 rounded-2xl font-button-bold text-button cursor-pointer shadow-normal backdrop-blur-md"
+            <motion.button className={buttonStyle}
             onClick={handleToggle}
             whileTap={{scale: 1.5}}
             >
@@ -164,7 +184,7 @@ export default function Navbar({selectedPage, setSelectedPage}:Props) {
                     </li>
                   </ul>
 
-                  <motion.button className="bg-primary text-cwhite py-3 px-5 rounded-2xl font-button-bold text-button cursor-pointer shadow-normal backdrop-blur-md max-w-[80%]"
+                  <motion.button className={`${buttonStyle}max-w-[80%]`}
                   onClick={handleLogin}
                   whileTap={{scale: 0.9}}
                   whileHover={{scale: 1.1}}

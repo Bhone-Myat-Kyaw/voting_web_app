@@ -1,3 +1,4 @@
+import { isLightMode } from "../../helpers/checkTheme";
 
 type Props = {
   year: number;
@@ -6,13 +7,20 @@ type Props = {
 };
 
 const Card = ({ year, title, about }: Props) => {
+  const darkCardStyle = "bg-dark-card-bg bg-dark-card-border";
+  const darkTextPrimary = "text-dark-text-primary"; // h1
+  const darkTextSecondary = "text-dark-text-secondary"
+  const lightCardStyle = "bg-cwhite"
+
+  const cardStyle = isLightMode ? lightCardStyle: darkCardStyle;  
+  const textPrimary = isLightMode? "text-cextra-dark-gray" : darkTextPrimary;
   return (
-    <div className="bg-cwhite p-8 w-[450px] rounded-lg  shadow-normal my-3 dark:bg-dark-card-bg dark:bg-dark-card-border">
+    <div className={`${cardStyle} p-8 w-[450px] rounded-lg  shadow-normal my-3`} >
       <h2 className="text-primary text-body-sm font-heading-bold">{year}</h2>
-      <h1 className="text-cextra-dark-gray text-section font-heading-bold dark:text-dark-text-primary ">
+      <h1 className={`${textPrimary} text-section font-heading-bold`}  >
         {title}
       </h1>
-      <p className="dark: text-dark-text-secondary">{about}</p>
+      <p className={`${isLightMode? "": darkTextSecondary}`}>{about}</p>
     </div>
   );
 };

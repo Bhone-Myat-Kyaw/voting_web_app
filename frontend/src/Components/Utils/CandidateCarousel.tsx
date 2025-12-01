@@ -27,13 +27,23 @@ const CandidateCarousel = ({candidates, onVoteClick}: CandidateProps) => {
     setIndex((prev: number) => (prev > 0 ? prev - 1 : prev));
   };
 
+  const checkMode = (currentMode: string) => {
+    if(currentMode === "light") {
+      return true
+    }
+    return false
+  }
+
+  const isLightMode = checkMode(localStorage.getItem("theme"));
+
+
   return (
     <div>
       <div className="relative max-w-6xl mx-auto mt-8 px-6 select-none">
       {/* Buttons */}
       <button
         onClick={prev}
-        className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-white shadow-lg rounded-full p-3 hover:bg-gray-100 dark:bg-dark-card-bg
+        className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-white shadow-lg rounded-full p-3 hover:bg-gray-100 
         "
       >
         ◀
@@ -57,7 +67,7 @@ const CandidateCarousel = ({candidates, onVoteClick}: CandidateProps) => {
             className="flex justify-center px-4 py-6"
           >
              
-            <div className="bg-white rounded-2xl shadow-md w-80 overflow-hidden dark:bg-dark-login-form-bg">
+            <div className={` rounded-2xl shadow-md w-80 overflow-hidden ${isLightMode ? "bg-white ": "bg-dark-login-form-bg"} `}>
               <img
                 src={"../assets/STILLNESS.png"}
                 alt={"name"}
@@ -65,8 +75,8 @@ const CandidateCarousel = ({candidates, onVoteClick}: CandidateProps) => {
               />
 
               <div className="p-5">
-                <h3 className="text-lg font-semibold dark:bg-dark-text-primary">{candidate.name}</h3>
-                <p className="text-sm text-gray-600 mt-1 font-heading dark:text-dark-placeholder">
+                <h3 className={`text-lg font-semibold ${isLightMode ?"text-cextra-dark-gray":"text-dark-text-primary"}`}>{candidate.name}</h3>
+                <p className={`text-sm  mt-1 font-heading ${isLightMode? "text-gray-600": "text-dark-placeholder"} `}>
                   {"Engineering"} | {"electronic engineer"}
                 </p>
 

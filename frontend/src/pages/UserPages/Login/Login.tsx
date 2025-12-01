@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import { voters } from "../../Components/Texts/voterInfo";
-import type { Voter } from "../../Components/Texts/voterInfo";
+import { voters } from "../../../Components/Texts/voterInfo";
+import type { Voter } from "../../../Components/Texts/voterInfo";
 import React, { useRef, useState } from "react";
 import type { Variants } from "framer-motion";
 import {motion} from "framer-motion"
-import { useAuthContext } from "../../Shared/Context/AuthConstant";
+import { useAuthContext } from "../../../Shared/Context/AuthConstant";
 
 interface FormError {
   general?: string;
@@ -116,6 +116,16 @@ type FormEvent = React.FormEvent<HTMLFormElement>;
   }
 
 
+  // custom styles
+  const darkForm = "dark:bg-dark-login-form-bg dark:border-dark-card-border";
+  const darkTitle = "text-dark-text-primary";
+  const darkFormLabel = "dark:text-dark-text-primary";
+  const darkInputField = "placeholder:text-cmedium-gray dark:bg-dark-input-bg dark:border-dark-input-border dark:placeholder:text-dark-placeholder dark:shadow-dark-border";
+  const darkInputFocus = "dark:focus-within:bg-dark-input-bg dark:focus-within:border-dark-input-border"
+
+
+
+
 
   
 
@@ -127,27 +137,24 @@ type FormEvent = React.FormEvent<HTMLFormElement>;
       viewport={{once: true, amount: 0.2}}
     >
       
-      <motion.div className="p-8 min-w-sm w-md max-w-lg h-auto lg:h-3/5 bg-cwhite rounded-3xl shadow-normal space-y-4 dark:bg-dark-login-form-bg dark:border-dark-card-border"
+      <motion.div className="p-8 min-w-sm w-md max-w-lg h-auto lg:h-3/5 bg-cwhite rounded-3xl shadow-normal space-y-4 "
       variants={formVariants}
       >
-        <motion.h2 className="text-h1-lg font-heading-bold mt-3 text-dark-text-primary"
+        <motion.h2 className="text-h1-lg font-heading-bold mt-3 text-cextra-dark-gray "
         >Login</motion.h2>
-        <motion.form ref={formRef} onSubmit={handleSubmit} className="space-y-5 w-[95%] m-auto dark:text-dark-text-primary"
+        <motion.form ref={formRef} onSubmit={handleSubmit} className="space-y-5 w-[95%] m-auto "
         >
           <div className="flex flex-col items-start justify-center gap-2 
           ">
           <label htmlFor="name" className="font-heading-bold ">Admission ID</label>
-          <input ref={admissionRef} type="text" name="admissionId" id="admissionId" required placeholder="Enter your admission ID" className="border-2 rounded-3xl p-3   w-full placeholder:text-cmedium-gray
-          dark:bg-dark-input-bg dark:border-dark-input-border
-          dark:placeholder:text-dark-placeholder
-          dark:shadow-dark-border "
+          <input ref={admissionRef} type="text" name="admissionId" id="admissionId" required placeholder="Enter your admission ID" className="border rounded-3xl p-3   w-full  "
           />
           <span className="text-small ml-2 text-red-400">{errorMsg.admissionID}</span>
           </div>
 
           <div className="flex flex-col items-start justify-center gap-2">
             <label htmlFor="password" className="font-heading-bold">Password</label>
-            <input ref={passwordRef} type="password" required name="password" id="password" placeholder="Enter your password" className="border rounded-3xl p-3 w-full placeholder:text-cmedium-gray placeholder:dark:text-clight-blue dark:bg-dark-input-bg dark:border-dark-input-border dark:focus-within:bg-dark-input-bg dark:focus-within:border-dark-input-border 
+            <input ref={passwordRef} type="password" required name="password" id="password" placeholder="Enter your password" className="border rounded-3xl p-3 w-full 
           
             " />
             <span className="text-small ml-2 text-red-400">{errorMsg.password}</span>

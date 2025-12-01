@@ -10,6 +10,11 @@ type Props = {
 const SectionTitle = ({title, subTitle, customize}: Props) => {
     // custom styles
     const customStyle = "text-primary font-body-medium text-body-sm";
+
+    const darkTextPrimary = "dark:text-dark-text-primary"; // h1
+    const darkTextSecondary = "dark:text-dark-text-secondary";
+    
+
     
     // framer motion
     const containerVariants: Variants = {
@@ -39,11 +44,11 @@ const SectionTitle = ({title, subTitle, customize}: Props) => {
           whileInView="visible"
           viewport={{once: true, amount: 0.9}}
           >
-            <motion.h1 className="text-h1 font-heading-bold dark:text-dark-text-primary"
+            <motion.h1 className="text-h1 font-heading-bold "
             variants={childVariants}
             
             >{title}</motion.h1>
-            <motion.h2 className={`text-section font-heading text-cdark-gray max-w-[800px] text-center ${customize? customStyle: ""} dark:text-dark-text-secondary`}
+            <motion.h2 className={`text-section font-heading text-cdark-gray max-w-[800px] text-center ${customize? customStyle: ""} `}
             variants={childVariants}
             >
               {subTitle}

@@ -6,11 +6,12 @@
 // import UserManual from "./pages/UserManual/UserManual";
 // import Container from "./Shared/Container";
 import {  Routes, Route } from "react-router-dom";
-import MainPage from "./pages/MainPage";
-import Login from "./pages/Login/Login";
-import Vote from "./pages/Vote/Vote";
+import MainPage from "./pages/UserPages/MainPage";
+import Login from "./pages/UserPages/Login/Login";
+import Vote from "./pages/UserPages/Vote/Vote";
 // import Modal from "./Components/Utils/Modal";
 import ProtectedRoute from "./Components/Utils/ProtectedRoute";
+import ConfirmationModal from "./Components/Utils/Modal/ConfirmationModal";
 // import { SelectedPage } from "./Components/Texts/pages";
 // import { useState } from "react";
 // import OnboardingModal from "./Components/Utils/onBoardingModal";
@@ -27,7 +28,7 @@ function App() {
         </ProtectedRoute>
       } />
       {/* <Route path="/onBoarding" element={<OnboardingModal/>}/> */}
-      {/* <Route path="/modal" element={<Modal />} /> */}
+      <Route path="/modal" element={<ConfirmationModal />} />
     </Routes>
   );
 }

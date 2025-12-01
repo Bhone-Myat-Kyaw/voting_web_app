@@ -252,9 +252,15 @@ body,
 .app {
   height: 100%;
   width: 100%;
-  @apply text-cextra-dark-gray dark:bg-dark-text-primary;
-  @apply bg-cwhite dark:bg-dark-bg-base ;
+  @apply text-cextra-dark-gray ;
+  @apply bg-cwhite  ;
 }
+
+.dark {
+ @apply bg-dark-bg-base
+}
+/* dark:bg-dark-bg-base */
+/* dark:bg-dark-text-primary */
 
 html {
   scroll-behavior: smooth;

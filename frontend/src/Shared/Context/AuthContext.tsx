@@ -13,6 +13,7 @@ type Props = {
 
 
 export const AuthContextProvider = ({children} : Props) => {
+    const [confirm, setConfirm]=useState(false);
     const [voter, setVoter] = useState<Voter | null>(null);
     const two_days = 2 * 24 * 60 * 60 * 1000;
     const login = (v: Voter) => {
@@ -20,7 +21,7 @@ export const AuthContextProvider = ({children} : Props) => {
         setWithExpiry("voter", v, two_days);
     }
     return (
-        <AuthContext.Provider value={{voter, login}}>
+        <AuthContext.Provider value={{voter, login, confirm, setConfirm}}>
             {children}
         </AuthContext.Provider>
     );

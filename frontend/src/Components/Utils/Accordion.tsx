@@ -64,16 +64,23 @@ const Accordion = ({ name, title, children, imgPath }: Props) => {
       }
     }
   }
+
+  // custom styles
+  const darkDetails = "dark:bg-dark-card-bg dark:border-dark-card-border";
+  const darkTitle = "dark:text-dark-text-primary";
+  const darkIcon = "dark:text-white";
+  const darkCardDiv = "dark:bg-dark-card-bg dark:border-dark-card-border";
+
   return (
     <motion.details
       name={name}
       open={undefined}
-      className="group border-b border-dark-card-border rounded-lg dark:bg-dark-card-bg dark:border-dark-card-border shadow-normal "
+      className="group border-b border-dark-card-border rounded-lg  shadow-normal "
       variants={accordionVariants}
     >
       <summary className="flex items-center justify-between p-5 font-medium cursor-pointer list-none">
-        <span className="dark:text-dark-text-primary font-heading">{title}</span>
-        <span className="text-gray-900 dark:text-white">
+        <span className=" font-heading">{title}</span>
+        <span className="text-gray-900 ">
           <svg
             className="w-3 h-3 text-gray-400 dark:text-gray-500 transform group-open:rotate-180 transition-transform duration-300"
             aria-hidden="true"
@@ -91,7 +98,7 @@ const Accordion = ({ name, title, children, imgPath }: Props) => {
           </svg>
         </span>
       </summary>
-      <div className="p-5 rounded-lg border-t border-gray-50  dark:bg-dark-card-bg dark:border-dark-card-border ">
+      <div className="p-5 rounded-lg border-t border-gray-50   ">
         <div className="w-full flex justify-around bg-red-300n h-52">
           <img src={imgPath} alt="" className="flex-1 w-10 object-fit" />
           <p className="text-gray-500 dark:text-gray-400 flex-2">{children}</p>

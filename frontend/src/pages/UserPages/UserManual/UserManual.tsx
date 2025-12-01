@@ -1,6 +1,6 @@
 import { Element } from "react-scroll";
-import { SelectedPage } from "../../Components/Texts/pages";
-import SectionTitle from "../../Components/Texts/SectionTitle";
+import { SelectedPage } from "../../../Components/Texts/pages";
+import SectionTitle from "../../../Components/Texts/SectionTitle";
 import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
 
@@ -27,6 +27,8 @@ const UserManual = ({setSelectedPage}: Props) => {
       }
     }
   }
+
+  const darkListStyle = "dark:text-dark-text-primary"
   return (
     <Element name={SelectedPage.UserManual}>
       <motion.div className="mt-10" 
@@ -37,7 +39,7 @@ const UserManual = ({setSelectedPage}: Props) => {
           <SectionTitle title="User Manual" subTitle="A simple, step-by-step guide to get you started with our platform. Follow these instructions to navigate through the key features seamlessly." />
         </div>
         <div className="flex flex-col justify-around  w-full   ">
-          <motion.ul className="list-none text-start w-full  md:max-w-5xl md:mx-auto dark:text-dark-text-primary "
+          <motion.ul className="list-none text-start w-full  md:max-w-5xl md:mx-auto  "
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"

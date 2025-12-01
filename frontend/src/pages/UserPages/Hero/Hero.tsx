@@ -1,10 +1,12 @@
 import { Element } from "react-scroll";
-import { SelectedPage } from "../../Components/Texts/pages";
+import { SelectedPage } from "../../../Components/Texts/pages";
 import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
 import { useLocation } from "react-router-dom";
-import type { People } from "../../Components/Texts/peopleInfo";
-import { welcomeTexts, type WelcomeText } from "../../Components/Texts/welcomeText";
+import type { People } from "../../../Components/Texts/peopleInfo";
+import { welcomeTexts, type WelcomeText } from "../../../Components/Texts/welcomeText";
+import { useTheme } from "../../../helpers/useTheme";
+import { isLightMode } from "../../../helpers/checkTheme";
 
 type Props = {
   setSelectedPage: (value: SelectedPage)=> void;
@@ -49,28 +51,34 @@ export default function Hero({setSelectedPage}: Props) {
     displayText = selectedText[0];
   }
 
+  // custom style variables
+  const darkBackground = "bg-dark-bg-base"; // container
+  const darkTextPrimary = "bg-dark-bg-base"; // h1
+  const darkTextSecondary= "text-dark-text-secondary"; // p
   
-
+  const {theme} = useTheme();
 
   return (
     
     <Element name={SelectedPage.Home}>
-      <motion.section className="w-full h-screen flex flex-col items-center justify-center dark:bg-dark-bg-base"
+      <motion.section className={`w-full h-screen flex flex-col items-center justify-center `}
+      
       onViewportEnter={()=>setSelectedPage(SelectedPage.Home)}
       viewport={{once: false, amount: 0.8}}
       
 
       >
         <motion.div className=" gap-10 mt-5  max-w-3xl text-center flex flex-col"
+        key={theme}
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
         viewport={{once: true, amount:0.2}}
         >
-          <motion.h1 className="text-5xl font-heading-bold dark:text-dark-text-primary"
+          <motion.h1 className="text-5xl font-heading-bold"
           variants={childVariants}
           >{displayText.title}</motion.h1>
-          <motion.p className="text-section-lg font-body max-w-3xl dark:text-dark-text-secondary"
+          <motion.p className="text-section-lg font-body max-w-3xl "
           variants={childVariants}
           >
             {displayText.body}

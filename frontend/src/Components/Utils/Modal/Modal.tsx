@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
-import { getWithExpiry } from '../../helpers/storage';
+import { getWithExpiry } from '../../../helpers/storage';
 
 type Props = {
     hasVoted: boolean;
