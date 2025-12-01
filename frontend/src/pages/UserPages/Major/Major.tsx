@@ -10,6 +10,8 @@ import { SelectedPage } from "../../../Components/Texts/pages";
 import SectionTitle from "../../../Components/Texts/SectionTitle";
 import { motion } from "framer-motion";
 import type {Variants} from "framer-motion"
+import { isLightMode } from "../../../helpers/checkTheme";
+import { containerVariants, childVariants } from "../../../Shared/framerVariants";
 
 type Props = {
   setSelectedPage: (value: SelectedPage) => void
@@ -19,28 +21,27 @@ const Major = ({setSelectedPage}: Props) => {
   const thStyle = "p-4 border-b border-gray-300 bg-blue-gray-50";
   const tdStyle = "p-4 border-b border-gray-300";
 
-  const containerVariants: Variants = {
-    hidden: {opacity: 0, y: 40},
-    visible: {opacity: 1, y: 0,
-      transition: {
-        staggerChildren: 0.4,
-      }
-    },
-  }
+  // const containerVariants: Variants = {
+  //   hidden: {opacity: 0, y: 40},
+  //   visible: {opacity: 1, y: 0,
+  //     transition: {
+  //       staggerChildren: 0.4,
+  //     }
+  //   },
+  // }
 
-  const tableVariants: Variants = {
-    hidden: {opacity: 0 , y: 40},
-    visible: {opacity: 1, y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeInOut"
-      }
-    }
-
-  }
+  // const tableVariants: Variants = {
+  //   hidden: {opacity: 0 , y: 40},
+  //   visible: {opacity: 1, y: 0,
+  //     transition: {
+  //       duration: 0.6,
+  //       ease: "easeInOut"
+  //     }
+  //   }
+  // }
 
   // custom styles 
-  const darkTable = "dark:border-dark-table-border dark:odd:bg-dark-table-row dark:even:bg-dark-table-row-alt dark:text-dark-text-primary";
+  const darkTable = "border-dark-table-border odd:bg-dark-table-row even:bg-dark-table-row-alt text-dark-text-primary";
 
   return (
     <Element name={SelectedPage.Curriculum}>
@@ -55,14 +56,14 @@ const Major = ({setSelectedPage}: Props) => {
             {/* description */}
 
             
-            <motion.table className="table-auto w-full md:table-fixed  text-left border border-gray-300 md:max-w-5xl md:mx-auto "
+            <motion.table className={`table-auto w-full md:table-fixed  text-left border border-gray-300 md:max-w-5xl md:mx-auto ${isLightMode? "": darkTable} `}
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{once: true, amount: 0.8}}
             >
               <motion.thead
-              variants={tableVariants}
+              variants={childVariants}
               >
                 <tr>
                   <th className={`${thStyle} border-r`}>Code</th>
@@ -72,7 +73,7 @@ const Major = ({setSelectedPage}: Props) => {
                 </tr>
               </motion.thead>
               <motion.tbody
-              variants={tableVariants}
+              variants={childVariants}
               >
                 {firstSemSubjects.map((item, index) => (
                   <tr key={item.id}>

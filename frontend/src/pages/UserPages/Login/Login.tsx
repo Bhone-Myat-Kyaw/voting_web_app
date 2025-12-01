@@ -5,6 +5,8 @@ import React, { useRef, useState } from "react";
 import type { Variants } from "framer-motion";
 import {motion} from "framer-motion"
 import { useAuthContext } from "../../../Shared/Context/AuthConstant";
+import { isLightMode } from "../../../helpers/checkTheme";
+import { containerVariants, childVariants } from "../../../Shared/framerVariants";
 
 interface FormError {
   general?: string;
@@ -21,24 +23,24 @@ const Login = () => {
 
 
   // framer motion
-  const containerVariants: Variants = {
-    hidden: {opacity: 0, y: 40},
-    visible: {opacity: 1, y: 0,
-      transition: {
-        staggerChildren: 0,
-      }
-    },
-  }
+  // const containerVariants: Variants = {
+  //   hidden: {opacity: 0, y: 40},
+  //   visible: {opacity: 1, y: 0,
+  //     transition: {
+  //       staggerChildren: 0,
+  //     }
+  //   },
+  // }
 
-  const formVariants: Variants = {
-    hidden: {opacity: 0, y: 40},
-    visible: {opacity: 1, y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeInOut",
-      }
-    },
-  }
+  // const formVariants: Variants = {
+  //   hidden: {opacity: 0, y: 40},
+  //   visible: {opacity: 1, y: 0,
+  //     transition: {
+  //       duration: 0.6,
+  //       ease: "easeInOut",
+  //     }
+  //   },
+  // }
 
   // TODO: error - have to reload for login form to appears
 
@@ -117,11 +119,12 @@ type FormEvent = React.FormEvent<HTMLFormElement>;
 
 
   // custom styles
-  const darkForm = "dark:bg-dark-login-form-bg dark:border-dark-card-border";
-  const darkTitle = "text-dark-text-primary";
-  const darkFormLabel = "dark:text-dark-text-primary";
-  const darkInputField = "placeholder:text-cmedium-gray dark:bg-dark-input-bg dark:border-dark-input-border dark:placeholder:text-dark-placeholder dark:shadow-dark-border";
-  const darkInputFocus = "dark:focus-within:bg-dark-input-bg dark:focus-within:border-dark-input-border"
+  const background = isLightMode? "bg-cwhite":"bg-dark-bg-base";
+  const formStyle = isLightMode?"bg-cwhite" :"bg-dark-login-form-bg border-dark-card-border";
+  const title = isLightMode? "text-cextra-dark-gray":"text-dark-text-primary";
+  const darkFormLabel = "text-dark-text-primary";
+  const darkInputField = "placeholder:text-cmedium-gray bg-dark-input-bg border-dark-input-border placeholder:text-dark-placeholder shadow-dark-border";
+  const darkInputFocus = "focus-within:bg-dark-input-bg focus-within:border-dark-input-border"
 
 
 
@@ -130,33 +133,35 @@ type FormEvent = React.FormEvent<HTMLFormElement>;
   
 
   return (
-    <motion.section className="w-full h-screen  flex items-center justify-center  text-center"
+    <motion.section className={`w-full h-screen ${background}  flex items-center justify-center  text-center`}
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"
       viewport={{once: true, amount: 0.2}}
     >
       
-      <motion.div className="p-8 min-w-sm w-md max-w-lg h-auto lg:h-3/5 bg-cwhite rounded-3xl shadow-normal space-y-4 "
-      variants={formVariants}
+      <motion.div className={`p-8 min-w-sm w-md max-w-lg h-auto lg:h-3/5 ${formStyle} rounded-3xl shadow-normal space-y-4 `}
+      variants={childVariants}
       >
-        <motion.h2 className="text-h1-lg font-heading-bold mt-3 text-cextra-dark-gray "
+        <motion.h2 className={`text-h1-lg font-heading-bold mt-3 ${title} `}
         >Login</motion.h2>
-        <motion.form ref={formRef} onSubmit={handleSubmit} className="space-y-5 w-[95%] m-auto "
+        <motion.form ref={formRef} onSubmit={handleSubmit} 
+        autoComplete="off"
+        className={`space-y-5 w-[95%] m-auto ${title}`}
         >
           <div className="flex flex-col items-start justify-center gap-2 
           ">
           <label htmlFor="name" className="font-heading-bold ">Admission ID</label>
-          <input ref={admissionRef} type="text" name="admissionId" id="admissionId" required placeholder="Enter your admission ID" className="border rounded-3xl p-3   w-full  "
+          <input ref={admissionRef} type="text" name="admissionId" id="admissionId" required placeholder="Enter your admission ID" className={`border rounded-3xl p-3   w-full ${isLightMode? "":darkInputField} `}
           />
           <span className="text-small ml-2 text-red-400">{errorMsg.admissionID}</span>
           </div>
 
           <div className="flex flex-col items-start justify-center gap-2">
             <label htmlFor="password" className="font-heading-bold">Password</label>
-            <input ref={passwordRef} type="password" required name="password" id="password" placeholder="Enter your password" className="border rounded-3xl p-3 w-full 
+            <input ref={passwordRef} type="password" required name="password" id="password" placeholder="Enter your password" className={`border rounded-3xl p-3 w-full ${isLightMode? "":darkInputField}`}
           
-            " />
+            />
             <span className="text-small ml-2 text-red-400">{errorMsg.password}</span>
           </div>
 

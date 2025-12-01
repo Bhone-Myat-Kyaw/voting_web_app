@@ -1,6 +1,7 @@
 import React from 'react'
 import { motion } from "framer-motion";
 import { isLightMode } from '../../../helpers/checkTheme';
+import { useNavigate } from 'react-router-dom';
 
 
 type Props = {
@@ -9,11 +10,14 @@ type Props = {
 }
 
 const ConfirmationModal = ({isOpen, setShowModal}: Props) => {
+    const navigate = useNavigate()
     if(!isOpen) return null;
     const modalCardStyle = isLightMode ? "bg-white" : "bg-dark-card-bg bg-dark-card-border";
     const modalButtonStyle = `px-4 py-2 bg-primary text-white rounded-3xl shadow-normal flex-1 font-button-bold ${isLightMode ? "":"border-dark-button-secondary-border"}`
     // TODO
-    const handleConfirm = () => {}
+    const handleConfirm = () => {
+        // alter database data
+    }
 
     const handleCancel = () => {
         setShowModal(!isOpen)

@@ -1,5 +1,8 @@
 import { motion } from "framer-motion";
 import type { Variants } from 'framer-motion';
+import { isLightMode } from "../../helpers/checkTheme";
+import { containerVariants, childVariants } from "../../Shared/framerVariants";
+
 
 type Props = {
     title: string;
@@ -11,44 +14,45 @@ const SectionTitle = ({title, subTitle, customize}: Props) => {
     // custom styles
     const customStyle = "text-primary font-body-medium text-body-sm";
 
-    const darkTextPrimary = "dark:text-dark-text-primary"; // h1
-    const darkTextSecondary = "dark:text-dark-text-secondary";
+    const darkTextPrimary = "text-dark-text-primary"; // h1
+    const darkTextSecondary = "text-dark-text-secondary";
+    
     
 
     
     // framer motion
-    const containerVariants: Variants = {
-      hidden: {opacity: 0},
-      visible: {
-        opacity: 1,
-        transition: {
-          staggerChildren: 0.4,
-        }
-      }
-    }
+    // const containerVariants: Variants = {
+    //   hidden: {opacity: 0},
+    //   visible: {
+    //     opacity: 1,
+    //     transition: {
+    //       staggerChildren: 0.4,
+    //     }
+    //   }
+    // }
 
-    const childVariants: Variants = {
-      hidden: {opacity: 0, y: 40},
-      visible: {opacity: 1, y:0,
-        transition: {
-          duration: 0.4,
-          ease: "easeInOut"
-        }
-      }
-    }
+    // const childVariants: Variants = {
+    //   hidden: {opacity: 0, y: 40},
+    //   visible: {opacity: 1, y:0,
+    //     transition: {
+    //       duration: 0.4,
+    //       ease: "easeInOut"
+    //     }
+    //   }
+    // }
   return (
     <div className="w-full my-10">
           <motion.div className="flex flex-col items-center gap-2"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{once: true, amount: 0.9}}
+          viewport={{once: true, amount: 0.2}}
           >
-            <motion.h1 className="text-h1 font-heading-bold "
+            <motion.h1 className={`text-h1 font-heading-bold ${isLightMode? "": darkTextPrimary}`}
             variants={childVariants}
             
             >{title}</motion.h1>
-            <motion.h2 className={`text-section font-heading text-cdark-gray max-w-[800px] text-center ${customize? customStyle: ""} `}
+            <motion.h2 className={`text-section font-heading text-cdark-gray max-w-[800px] text-center ${customize? customStyle: ""} ${isLightMode? "": darkTextSecondary} `}
             variants={childVariants}
             >
               {subTitle}

@@ -5,6 +5,7 @@ import Card from "../../../Components/Utils/Card";
 import { SelectedPage } from "../../../Components/Texts/pages";
 import SectionTitle from "../../../Components/Texts/SectionTitle";import { useMediaQuery } from "../../../helpers/useMediaQuery";
 import { useAuthContext } from "../../../Shared/Context/AuthConstant";
+import { containerVariants, childVariants } from "../../../Shared/framerVariants";
 
 type Props = {
   setSelectedPage: (value: SelectedPage) => void
@@ -54,30 +55,31 @@ const History = ({setSelectedPage}: Props) => {
     },
   ];
 
-  const containerVariants: Variants = {
-    hidden: {opacity: 0},
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.4,
-      }
-    }
-    
-  }
+  // const containerVariants: Variants = {
+  //   hidden: {opacity: 0},
+  //   visible: {
+  //     opacity: 1,
+  //     transition: {
+  //       staggerChildren: 0.4,
+  //     }
+  //   }
+  // }
 
-  const cardVariants: Variants = {
-    hidden: {opacity: 0, y: 40},
-    visible: {opacity:1, y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeInOut"
-      }
-    },
-  }
+
+  // const cardVariants: Variants = {
+  //   hidden: {opacity: 0, y: 40},
+  //   visible: {opacity:1, y: 0,
+  //     transition: {
+  //       duration: 0.6,
+  //       ease: "easeInOut"
+  //     }
+  //   },
+  // }
+
 
   return (
     <Element name={SelectedPage.History}>
-      <motion.section id="history" className="w-full  gap-10 py-3 mb-16"
+      <motion.section id="history" className="w-full  gap-10 py-3 mb-16 "
       onViewportEnter={()=>setSelectedPage(SelectedPage.History)}
       viewport={{once: false, amount: 0.5}}
       >
@@ -89,7 +91,7 @@ const History = ({setSelectedPage}: Props) => {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{once: true, amount: 0.3}}
+          viewport={{once: true, amount: 0.2}}
           >
             {isAboveMediumScreen && (
               <div className="col-start-2 w-px bg-gray-[300] rounded-full"></div>
@@ -112,7 +114,7 @@ const History = ({setSelectedPage}: Props) => {
               return (
                 <motion.div key={index}
                 className={`${isAboveMediumScreen? desktopScreen: smToMdScreen}`}
-                variants={cardVariants}
+                variants={childVariants}
                 >
                   {!isLast ? (
                     <Card year={card.year} title={card.title} about={card.about}/>

@@ -12,6 +12,7 @@ import Vote from "./pages/UserPages/Vote/Vote";
 // import Modal from "./Components/Utils/Modal";
 import ProtectedRoute from "./Components/Utils/ProtectedRoute";
 import ConfirmationModal from "./Components/Utils/Modal/ConfirmationModal";
+import Modal from "./Components/Utils/Modal/Modal";
 // import { SelectedPage } from "./Components/Texts/pages";
 // import { useState } from "react";
 // import OnboardingModal from "./Components/Utils/onBoardingModal";
@@ -28,7 +29,7 @@ function App() {
         </ProtectedRoute>
       } />
       {/* <Route path="/onBoarding" element={<OnboardingModal/>}/> */}
-      <Route path="/modal" element={<ConfirmationModal />} />
+      <Route path="/modal" element={<Modal hasVoted={true} />} />
     </Routes>
   );
 }

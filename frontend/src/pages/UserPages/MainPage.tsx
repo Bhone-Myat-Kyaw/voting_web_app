@@ -45,7 +45,9 @@ const MainPage = () => {
       <OnBoardingModal isOpen={showOnboardingModal} setShowOnboardingModal={setShowOnboardingModal} />
       <Navbar selectedPage={selectedPage} setSelectedPage={setSelectedPage} />
       <Container>
+        
         <Hero setSelectedPage={setSelectedPage} />
+        
         <History setSelectedPage={setSelectedPage} />
         <Major setSelectedPage={setSelectedPage}  />
 

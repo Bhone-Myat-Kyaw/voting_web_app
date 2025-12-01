@@ -61,9 +61,9 @@ export default function Navbar({selectedPage, setSelectedPage}:Props) {
 
   // custom styles variables
   const themeSwitchButton = `${isLightMode? "bg-clight-gray text-cextra-dark": "bg-dark-bg-surface-1 text-clight-gray" } p-2 rounded-full `;
-  const buttonStyle = "bg-primary text-cwhite py-3 px-5 rounded-2xl font-button-bold text-button cursor-pointer shadow-normal backdrop-blur-md  ";
+  const buttonStyle = "bg-primary text-cwhite py-3 px-5 rounded-2xl font-button-bold text-button cursor-pointer shadow-normal backdrop-blur-md hover:bg-blue-400 ";
 
-  const darkTextPrimary = "dark:text-dark-text-primary";
+  const darkTextPrimary = "text-dark-text-primary";
 
 
   return (
@@ -74,7 +74,7 @@ export default function Navbar({selectedPage, setSelectedPage}:Props) {
           <img src={logo} alt="" className="h-14 w-auto"/>
           {/* right */}
           {isAboveMediumScreen ? (<div className="flex justify-between items-center gap-4">
-            <ul className="list-none flex justify-around items-center gap-5 font-heading cursor-pointer ">
+            <ul className={`list-none flex justify-around items-center gap-5 font-heading cursor-pointer ${isLightMode? "text-cextra-dark-gray": darkTextPrimary}`}>
               <li>
                 <CustomLink page="Home" selectedPage={selectedPage} setSelectedPage={setSelectedPage} />
                   
@@ -119,13 +119,13 @@ export default function Navbar({selectedPage, setSelectedPage}:Props) {
               </li>
             </ul>
             <motion.button
-              className={`${buttonStyle} hover:bg-dark-bg-base`}
+              className={`${buttonStyle} `}
               onClick={handleLogin}
               whileTap={{scale: 1.5}}
             >
               Log in
             </motion.button>
-            <button className={themeSwitchButton}
+            <button className={`${themeSwitchButton} cursor-pointer shadow-normal`}
             onClick={toggleTheme}
             >
               {theme === "light" ? <MoonIcon className="h-5 w-5" /> : <SunIcon className="h-5 w-5 text-white " />}
@@ -140,7 +140,7 @@ export default function Navbar({selectedPage, setSelectedPage}:Props) {
             </motion.button>
           )}
           {!isAboveMediumScreen && (
-            <div className={`w-[300px] fixed h-screen right-0 top-0  bottom-0 z-70  rounded-tl-3xl rounded-bl-3xl shadow-normal  bg-cwhite ${sliderAnimation} transform ${isToggle ? "": "translate-x-[300px] "}`}>
+            <div className={`w-[300px] fixed h-screen right-0 top-0  bottom-0 z-70  rounded-tl-3xl rounded-bl-3xl shadow-normal  ${isLightMode?"bg-cwhite": "bg-dark-bg-surface-3"} ${sliderAnimation} transform ${isToggle ? "": "translate-x-[300px] "}`}>
                 <div className="flex flex-col gap-4 pl-10 w-full h-screen">
                   <div className="flex justify-end pt-10 pr-20 mb-6">
                     <motion.button onClick={handleToggle}

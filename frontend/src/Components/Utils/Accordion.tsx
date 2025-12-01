@@ -46,6 +46,8 @@
 import React from "react";
 import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
+import { isLightMode } from "../../helpers/checkTheme";
+import { childVariants } from "../../Shared/framerVariants";
 
 type Props = {
   name: string;
@@ -55,31 +57,31 @@ type Props = {
 };
 
 const Accordion = ({ name, title, children, imgPath }: Props) => {
-  const accordionVariants: Variants = {
-    hidden: {opacity: 0, y: 40},
-    visible: {opacity: 1, y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeInOut",
-      }
-    }
-  }
+  // const accordionVariants: Variants = {
+  //   hidden: {opacity: 0, y: 40},
+  //   visible: {opacity: 1, y: 0,
+  //     transition: {
+  //       duration: 0.6,
+  //       ease: "easeInOut",
+  //     }
+  //   }
+  // }
 
   // custom styles
-  const darkDetails = "dark:bg-dark-card-bg dark:border-dark-card-border";
-  const darkTitle = "dark:text-dark-text-primary";
-  const darkIcon = "dark:text-white";
-  const darkCardDiv = "dark:bg-dark-card-bg dark:border-dark-card-border";
+  const darkDetails = "bg-dark-card-bg border-dark-card-border";
+  const darkTitle = "text-dark-text-primary";
+  const darkIcon = "text-white";
+  const darkCardDiv = "bg-dark-card-bg border-dark-card-border";
 
   return (
     <motion.details
       name={name}
       open={undefined}
-      className="group border-b border-dark-card-border rounded-lg  shadow-normal "
-      variants={accordionVariants}
+      className={`group border-b  ${isLightMode? "bg-white border-gray-200" : darkDetails} rounded-lg  shadow-normal `}
+      variants={childVariants}
     >
       <summary className="flex items-center justify-between p-5 font-medium cursor-pointer list-none">
-        <span className=" font-heading">{title}</span>
+        <span className={`font-heading ${isLightMode? "": darkTitle}`}>{title}</span>
         <span className="text-gray-900 ">
           <svg
             className="w-3 h-3 text-gray-400 dark:text-gray-500 transform group-open:rotate-180 transition-transform duration-300"
@@ -98,7 +100,7 @@ const Accordion = ({ name, title, children, imgPath }: Props) => {
           </svg>
         </span>
       </summary>
-      <div className="p-5 rounded-lg border-t border-gray-50   ">
+      <div className={`p-5 rounded-lg border-t ${isLightMode? "border-gray-200" : "border-dark-card-border"}  `} >
         <div className="w-full flex justify-around bg-red-300n h-52">
           <img src={imgPath} alt="" className="flex-1 w-10 object-fit" />
           <p className="text-gray-500 dark:text-gray-400 flex-2">{children}</p>

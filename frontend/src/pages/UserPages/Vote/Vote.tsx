@@ -14,6 +14,8 @@ import {motion} from "framer-motion"
 import { getWithExpiry } from "../../../helpers/storage"; 
 import { useAuthContext } from "../../../Shared/Context/AuthConstant";
 import ConfirmationModal from "../../../Components/Utils/Modal/ConfirmationModal";
+import { isLightMode } from "../../../helpers/checkTheme";
+import { containerVariants, childVariants } from "../../../Shared/framerVariants";
 
 // type Props = {
 //     admissionID: string;
@@ -27,24 +29,24 @@ const Vote = () => {
     //   const {confirm, setConfirm} = useAuthContext()
 
     // framer motion
-    const containerVariants: Variants = {
-        hidden: {opacity: 0, y: 40},
-        visible: {opacity: 1, y: 0, 
-            transition: {
-                staggerChildren: 0.4,
-            }
-        }, 
-    }
+    // const containerVariants: Variants = {
+    //     hidden: {opacity: 0, y: 40},
+    //     visible: {opacity: 1, y: 0, 
+    //         transition: {
+    //             staggerChildren: 0.4,
+    //         }
+    //     }, 
+    // }
 
-    const childVariants: Variants = {
-        hidden: {opacity: 0, y: 40},
-        visible: {opacity: 1, y: 0, 
-            transition: {
-                duration: 0.6,
-                ease: "easeInOut",
-            }
-        }
-    }
+    // const childVariants: Variants = {
+    //     hidden: {opacity: 0, y: 40},
+    //     visible: {opacity: 1, y: 0, 
+    //         transition: {
+    //             duration: 0.6,
+    //             ease: "easeInOut",
+    //         }
+    //     }
+    // }
 
     // props from login
     // const location =useLocation();
@@ -81,12 +83,13 @@ const Vote = () => {
     
 
     // custom styles
-    const darkContainer = "dark:bg-dark-bg-base";
-    const darkTile = "dark:text-dark-text-primary";
+    const containerBackground = `${isLightMode? "bg-cwhite":"bg-dark-bg-base"}`;
+    const darkTitle = "text-dark-text-primary";
+    const darkTextSecondary = "text-dark-text-secondary"; 
     
     // if voter null -> show error page.
   return ( !voter.hasVoted ?
-    <motion.div className="w-full h-screen bg-cwhite py-10  "
+    <motion.div className={`w-full h-scree ${containerBackground} py-10 `} 
     variants={containerVariants}
     initial="hidden"
     whileInView={"visible"}
@@ -97,9 +100,9 @@ const Vote = () => {
             <motion.div className="mb-3 " 
             variants={childVariants}
             >
-                <h1 className="text-h1-lg font-heading-bold
-                mb-2">{`${voter?.sex == 'male'? "Queen": "King" }`} Selection 2025</h1>
-                <h2>Cast your vote for 13th batch queen</h2>
+                <h1 className={`text-h1-lg font-heading-bold
+                mb-2 ${isLightMode? "": darkTitle}`}>{`${voter?.sex == 'male'? "Queen": "King" }`} Selection 2025</h1>
+                <h2 className={`${isLightMode? "": darkTextSecondary}`}>Cast your vote for 13th batch queen</h2>
             </motion.div>
             {/* carousel */}
             <motion.div className="h-[400px] sm:h-[500px] lg:h-[600px] mx-auto"
