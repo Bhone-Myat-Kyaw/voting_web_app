@@ -16,30 +16,7 @@ const SectionTitle = ({title, subTitle, customize}: Props) => {
 
     const darkTextPrimary = "text-dark-text-primary"; // h1
     const darkTextSecondary = "text-dark-text-secondary";
-    
-    
-
-    
-    // framer motion
-    // const containerVariants: Variants = {
-    //   hidden: {opacity: 0},
-    //   visible: {
-    //     opacity: 1,
-    //     transition: {
-    //       staggerChildren: 0.4,
-    //     }
-    //   }
-    // }
-
-    // const childVariants: Variants = {
-    //   hidden: {opacity: 0, y: 40},
-    //   visible: {opacity: 1, y:0,
-    //     transition: {
-    //       duration: 0.4,
-    //       ease: "easeInOut"
-    //     }
-    //   }
-    // }
+     
   return (
     <div className="w-full my-10">
           <motion.div className="flex flex-col items-center gap-2"

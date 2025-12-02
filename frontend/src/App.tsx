@@ -8,11 +8,13 @@
 import {  Routes, Route } from "react-router-dom";
 import MainPage from "./pages/UserPages/MainPage";
 import Login from "./pages/UserPages/Login/Login";
+// import Login from "./pages/UserPages/Login/Login3";
 import Vote from "./pages/UserPages/Vote/Vote";
 // import Modal from "./Components/Utils/Modal";
 import ProtectedRoute from "./Components/Utils/ProtectedRoute";
 import ConfirmationModal from "./Components/Utils/Modal/ConfirmationModal";
 import Modal from "./Components/Utils/Modal/Modal";
+import TestApp from "./pages/UserPages/Vote/TestApp";
 // import { SelectedPage } from "./Components/Texts/pages";
 // import { useState } from "react";
 // import OnboardingModal from "./Components/Utils/onBoardingModal";
@@ -29,7 +31,8 @@ function App() {
         </ProtectedRoute>
       } />
       {/* <Route path="/onBoarding" element={<OnboardingModal/>}/> */}
-      <Route path="/modal" element={<Modal hasVoted={true} />} />
+      {/* <Route path="/modal" element={<Modal hasVoted={true} />} /> */}
+      <Route path="/carousel" element={<TestApp />} />
     </Routes>
   );
 }

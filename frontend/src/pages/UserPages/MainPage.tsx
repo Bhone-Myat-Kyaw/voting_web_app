@@ -16,29 +16,6 @@ const MainPage = () => {
       return !localStorage.getItem("status");
     });
 
-
-
-    // useEffect(()=>{
-    //   const t = setTimeout(()=>{
-    //     if(localStorage.getItem("status")){
-    //       setShowOnboardingModal(false);
-    //     } else {
-    //       setShowOnboardingModal(true);
-    //     }
-
-    //     return () => clearTimeout(t)
-    //   },0)
-      
-    // },[])
-    
-    //  Display Like An Onboarding Modal
-    // useEffect(()=>{
-    //   const t = setTimeout(()=>{
-    //     setShowOnboardingModal(true);
-    //   },0)
-    //   return () => clearTimeout(t);
-    // },[]);
-
     const mainBackground = isLightMode ? "bg-cwhite" : "bg-dark-bg-base"
   return (
     <div className={`app w-full ${mainBackground}`}>

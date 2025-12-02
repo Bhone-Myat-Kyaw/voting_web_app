@@ -1,13 +1,13 @@
 import { Element } from "react-scroll";
 import { SelectedPage } from "../../../Components/Texts/pages";
 import { motion } from "framer-motion";
-import type { Variants } from "framer-motion";
 import { useLocation } from "react-router-dom";
 import type { People } from "../../../Components/Texts/peopleInfo";
-import { welcomeTexts, type WelcomeText } from "../../../Components/Texts/welcomeText";
-import { useTheme } from "../../../helpers/useTheme";
+import type {  WelcomeText } from "../../../Components/Texts/welcomeText";
 import { isLightMode } from "../../../helpers/checkTheme";
 import { containerVariants, childVariants } from "../../../Shared/framerVariants";
+import { checkPersonStatus } from "./HeroFunctions";
+import { darkTextPrimary, darkTextSecondary } from "./HeroStyles";
 
 type Props = {
   setSelectedPage: (value: SelectedPage)=> void;
@@ -15,50 +15,20 @@ type Props = {
 
 export default function Hero({setSelectedPage}: Props) {
   // localStorage.removeItem("voter")
-  // framer motion
   
-  // const containerVariants: Variants = {
-  //   hidden: {opacity: 0},
-  //   visible: {
-  //     opacity: 1,
-  //     transition: {
-  //       staggerChildren: 0.4,
-  //     }
-  //   }
-  // };
-
-  // const childVariants: Variants = {
-  //   hidden: {opacity: 0, y: 40},
-  //   visible: {opacity: 1, y: 0,
-  //     transition: {
-  //       duration: 0.6,
-  //       ease: "easeInOut"
-  //     }
-  //   },
-  // }
 
   // props from model
   const location = useLocation();
   const personStatus: People = location.state;
-  // const [selectedText]: WelcomeText[] = welcomeTexts.filter((item)=> item.status === personStatus);
-  let displayText: WelcomeText;
 
-  if(!personStatus) {
-    // console.log("If block got executed")
-    const defaultText = welcomeTexts[0];
-    displayText = defaultText;
-  } else {
-    // console.log("Else block got executed")
-    const selectedText: WelcomeText[] = welcomeTexts.filter((item)=> item.status === personStatus);
-    displayText = selectedText[0];
-  }
+  const displayText: WelcomeText = checkPersonStatus(personStatus);
 
-  // custom style variables
-  const darkBackground = "bg-dark-bg-base"; // container
-  const darkTextPrimary = "text-dark-text-primary"; // h1
-  const darkTextSecondary= "text-dark-text-secondary"; // p
+
+
+
+
   
-  // const {theme} = useTheme();
+  
 
   return (
     

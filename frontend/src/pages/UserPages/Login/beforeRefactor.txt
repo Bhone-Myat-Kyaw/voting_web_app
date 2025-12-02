@@ -20,3 +20,14 @@ if (foundVoter[0].password != userPassword) {
       setWithExpiry("voter", foundVoter[0], two_days )
 
 // encapsulated these fn in AuthContext file
+
+
+
+
+
+
+// filter returns an array
+    const foundVoter = voters.filter(voter => voter.admissionID == userAdmissionID)
+    //  since the returned array contains only on element(object),
+    //  we will retrieve that with index [0]
+    // console.log(foundVoter)

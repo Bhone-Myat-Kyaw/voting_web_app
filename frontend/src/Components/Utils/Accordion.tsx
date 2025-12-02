@@ -1,51 +1,6 @@
-{
-  /* <div id="accordion-card" data-accordion="collapse">
-  <h2 id="accordion-card-heading-1">
-    <button
-      type="button"
-      className="flex items-center gap-3 justify-between bg-amber-200 w-full p-5 font-medium text-body rounded-xl shadow-normal hover:bg-clight-blue [&[aria-expanded='true']]:rounded-b-none [&[aria-expanded='true']]:shadow-none
-            "
-      data-accordion-target="#accordion-card-body-1"
-    >
-      <span>Gathering</span>
-      <span>v</span>
-    </button>
-  </h2>
-  <div
-    id="accordion-card-body-1"
-    className="hidden border border-t-0 p-4 rounded-b-lg shadow-normal "
-    aria-labelledby="accordion-card-heading-1"
-  >
-    <div>Cardbody</div>
-  </div>
-</div>; */
-}
-
-{
-  /* <details className="flex flex-col gap-5 ">
-  <summary>
-    <p>Gathering</p>
-  </summary>
-  <div className="flex">
-    <div className="w-full flex-shrink-0 bg-red-300">
-      <img
-        src="../../assets/STILLNESS.png"
-        alt=""
-        className="w-full h-48 rounded-lg object-cover"
-      />
-    </div>
-    <p>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus
-      inventore dolorem exercitationem vero nisi ex incidunt eligendi nam
-      deserunt hic.
-    </p>
-  </div>
-</details>; */
-}
 
 import React from "react";
 import { motion } from "framer-motion";
-import type { Variants } from "framer-motion";
 import { isLightMode } from "../../helpers/checkTheme";
 import { childVariants } from "../../Shared/framerVariants";
 
@@ -57,21 +12,13 @@ type Props = {
 };
 
 const Accordion = ({ name, title, children, imgPath }: Props) => {
-  // const accordionVariants: Variants = {
-  //   hidden: {opacity: 0, y: 40},
-  //   visible: {opacity: 1, y: 0,
-  //     transition: {
-  //       duration: 0.6,
-  //       ease: "easeInOut",
-  //     }
-  //   }
-  // }
+
 
   // custom styles
   const darkDetails = "bg-dark-card-bg border-dark-card-border";
   const darkTitle = "text-dark-text-primary";
-  const darkIcon = "text-white";
-  const darkCardDiv = "bg-dark-card-bg border-dark-card-border";
+  // const darkIcon = "text-white";
+  // const darkCardDiv = "bg-dark-card-bg border-dark-card-border";
 
   return (
     <motion.details
@@ -109,10 +56,6 @@ const Accordion = ({ name, title, children, imgPath }: Props) => {
     </motion.details>
   );
 };
-
-{/* dark:bg-gray-900 dark:border-gray-700 */}
-
-// div after summary
 
 
 export default Accordion;

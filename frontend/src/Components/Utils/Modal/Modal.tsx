@@ -4,14 +4,14 @@ import { getWithExpiry } from '../../../helpers/storage';
 import { isLightMode } from '../../../helpers/checkTheme';
 
 type Props = {
-    hasVoted: boolean;
+    hasvoted: boolean;
 }
 
-const Modal = ({ hasVoted}: Props) => {
+const Modal = ({ hasvoted}: Props) => {
     const navigate = useNavigate()
 
-    if(!hasVoted) return  ;
-    console.log("Modal is rendered and hasVoted=",hasVoted)
+    if(!hasvoted) return  ;
+    console.log("Modal is rendered and hasvoted=",hasvoted)
 
     const redirectHome = () => navigate('/');
     const voterData = getWithExpiry("voter");
@@ -23,7 +23,7 @@ const Modal = ({ hasVoted}: Props) => {
     
   return (
     <div>
-        {!!hasVoted && (
+        {!!hasvoted && (
          <div className={`fixed inset-0 bg-transparent backdrop-blur-2xl flex items-center justify-center z-50 ${background}`} >
         <div className= {`rounded-xl shadow-light py-7 px-9 w-[25%] min-w-80 ${modalBackground}`}>
             <div className='flex flex-col gap-2 mb-5'>

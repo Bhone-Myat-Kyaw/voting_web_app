@@ -3,7 +3,6 @@ import Accordion from "../../../Components/Utils/Accordion";
 import { Element } from "react-scroll";
 import { SelectedPage } from "../../../Components/Texts/pages";
 import SectionTitle from "../../../Components/Texts/SectionTitle";
-import type { Variants } from "framer-motion";
 import { containerVariants } from "../../../Shared/framerVariants";
 
 type Props = {
@@ -12,16 +11,6 @@ type Props = {
 
 const Memory = ({setSelectedPage}: Props) => {
   const accordionGpName = "memory";
-
-  // framer motion
-  // const containerVariants: Variants = {
-  //   hidden: {opacity: 0, y: 40},
-  //   visible: {opacity: 1, y: 0,
-  //     transition: {
-  //       staggerChildren: 0.4,
-  //     }
-  //   }
-  // }
   
   return (
     <Element name={SelectedPage.MemorableMoment}>

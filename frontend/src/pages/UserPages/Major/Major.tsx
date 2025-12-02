@@ -1,4 +1,3 @@
-import React from "react";
 import {
   firstSemSubjects,
   secondSemSubjects,
@@ -9,7 +8,6 @@ import { Element } from "react-scroll";
 import { SelectedPage } from "../../../Components/Texts/pages";
 import SectionTitle from "../../../Components/Texts/SectionTitle";
 import { motion } from "framer-motion";
-import type {Variants} from "framer-motion"
 import { isLightMode } from "../../../helpers/checkTheme";
 import { containerVariants, childVariants } from "../../../Shared/framerVariants";
 
@@ -18,29 +16,8 @@ type Props = {
 }
 
 const Major = ({setSelectedPage}: Props) => {
+    // custom styles 
   const thStyle = "p-4 border-b border-gray-300 bg-blue-gray-50";
-  const tdStyle = "p-4 border-b border-gray-300";
-
-  // const containerVariants: Variants = {
-  //   hidden: {opacity: 0, y: 40},
-  //   visible: {opacity: 1, y: 0,
-  //     transition: {
-  //       staggerChildren: 0.4,
-  //     }
-  //   },
-  // }
-
-  // const tableVariants: Variants = {
-  //   hidden: {opacity: 0 , y: 40},
-  //   visible: {opacity: 1, y: 0,
-  //     transition: {
-  //       duration: 0.6,
-  //       ease: "easeInOut"
-  //     }
-  //   }
-  // }
-
-  // custom styles 
   const darkTable = "border-dark-table-border odd:bg-dark-table-row even:bg-dark-table-row-alt text-dark-text-primary";
 
   return (

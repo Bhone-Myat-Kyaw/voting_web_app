@@ -1,0 +1,46 @@
+    //   const {confirm, setConfirm} = useAuthContext()
+
+    // framer motion
+    // const containerVariants: Variants = {
+    //     hidden: {opacity: 0, y: 40},
+    //     visible: {opacity: 1, y: 0, 
+    //         transition: {
+    //             staggerChildren: 0.4,
+    //         }
+    //     }, 
+    // }
+
+    // const childVariants: Variants = {
+    //     hidden: {opacity: 0, y: 40},
+    //     visible: {opacity: 1, y: 0, 
+    //         transition: {
+    //             duration: 0.6,
+    //             ease: "easeInOut",
+    //         }
+    //     }
+    // }
+
+    // props from login
+    // const location =useLocation();
+    // const voterData: Voter = location.state;
+    // console.log("voterData=",voterData)
+    // const sex = voterData.sex;
+
+    // rather than props, retrieve from local storage
+    const voterDataParsed = getWithExpiry("voter");
+    //================== 
+    // TODO: userDataParsed null -> 500 internal server error or something like that
+    //===================
+    const sex = voterDataParsed?.sex;
+
+
+
+        // const maleCandidates: Candidate[] = candidates.filter(candidate => (candidate.sex == "male"));
+    // const femaleCandidates: Candidate[] = candidates.filter(candidate => (candidate.sex == "female"))
+
+
+    // useEffect(()=>{
+    //     return <Modal isOpen={modalOpen} />
+    // }, [modalOpen])
+
+    // const [voter, setVoter] = useState<Voter | null>(voterDataParsed);

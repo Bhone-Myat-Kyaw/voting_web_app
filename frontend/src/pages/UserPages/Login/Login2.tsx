@@ -18,19 +18,19 @@ interface FormError {
 
 const Login = () => {
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [errorMsg, setErrorMsg] = useState<FormError>({})
+    const [admissionid, setAdmissionid] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [showPassword, setShowPassword] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
-
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
 
   // common styles 
   const darkField = "";
-  const focusField = "transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent";
 
   // getting data from authContext
   const {login} = useAuthContext();
+
 
 
   // TODO: error - have to reload for login form to appears
@@ -38,78 +38,44 @@ const Login = () => {
 
 
 // type InputEvent = React.ChangeEvent<HTMLInputElement>;
-type FormEvent = React.FormEvent<HTMLFormElement>;
+  type FormEvent = React.FormEvent<HTMLFormElement>;
 
   const formRef = useRef<HTMLFormElement>(null);
-  const admissionRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
-  
-  
+ 
 
 
-
-  const checkUsers = (foundVoter: Voter[]) => {
-    if(foundVoter.length == 0) {
-      setErrorMsg({admissionID: "User Not Found. Check your admission ID."})
-      return false;
-    };
-  }
-
-  const checkPassword = (foundVoter: Voter[], userPassword: number) => {
-    if (foundVoter[0].password != userPassword) {
-      setErrorMsg({password: "Incorrect Password."})
-      return false
-    }
-    return true;
-  }
-
-  const handleSubmit = async (event: FormEvent) => {
-
+  async function submitFunction(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    // clear all previous error for new submit click
-    setErrorMsg({});
+    setIsLoading(true);
 
-    if (!admissionRef.current && !passwordRef.current) {
-      console.log("General error block got executed")
-      if(admissionRef.current.value == '') {
-        setErrorMsg({admissionID: "This field is required"})
-      } else {
-        setErrorMsg({password: "This field is required"})
-      }
-      return true;
-    }
-
-    const userAdmissionID = admissionRef.current.value;
-    const userPassword = Number(passwordRef.current.value);
-    console.log("userAdmissionID=", userAdmissionID)
-
-    const id = userAdmissionID.split('/');
-      if (id.length == 2 && !Number.isNaN(id[0]) && id[0].length == 2 && !Number.isNaN(id[1]) && id[1].length == 5) {
-        try {
-          const response = await axios.post(
-            `${import.meta.env.VITE_SERVER}/auth/login`,
-            { userAdmissionID, userPassword },
-            { withCredentials: true },
-          );
-          
-          console.log(response);
-          if (response.status == 200) {
-            console.log(response.data.redirectUrl);
-            navigate(response.data.redirectUrl);
-          } else {
-            setErrorMsg({general: response.data});
-          }
-        } catch (error: any) {
-          setErrorMsg({general: "Invalid credentials"});
-          //console.error(error.response?.data || error.message);
-        } finally {
-          setIsLoading(false);
+    const id = admissionid.split('/');
+    if (id.length == 2 && !Number.isNaN(id[0]) && id[0].length == 2 && !Number.isNaN(id[1]) && id[1].length == 5) {
+      try {
+        const response = await axios.post(
+          `${import.meta.env.VITE_SERVER}/auth/login`,
+          { admissionid, password },
+          { withCredentials: true }
+        );
+        
+        console.log(response);
+        if (response.status == 200) {
+          //console.log(response.data.redirectUrl);
+          navigate(response.data.redirectUrl);
+        } else {
+          setError(response.data);
         }
-      } else {
+      } catch (error: any) {
+        setError("Invalid credentials");
+        //console.error(error.response?.data || error.message);
+      } finally {
         setIsLoading(false);
-        setErrorMsg({admissionID:"Please enter valid admission id."});
       }
+    } else {
+      setIsLoading(false);
+      setError("Please enter valid admission id.");
+    }
   }
+
     
 
     // const hasUser = checkUsers(foundVoter);
@@ -135,9 +101,9 @@ type FormEvent = React.FormEvent<HTMLFormElement>;
   const background = isLightMode? "bg-cwhite":"bg-dark-bg-base";
   const formStyle = isLightMode?"bg-cwhite" :"bg-dark-login-form-bg border-dark-card-border";
   const title = isLightMode? "text-cextra-dark-gray":"text-dark-text-primary";
-  // const darkFormLabel = "text-dark-text-primary";
+  const darkFormLabel = "text-dark-text-primary";
   const darkInputField = "placeholder:text-cmedium-gray bg-dark-input-bg border-dark-input-border placeholder:text-dark-placeholder shadow-dark-border";
-  // const darkInputFocus = "focus-within:bg-dark-input-bg focus-within:border-dark-input-border"
+  const darkInputFocus = "focus-within:bg-dark-input-bg focus-within:border-dark-input-border"
 
 
 
@@ -158,41 +124,63 @@ type FormEvent = React.FormEvent<HTMLFormElement>;
       >
         <motion.h2 className={`text-h1-lg font-heading-bold mt-3 ${title} `}
         >Login</motion.h2>
-        <motion.form ref={formRef} onSubmit={()=>{}} 
-        autoComplete="off"
+        <motion.form ref={formRef} onSubmit={submitFunction} 
+        
         className={`space-y-5 w-[95%] m-auto ${title}`}
         >
           <div className="flex flex-col items-start justify-center gap-2 
           ">
           <label htmlFor="name" className="font-heading-bold ">Admission ID</label>
-          <input ref={admissionRef} type="text" name="admissionId" id="admissionId" required placeholder="Enter your admission ID" className={`border rounded-3xl p-3   w-full ${isLightMode? "":darkInputField} ${
-                  error ? 'border-red-500 shake' : 'border-gray-300'
-                } ${focusField}`}
+          <input  
+            type="text" 
+            name="admissionid" 
+            id="admissionid" 
+            required 
+            placeholder="Enter your admission ID"
+            value={admissionid}
+            onChange={(e)=> {
+                setAdmissionid(e.target.value)
+                setError('');
+            }} 
+            className={`border rounded-3xl p-3   w-full ${isLightMode? "":darkInputField} ${
+                error ? 'border-red-500 shake' : ''}`}
+            disabled={isLoading}
           />
-          <span className="text-small ml-2 text-red-400">{errorMsg.admissionID}</span>
+          
           </div>
 
-          <div className="flex flex-col items-start justify-center gap-2">
+          <div className="flex flex-col items-start  justify-center gap-2">
             <label htmlFor="password" className="font-heading-bold">Password</label>
             <div className="w-full relative">
-              <input ref={passwordRef} type={`${showPassword? "text": "password"}`} required name="password" id="password" placeholder="Enter your password" className={`border rounded-3xl p-3 w-full ${isLightMode? "":darkInputField} ${focusField}`}
-              />
-              <button
+                <input
+                 type={`${showPassword? "text": "password"}`} required 
+                 name="password" 
+                 id="password" 
+                 value={password}
+                 onChange={(e)=> {
+                    setPassword(e.target.value);
+                    setError(''); // Clear error when user starts typing
+                 }}
+                 placeholder="Enter your password" 
+                 className={`border rounded-3xl p-3 w-full ${isLightMode? "":darkInputField} ${error ? 'border-red-500 shake': ""}`}
+                 disabled={isLoading}
+                />
+
+                <button
                 type="button"
                 className="absolute right-3 top-1/2 -translate-y-1/2 h-full flex items-center transition-transform duration-200 hover:scale-110 disabled:opacity-50"
                 onClick={() => setShowPassword(!showPassword)}
                 disabled={isLoading}
               >
-                {!showPassword ? (
+                {showPassword ? (
                   <EyeSlashIcon className="h-5 w-5 text-gray-600 hover:text-gray-800 transition-colors" />
                 ) : (
                   <EyeIcon className="h-5 w-5 text-gray-600 hover:text-gray-800 transition-colors" />
                 )}
               </button>
-            </div>
             
-            <span className="text-small ml-2 text-red-400">{errorMsg.password}</span>
-          </div>
+            </div>
+        </div>
 
           
           <button type="submit" className="bg-primary p-3 w-full rounded-3xl text-cwhite font-button-bold mt-3 cursor-pointer">
