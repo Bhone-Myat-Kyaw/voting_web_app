@@ -1,24 +1,33 @@
 import {useEffect, useState} from 'react'
 import {Button} from "flowbite-react"
 // import { candidates } from '../Texts/candidatesInfo'
-import type { Candidate } from '../Texts/candidatesInfo'
+import type { SelectedCandidate } from '../Texts/candidatesInfo'
 import { isLightMode } from '../../helpers/checkTheme';
+import Loading from './Loading';
+import type { Voter } from '../Texts/voterInfo';
+import axios from 'axios';
+import Modal from './Modal/Modal';
 
 
 interface CandidateProps {
-  candidates : Candidate[]; // change now
-  onVoteClick?: (candidateid: number) => void;
-  
+  candidates : SelectedCandidate[]; 
+  // onVoteClick: (candidateid: string) => void;
+  voter: Voter;
+  showCountdown: boolean;
+  setVoter: (value:Voter | null)=> void;
+  setShowCountdown: (value: boolean)=>void;
+  setShowModal: (value:boolean)=>void;
+  setCandidateName: (value: string)=>void;
 }
 
 
-const CandidateCarousel = ({candidates, onVoteClick, }: CandidateProps) => {
+const CandidateCarousel = ({candidates, voter, showCountdown, setVoter, setShowModal, setShowCountdown, setCandidateName }: CandidateProps) => {
 
     const [currentIndex, setCurrentIndex] = useState(0);
     const [cardsToShow, setCardsToShow] = useState(3);
     const [isAnimating, setIsAnimating] = useState(false);
 
-    const title = candidates[0].sex === "male" ? "King Candidates": "Queen Candidates";
+    const title = candidates[0].students.gender === "male" ? "King Candidates": "Queen Candidates";
   
     // Calculate number of cards to show based on screen size
     useEffect(() => {
@@ -57,10 +66,54 @@ const CandidateCarousel = ({candidates, onVoteClick, }: CandidateProps) => {
       setTimeout(() => setIsAnimating(false), 300);
     };
   
-    const handleVote = (candidateId: string) => {
-      alert(`Voted for candidate: ${candidateId}`);
+    // const handleVote = (candidateId: string) => {
+      // alert(`Voted for candidate: ${candidateId}`);
       // Implement your voting logic here
+    // };
+    const isCounting = () => {
+      // fetch data and setShowCountdown(true)
+      
+    }
+
+    const handleVoteClick = async (candidateid: string, candidateName) => {
+      const isAllowed = () => {
+        // fetch backend
+
+        // allow -> set(false)
+        //setShowCountdown()
+
+
+      }
+
+        if (showCountdown) {
+          return setShowCountdown(true)
+        } else {
+          setShowCountdown(false)
+        }
+        if (!voter) return <Loading/>;
+
+        if (voter.hasvoted) return <Modal voter={voter} hasvoted={voter.hasvoted} />; // already voted model
+
+        try {
+            const res = await axios.post(
+                `${import.meta.env.VITE_SERVER}/vote/postVote`,
+                {
+                voterid: voter.id,
+                candidateid,
+                },
+                { withCredentials: true }
+            );
+            if (res.status === 200) {
+                setVoter(prev => ({ ...prev!, hasvoted: true }));
+            }
+
+        } catch (error: any) {
+            console.error("error from handleVoteClick catch block=",error);
+        }
+        setCandidateName(candidateName);
+         
     };
+
   
     // Calculate card width based on number of cards to show
     const getCardWidth = () => {
@@ -68,32 +121,6 @@ const CandidateCarousel = ({candidates, onVoteClick, }: CandidateProps) => {
       if (cardsToShow === 2) return 'w-1/2';
       return 'w-1/3';
     };
-  // const [index, setIndex] = useState(0);
-
-  // const lessThan3 = "justify-around";
-
-  // // show 3 on desktop, 1 on mobile
-  // const itemsPerSlide = window.innerWidth <div 768 ? 1 : 3;
-
-  // const maxIndex = candidates.length - itemsPerSlide;
-
-  // const next = () => {
-  //   setIndex((prev: number) => (prev < maxIndex ? prev + 1 : prev));
-  // };
-
-  // const prev = () => {
-  //   setIndex((prev: number) => (prev > 0 ? prev - 1 : prev));
-  // };
-
-  // const checkMode = (currentMode: string) => {
-  //   if(currentMode === "light") {
-  //     return true
-  //   }
-  //   return false
-  // }
-
-  //  ***********
-  // const isLightMode = checkMode(localStorage.getItem("theme"));
 
   const cardBackground = isLightMode? "bg-white border-gray-100" : "dark-bg-surface-3 border-dark-bg-surface-1";
 
@@ -104,63 +131,7 @@ const CandidateCarousel = ({candidates, onVoteClick, }: CandidateProps) => {
 
   return (
     <div>
-      {/* <div className="relative max-w-6xl mx-auto mt-8 px-6 select-none">
       
-      <button
-        onClick={prev}
-        className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-white shadow-lg rounded-full p-3 hover:bg-gray-100 
-        "
-      >
-        ◀
-      </button>
-
-      <button
-        onClick={next}
-        className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-white shadow-lg rounded-full p-3 hover:bg-gray-100"
-      >
-        ▶
-      </button> */}
-
-      {/* <div className='overflow-hidden '> */}
-
-        {/* <div className={`flex  transition-transform duration-500 px-10 ${candidates.length < 3? lessThan3 : "justify-start"}`} style={{
-            transform: `translateX(-${(index * 100) / itemsPerSlide}%)`,
-          }}>
-
-          {candidates.map((candidate: any) => (
-          <div key={candidate.id}
-            className="flex justify-center px-4 py-6"
-          >
-             
-            <div className={` rounded-2xl shadow-md w-80 overflow-hidden ${isLightMode ? "bg-white ": "bg-dark-login-form-bg"} `}>
-              <img
-                src={"../assets/STILLNESS.png"}
-                alt={"name"}
-                className="w-full h-72 object-cover"
-              />
-
-              <div className="p-5">
-                <h3 className={`text-lg font-semibold ${isLightMode ?"text-cextra-dark-gray":"text-dark-text-primary"}`}>{candidate.students.name}</h3>
-                <p className={`text-sm  mt-1 font-heading ${isLightMode? "text-gray-600": "text-dark-placeholder"} `}>
-                  {"Engineering"} | {"electronic engineer"}
-                </p>
-
-                <Button
-                  className="w-full mt-4"
-                  color="blue"
-                  onClick={()=>onVoteClick(candidate.id)}
-                >
-                  Vote
-                </Button>
-              </div>
-            </div>
-          </div> 
-          ))}
-
-        </div> */}
-
-
-      {/* </div> */}
 
       <div className="w-full max-w-7xl mx-auto px-4 py-8">
       <h2 className={`text-3xl font-bold ${titleStyle} mb-8 text-center`}>{title}</h2>
@@ -220,56 +191,58 @@ const CandidateCarousel = ({candidates, onVoteClick, }: CandidateProps) => {
               transition: isAnimating ? 'transform 0.3s ease-out' : 'none'
             }}
           >
-            {candidates.map((candidate) => (
-              <div 
-                key={candidate.id}
-                className={`${getCardWidth()} flex-shrink-0 px-2 md:px-3`}
-              >
-                <div className={`${cardBackground} rounded-xl shadow-lg overflow-hidden 
-                              hover:shadow-xl transition-shadow duration-300 
-                              border h-full`}>
-                  <div className="p-6 md:p-8">
-                    <div className="mb-4">
-                      {/* <span className="inline-block px-3 py-1 bg-purple-100 
-                                    text-purple-700 rounded-full text-sm font-medium">
-                        {candidate.department}
-                      </span> */}
-                      <img
-                        src={"../assets/STILLNESS.png"}
-                        alt={"name"}
-                        className="w-full h-50 object-cover"
-                      />
-                    </div>
-                    
-                    <h3 className={`text-xl md:text-2xl font-bold ${candidateText} mb-3`}>
-                      {candidate.name}
-                    </h3>
-                    
-                    <p className="text-gray-600 mb-6 leading-relaxed">
-                      {candidate.description}
-                    </p>
-                    
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-gray-500">
-                        Roll: I.CEIT-1
-                        {candidate.role}
-                      </span>
-                      <button
-                        onClick={() => handleVote(candidate.id)}
-                        className="bg-gradient-to-r from-purple-600 to-indigo-600 
-                                 text-white px-5 py-2.5 rounded-lg font-medium
-                                 hover:from-purple-700 hover:to-indigo-700 
-                                 focus:outline-none focus:ring-2 focus:ring-purple-500 
-                                 focus:ring-offset-2 transition-all duration-200 
-                                 transform hover:-translate-y-0.5 active:translate-y-0"
-                      >
-                        Vote
-                      </button>
+            {candidates.map((candidate) =>{
+              console.log(candidate.students.rollnum)
+              return(
+                <div 
+                  key={candidate.id}
+                  className={`${getCardWidth()} flex-shrink-0 px-2 md:px-3`}
+                >
+                  <div className={`${cardBackground} rounded-xl shadow-lg overflow-hidden 
+                                hover:shadow-xl transition-shadow duration-300 
+                                border h-full`}>
+                    <div className="p-6 md:p-8">
+                      <div className="mb-4">
+                        {/* <span className="inline-block px-3 py-1 bg-purple-100 
+                                      text-purple-700 rounded-full text-sm font-medium">
+                          {candidate.department}
+                        </span> */}
+                        <img
+                          src={"../assets/STILLNESS.png"}
+                          alt={"name"}
+                          className="w-full h-50 object-cover"
+                        />
+                      </div>
+                      
+                      <h3 className={`text-xl md:text-2xl font-bold ${candidateText} mb-3`}>
+                        {candidate.students.name}
+                      </h3>
+                      
+                      <p className="text-gray-600 mb-6 leading-relaxed">
+                        {candidate.students.description}
+                      </p>
+                      
+                      <div className="flex items-center justify-between">
+                        <span className={`text-sm font-medium ${candidateRoll}`}>
+                          Roll: I.CEIT-{candidate.students.rollnum}
+                          {/* {console.log(candidate.rollnum)} */}
+                        </span>
+                        <button
+                          onClick={() => handleVoteClick(candidate.id)}
+                          className="bg-gradient-to-r from-purple-600 to-indigo-600 
+                                  text-white px-5 py-2.5 rounded-lg font-medium
+                                  hover:from-purple-700 hover:to-indigo-700 
+                                  focus:outline-none focus:ring-2 focus:ring-purple-500 
+                                  focus:ring-offset-2 transition-all duration-200 
+                                  transform hover:-translate-y-0.5 active:translate-y-0"
+                        >
+                          Vote
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+            )})}
           </div>
         </div>
 

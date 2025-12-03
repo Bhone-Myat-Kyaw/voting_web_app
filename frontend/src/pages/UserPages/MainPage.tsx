@@ -1,14 +1,11 @@
-import Navbar from "../../Components/Navbar/Navbar";
+import { Navbar } from "../../Components";
 import Container from "../../Shared/Container";
-import Hero from "./Hero/Hero";
-import History from "./History/History";
-import Major from "./Major/Major";
-import UserManual from "./UserManual/UserManual";
-import Memory from "./Memory/Memory";
-import { useEffect, useState } from "react";
-import { SelectedPage } from "../../Components/Texts/pages";
+import { Hero, History, Major, UserManual, Memory } from "./";
+import { useState } from "react";
+import { SelectedPage } from "../../Shared/Types";
 import OnBoardingModal from "../../Components/Utils/Modal/OnboardingModal";
 import { isLightMode } from "../../helpers/checkTheme";
+import Footer from "../../Components/Footer/Footer";
 
 const MainPage = () => {
     const [selectedPage, setSelectedPage] = useState<SelectedPage>(SelectedPage.Home)
@@ -31,6 +28,7 @@ const MainPage = () => {
         <UserManual setSelectedPage={setSelectedPage} />
         <Memory setSelectedPage={setSelectedPage}/>
       </Container>
+      <Footer />
     </div>
   );
 };

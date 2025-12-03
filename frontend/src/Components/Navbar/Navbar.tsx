@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-scroll";
 import logo from "/src/assets/logo.png"
 import { useMediaQuery } from "../../helpers/useMediaQuery";
 import { Bars3Icon, XMarkIcon, MoonIcon, SunIcon } from "@heroicons/react/24/solid";
@@ -60,7 +59,7 @@ export default function Navbar({selectedPage, setSelectedPage}:Props) {
   }
 
   // custom styles variables
-  const themeSwitchButton = `${isLightMode? "bg-clight-gray text-cextra-dark": "bg-dark-bg-surface-1 text-clight-gray" } p-2 rounded-full `;
+  const themeSwitchButton = `${isLightMode? "bg-cmedium-gray text-cextra-dark": "bg-dark-bg-surface-1 text-clight-gray" } p-2 rounded-full `;
   const buttonStyle = "bg-primary text-cwhite py-3 px-5 rounded-2xl font-button-bold text-button cursor-pointer shadow-normal backdrop-blur-md hover:bg-blue-400 ";
 
   const darkTextPrimary = "text-dark-text-primary";
@@ -77,42 +76,15 @@ export default function Navbar({selectedPage, setSelectedPage}:Props) {
             <ul className={`list-none flex justify-around items-center gap-5 font-heading cursor-pointer ${isLightMode? "text-cextra-dark-gray": darkTextPrimary}`}>
               <li>
                 <CustomLink page="Home" selectedPage={selectedPage} setSelectedPage={setSelectedPage} />
-                  
-                
-                  
               </li>
               <li>
                 <CustomLink page="History" selectedPage={selectedPage} setSelectedPage={setSelectedPage} />
-                {/* <Link
-                  to="curriculum"
-                  smooth={true}
-                  duration={100}
-                  offset={-100}
-                >
-                  Curriculum
-                </Link> */}
               </li>
               <li>
                 <CustomLink page="Curriculum" selectedPage={selectedPage} setSelectedPage={setSelectedPage} />
-                {/* <Link
-                  to="usermanual"
-                  smooth={true}
-                  duration={100}
-                  offset={-120}
-                >
-                  User Manual
-                </Link> */}
               </li>
               <li>
                 <CustomLink page="User Manual" selectedPage={selectedPage} setSelectedPage={setSelectedPage} />
-                {/* <Link
-                  to="memorablemoment"
-                  smooth={true}
-                  duration={100}
-                  offset={-25}
-                >
-                  Memorable Moments
-                </Link> */}
               </li>
               <li>
                 <CustomLink page="Memorable Moments" selectedPage={selectedPage} setSelectedPage={setSelectedPage} />
@@ -142,14 +114,21 @@ export default function Navbar({selectedPage, setSelectedPage}:Props) {
           {!isAboveMediumScreen && (
             <div className={`w-[300px] fixed h-screen right-0 top-0  bottom-0 z-70  rounded-tl-3xl rounded-bl-3xl shadow-normal  ${isLightMode?"bg-cwhite": "bg-dark-bg-surface-3"} ${sliderAnimation} transform ${isToggle ? "": "translate-x-[300px] "}`}>
                 <div className="flex flex-col gap-4 pl-10 w-full h-screen">
-                  <div className="flex justify-end pt-10 pr-20 mb-6">
+                  <div className="flex justify-between pt-10 pr-15 mb-6">
+                    <button className={`${themeSwitchButton} cursor-pointer shadow-normal`}
+                    onClick={toggleTheme}
+                    >
+                      {theme === "light" ? <MoonIcon className="h-5 w-5" /> : <SunIcon className="h-5 w-5 text-white " />}
+                      
+                    </button>
+                    
                     <motion.button onClick={handleToggle}
                     whileTap={{scale: 1.5}}
                     >
-                      <XMarkIcon className="w-6 h-6 right-0"  />
+                      <XMarkIcon className={`w-6 h-6 right-0 ${isLightMode? 'text-cmedium-gray': "text-dark-text-primary"} `} />
                     </motion.button>
                   </div>
-                  <ul className="list-none cursor-pointer flex flex-col gap-10 ">
+                  <ul className={`list-none cursor-pointer flex flex-col gap-10 ${isLightMode? "text-cextra-dark-gray": darkTextPrimary}`} >
                     <li>
                       
                         <span className="font-heading text-h2">

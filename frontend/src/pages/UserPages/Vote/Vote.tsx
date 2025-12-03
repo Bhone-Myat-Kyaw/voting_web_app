@@ -5,7 +5,7 @@ import Container from "../../../Shared/Container";
 import CandidateCarousel from "../../../Components/Utils/CandidateCarousel";
 // import CandidateCarousel from "../../Components/Utils/CandidateCarousel1";
 // import { candidates } from "../../../Components/Texts/candidatesInfo";
-import { candidates, type Candidate } from "../../../Components/Texts/candidatesInfo";
+import { candidates, type Candidate, type SelectedCandidate } from "../../../Components/Texts/candidatesInfo";
 import type { Voter } from "../../../Components/Texts/voterInfo";
 import { useEffect, useState } from "react";
 import Modal from "../../../Components/Utils/Modal/Modal";
@@ -19,6 +19,8 @@ import { containerVariants, childVariants } from "../../../Shared/framerVariants
 import { useUser } from "../../../hooks/useUser";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import Loading from "../../../Components/Utils/Loading";
+import CountDownModal from "../../../Components/Utils/Modal/CountDownModal";
 
 // type Props = {
 //     admissionID: string;
@@ -28,44 +30,48 @@ import axios from "axios";
 
 const Vote = () => {
     // fetching voterData;
-    //  const { data: voterData, isLoading: voterIsLoading } = useUser();
-    //  console.log(voterData);
+     const { data: voterData, isLoading: voterIsLoading } = useUser();
+     console.log("voterData=",voterData);
     
 
-
-    // const { data: candidates, isLoading } = useQuery({
-    //     queryKey: ['candidates'],
-    //     queryFn: async () => {
-    //     const res = await axios.get(`${import.meta.env.VITE_SERVER}/vote/selectCandidates`, { withCredentials: true });
-    //     return res.data.data;
-    //     },
-    //     staleTime: Infinity
-    // });
+    // fetching candidates data
+    const { data: candidates, isLoading } = useQuery({
+        queryKey: ['candidates'],
+        queryFn: async () => {
+        const res = await axios.get(`${import.meta.env.VITE_SERVER}/vote/selectCandidates`, { withCredentials: true });
+        return res.data.data;
+        },
+        staleTime: Infinity
+    });
     
 
     console.log("candidates=",candidates);
 
-
+    // useStates
     const [voter, setVoter] = useState<Voter | null>(null);
-
-
-    // useEffect(() => {
-    //     if (voterData) setVoter(voterData);
-    // }, [voterData]);
-
-    const voterLocal = getWithExpiry("voter")
-
-
-
-
-
-
     const [showModal, setShowModal] = useState(false)
+    const [showCountdown, setShowCountdown] = useState<boolean>(false)
+    const [candidateName, setCandidateName] = useState<string|null>(null)
 
-    // const handleVoteClick = async (candidateid: number) => {
+
+
+    useEffect(() => {
+        if (voterData) setVoter(voterData);
+    }, [voterData]);
+
+    // const voterLoacl = getWithExpiry("voter")
+
+
+
+
+
+
+
+    // const handleVoteClick = async (candidateid: string) => {
+    //     if (showCountdown) return <CountDownModal setShowCountdown={setShowCountdown} />
     //     if (!voter) return alert("User not loaded yet");
 
-    //     if (voter.hasvoted) return alert("You already voted!");
+    //     if (voter.hasvoted) return alert("You already voted!"); // already voted model
 
     //     try {
     //         const res = await axios.post(
@@ -76,47 +82,39 @@ const Vote = () => {
     //             },
     //             { withCredentials: true }
     //         );
-    //             if (res.status === 200) {
-    //                 setVoter(prev => ({ ...prev!, hasvoted: true }));
-    //             }
-
-    //         } catch (error: any) {
-    //         console.error(error);
+    //         if (res.status === 200) {
+    //             setVoter(prev => ({ ...prev!, hasvoted: true }));
     //         }
+
+    //     } catch (error: any) {
+    //         console.error("error from handleVoteClick catch block=",error);
+    //     }
     //         setShowModal(true) 
-    //     };
+    // };
 
-        // if (isLoading) {
-        //     return <div className="flex items-center justify-center">Loading...</div>
-        // }
+    if (isLoading) {
+        return <Loading/>
+    }
 
-        // if (voterIsLoading) {
-        //     return <div className="flex items-center justify-center">Loading...</div>
-        // }
+    if (voterIsLoading) {
+        return <Loading/>
+    }
 
-        // if (!voter) return <div>Loading...</div>
-        // TODO: alter database hasvoted value
+    if (!voter) return <Loading/>
+    // TODO: alter database hasvoted value
 
-        // let maleCandidates: any = [], femaleCandidates: any = [];
-        // let maleCandidatesCount = 0, femaleCandidatesCount = 0;
+    let maleCandidates: SelectedCandidate[] = [], femaleCandidates: SelectedCandidate[] = [];
+    let maleCandidatesCount = 0, femaleCandidatesCount = 0;
   
-        // candidates.forEach((candidate: any) => {
-        //     if (candidate.students.gender == 'male') {
-        //     maleCandidates.push(candidate);
-        //     maleCandidatesCount++;
-        //     } else {
-        //     femaleCandidates.push(candidate);
-        //     femaleCandidatesCount++;
-        //     }
-        // });
-
-    const maleCandidates: Candidate[] = candidates.filter(candidate => (candidate.sex == "male"));
-    const femaleCandidates: Candidate[] = candidates.filter(candidate => (candidate.sex == "female"))
-
-        
-    
-
-    
+    candidates.forEach((candidate: any) => {
+        if (candidate.students.gender == 'male') {
+        maleCandidates.push(candidate);
+        maleCandidatesCount++;
+        } else {
+        femaleCandidates.push(candidate);
+        femaleCandidatesCount++;
+        }
+    });
 
 
     // custom styles
@@ -125,7 +123,7 @@ const Vote = () => {
     const darkTextSecondary = "text-dark-text-secondary"; 
     
     // if voter null -> show error page.
-    return ( !voterLocal?.hasvoted ?
+    return ( !voter?.hasvoted ?
     <motion.div className={`w-full h-screen ${containerBackground} py-10 `} 
     variants={containerVariants}
     initial="hidden"
@@ -146,16 +144,24 @@ const Vote = () => {
             variants={childVariants}
             >
                 
-                <CandidateCarousel candidates={voterLocal.sex==="male"? femaleCandidates: maleCandidates }  onVoteClick={()=>{}}   />
+                <CandidateCarousel candidates={voter.gender==="male"? femaleCandidates: maleCandidates  } 
+                voter={voter}
+                showCountdown={showCountdown}
+                setShowCountdown={setShowCountdown}
+                setVoter={setVoter}
+                setShowModal={setShowModal}
+                setCandidateName={setCandidateName}
+                />
             </motion.div>
 
 
         </Container>
 
-        <ConfirmationModal isOpen={showModal} setShowModal={setShowModal} />
+        <ConfirmationModal isOpen={showModal} setShowModal={setShowModal} candidateName={candidateName} />
+        <CountDownModal setShowCountdown= {setShowCountdown} />
         
         
-    </motion.div> : <Modal hasvoted={voter.hasvoted} />
+    </motion.div> : <Modal voter={voter} hasvoted={voter.hasvoted} />
   )
 }
 

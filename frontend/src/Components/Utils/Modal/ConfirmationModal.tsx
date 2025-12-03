@@ -2,21 +2,25 @@ import React from 'react'
 import { motion } from "framer-motion";
 import { isLightMode } from '../../../helpers/checkTheme';
 import { useNavigate } from 'react-router-dom';
+import type { Candidate } from '../../../Shared/Types';
 
 
 type Props = {
     isOpen: boolean;
     setShowModal: (value: boolean) => void;
+    candidateName: string | null;
 }
 
-const ConfirmationModal = ({isOpen, setShowModal}: Props) => {
+const ConfirmationModal = ({isOpen, setShowModal, candidateName}: Props) => {
     const navigate = useNavigate()
     if(!isOpen) return null;
     const modalCardStyle = isLightMode ? "bg-white" : "bg-dark-card-bg bg-dark-card-border";
     const modalButtonStyle = `px-4 py-2 bg-primary text-white rounded-3xl shadow-normal flex-1 font-button-bold ${isLightMode ? "":"border-dark-button-secondary-border"}`
     // TODO
     const handleConfirm = () => {
-        // alter database data
+        // alter database data submit fn
+        navigate('/')
+        setShowModal(true)
     }
 
     const handleCancel = () => {
@@ -29,7 +33,7 @@ const ConfirmationModal = ({isOpen, setShowModal}: Props) => {
         <div className= {`rounded-xl shadow-light py-7 px-9 w-[25%] min-w-80 ${modalCardStyle} `}>
             <div className='flex flex-col gap-2 mb-5'>
                 <h2 className='text-section font-heading text-primary text-center'>ARE YOU SURE?</h2>
-                <h2 className={`text-h2 font-heading-bold text-center ${isLightMode ? "" : "text-dark-text-primary"}`}>You've selected<br/>name<br/>for your vote</h2>
+                <h2 className={`text-h2 font-heading-bold text-center ${isLightMode ? "" : "text-dark-text-primary"}`}>You've selected<br/>{candidateName}<br/>for your vote</h2>
                 
             </div>
             

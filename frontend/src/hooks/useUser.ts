@@ -6,7 +6,7 @@ async function fetchUser() {
   const res = await axios.get(`${import.meta.env.VITE_SERVER}/auth/checkToken`, {
     withCredentials: true,
   });
-  console.log(res.data.payload);
+  // console.log(res.data.payload);
   return res.data.payload;
 }
 

@@ -18,16 +18,24 @@ interface FormError {
 
 const Login = () => {
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [errorMsg, setErrorMsg] = useState<FormError>({})
+  const [admissionid, setAdmissionid] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [showPassword, setShowPassword] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
 
 
   // common styles 
   const darkField = "";
   const focusField = "transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent";
+    // custom styles
+  const background = isLightMode? "bg-cwhite":"bg-dark-bg-base";
+  const formStyle = isLightMode?"bg-cwhite" :"bg-dark-login-form-bg border-dark-card-border";
+  const title = isLightMode? "text-cextra-dark-gray":"text-dark-text-primary";
+  // const darkFormLabel = "text-dark-text-primary";
+  const darkInputField = "placeholder:text-cmedium-gray bg-dark-input-bg border-dark-input-border placeholder:text-dark-placeholder shadow-dark-border";
+  // const darkInputFocus = "focus-within:bg-dark-input-bg focus-within:border-dark-input-border"
 
   // getting data from authContext
   const {login} = useAuthContext();
@@ -38,7 +46,7 @@ const Login = () => {
 
 
 // type InputEvent = React.ChangeEvent<HTMLInputElement>;
-type FormEvent = React.FormEvent<HTMLFormElement>;
+  type FormEvent = React.FormEvent<HTMLFormElement>;
 
   const formRef = useRef<HTMLFormElement>(null);
   const admissionRef = useRef<HTMLInputElement>(null);
@@ -48,96 +56,41 @@ type FormEvent = React.FormEvent<HTMLFormElement>;
 
 
 
-  const checkUsers = (foundVoter: Voter[]) => {
-    if(foundVoter.length == 0) {
-      setErrorMsg({admissionID: "User Not Found. Check your admission ID."})
-      return false;
-    };
-  }
 
-  const checkPassword = (foundVoter: Voter[], userPassword: number) => {
-    if (foundVoter[0].password != userPassword) {
-      setErrorMsg({password: "Incorrect Password."})
-      return false
-    }
-    return true;
-  }
-
-  const handleSubmit = async (event: FormEvent) => {
-
+  async function submitFunction(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    // clear all previous error for new submit click
-    setErrorMsg({});
+    setIsLoading(true);
+    console.log(import.meta.env.VITE_SERVER)
 
-    if (!admissionRef.current && !passwordRef.current) {
-      console.log("General error block got executed")
-      if(admissionRef.current.value == '') {
-        setErrorMsg({admissionID: "This field is required"})
-      } else {
-        setErrorMsg({password: "This field is required"})
-      }
-      return true;
-    }
-
-    const userAdmissionID = admissionRef.current.value;
-    const userPassword = Number(passwordRef.current.value);
-    console.log("userAdmissionID=", userAdmissionID)
-
-    const id = userAdmissionID.split('/');
-      if (id.length == 2 && !Number.isNaN(id[0]) && id[0].length == 2 && !Number.isNaN(id[1]) && id[1].length == 5) {
-        try {
-          const response = await axios.post(
-            `${import.meta.env.VITE_SERVER}/auth/login`,
-            { userAdmissionID, userPassword },
-            { withCredentials: true },
-          );
-          
-          console.log(response);
-          if (response.status == 200) {
-            console.log(response.data.redirectUrl);
-            navigate(response.data.redirectUrl);
-          } else {
-            setErrorMsg({general: response.data});
-          }
-        } catch (error: any) {
-          setErrorMsg({general: "Invalid credentials"});
-          //console.error(error.response?.data || error.message);
-        } finally {
-          setIsLoading(false);
+    const id = admissionid.split('/');
+    if (id.length == 2 && !Number.isNaN(id[0]) && id[0].length == 2 && !Number.isNaN(id[1]) && id[1].length == 5) {
+      try {
+        const response = await axios.post(
+          `${import.meta.env.VITE_SERVER}/auth/login`,
+          { admissionid, password },
+          { withCredentials: true }
+        );
+        
+        console.log(response);
+        if (response.status == 200) {
+          console.log(response.data.redirectUrl);
+          navigate(response.data.redirectUrl);
+        } else {
+          setError(response.data);
+          console.log("error statsu not 200=",error)
         }
-      } else {
+      } catch (error: any) {
+        setError("Invalid credentials");
+        console.error(error.response?.data || error.message);
+      } finally {
         setIsLoading(false);
-        setErrorMsg({admissionID:"Please enter valid admission id."});
       }
+    } else {
+      setIsLoading(false);
+      setError("Please enter valid admission id.");
+    }
   }
-    
 
-    // const hasUser = checkUsers(foundVoter);
-
-    // if(hasUser === false) {
-    //   return;
-    // };
-    
-    
-    
-    // console.log(checkPassword(foundVoter, userPassword))
-
-    // if(!checkPassword(foundVoter, userPassword)) {
-    //   return;
-    // };
-
-    // login(foundVoter[0]) // store in local storage + context
-    // return navigate("/vote", {state: foundVoter[0]})
-  // }
-
-
-  // custom styles
-  const background = isLightMode? "bg-cwhite":"bg-dark-bg-base";
-  const formStyle = isLightMode?"bg-cwhite" :"bg-dark-login-form-bg border-dark-card-border";
-  const title = isLightMode? "text-cextra-dark-gray":"text-dark-text-primary";
-  // const darkFormLabel = "text-dark-text-primary";
-  const darkInputField = "placeholder:text-cmedium-gray bg-dark-input-bg border-dark-input-border placeholder:text-dark-placeholder shadow-dark-border";
-  // const darkInputFocus = "focus-within:bg-dark-input-bg focus-within:border-dark-input-border"
 
 
 
@@ -158,24 +111,47 @@ type FormEvent = React.FormEvent<HTMLFormElement>;
       >
         <motion.h2 className={`text-h1-lg font-heading-bold mt-3 ${title} `}
         >Login</motion.h2>
-        <motion.form ref={formRef} onSubmit={()=>{}} 
+        <motion.form ref={formRef} onSubmit={submitFunction} 
         autoComplete="off"
         className={`space-y-5 w-[95%] m-auto ${title}`}
         >
           <div className="flex flex-col items-start justify-center gap-2 
           ">
           <label htmlFor="name" className="font-heading-bold ">Admission ID</label>
-          <input ref={admissionRef} type="text" name="admissionId" id="admissionId" required placeholder="Enter your admission ID" className={`border rounded-3xl p-3   w-full ${isLightMode? "":darkInputField} ${
+          <input 
+           type="text" 
+              name="admissionid"
+              id="admissionid"
+              value={admissionid}
+              onChange={(e) => {
+                setAdmissionid(e.target.value);
+                setError(''); // Clear error when user starts typing
+              }}
+           required 
+           placeholder="Enter your admission ID" 
+           className={`border rounded-3xl p-3   w-full ${isLightMode? "":darkInputField} ${
                   error ? 'border-red-500 shake' : 'border-gray-300'
                 } ${focusField}`}
+            disabled={isLoading}
           />
-          <span className="text-small ml-2 text-red-400">{errorMsg.admissionID}</span>
           </div>
 
           <div className="flex flex-col items-start justify-center gap-2">
             <label htmlFor="password" className="font-heading-bold">Password</label>
             <div className="w-full relative">
-              <input ref={passwordRef} type={`${showPassword? "text": "password"}`} required name="password" id="password" placeholder="Enter your password" className={`border rounded-3xl p-3 w-full ${isLightMode? "":darkInputField} ${focusField}`}
+              <input 
+                name="password" 
+                id="password"
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setError(''); // Clear error when user starts typing
+                }}
+               type={`${showPassword? "text": "password"}`} 
+               required 
+               placeholder="Enter your password" 
+               className={`border rounded-3xl p-3 w-full ${isLightMode? "":darkInputField} ${focusField}`}
+               disabled={isLoading}
               />
               <button
                 type="button"
@@ -191,12 +167,29 @@ type FormEvent = React.FormEvent<HTMLFormElement>;
               </button>
             </div>
             
-            <span className="text-small ml-2 text-red-400">{errorMsg.password}</span>
           </div>
+
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-2xl transition-all duration-300 animate-fadeIn">
+              <div className="flex items-center justify-center space-x-2">
+                <ExclamationCircleIcon className="text-red-700 size-5" />
+                <span className="text-sm font-medium">{error}</span>
+              </div>
+            </div>
+          )}
 
           
           <button type="submit" className="bg-primary p-3 w-full rounded-3xl text-cwhite font-button-bold mt-3 cursor-pointer">
-            Login
+            <div className="flex items-center justify-center space-x-2">
+              {isLoading && (
+                <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+              )}
+              <span>{isLoading ? 'Logging in...' : 'Login'}</span>
+            </div>
+           
           </button>
           
         </motion.form>

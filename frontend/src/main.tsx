@@ -4,14 +4,15 @@ import App from "./App.tsx";
 import "./index.css";
 import "flowbite-react";
 import { BrowserRouter } from "react-router-dom";
-import { AuthContextProvider } from "./Shared/Context/AuthContext.tsx";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
+const queryClient = new QueryClient();
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
-      <AuthContextProvider >
+      <QueryClientProvider client={queryClient} >
         <App />
-      </AuthContextProvider>
+      </QueryClientProvider>
     </BrowserRouter>
   </StrictMode>,
 );

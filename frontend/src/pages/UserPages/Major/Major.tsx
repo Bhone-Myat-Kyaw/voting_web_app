@@ -3,10 +3,9 @@ import {
   secondSemSubjects,
 } from "../../../Components/Texts/subject";
 import TableDataRow from "../../../Components/Utils/TableDataRow";
-// import CurriculumTable from "../../Components/Utils/CurriculumTable";
 import { Element } from "react-scroll";
-import { SelectedPage } from "../../../Components/Texts/pages";
-import SectionTitle from "../../../Components/Texts/SectionTitle";
+import { SelectedPage } from "../../../Shared/Types";
+import { SectionTitle } from "../../../Components";
 import { motion } from "framer-motion";
 import { isLightMode } from "../../../helpers/checkTheme";
 import { containerVariants, childVariants } from "../../../Shared/framerVariants";
