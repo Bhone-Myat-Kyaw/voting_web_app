@@ -5,7 +5,6 @@ import { useUser } from "../../hooks/useUser";
 import axios from "axios";
 import { useQueryClient } from "@tanstack/react-query";
 
-
 export default function AdminLayout() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -24,9 +23,6 @@ export default function AdminLayout() {
       console.log(error);
     }
   }
-
-  // This component will only render if user is authenticated and is admin
-  // due to the ProtectedRoute wrapper
   
   if (isLoading) {
     return (
@@ -54,7 +50,13 @@ export default function AdminLayout() {
               Welcome, {user?.name} {/* Now safe to access user */}
             </p>
           </div>
-          <div className="items-center hidden gap-4 lg:flex">
+          <div className="items-center flex gap-4">
+            <button 
+              className="px-8 py-2 rounded-lg bg-blue-400 border border-gray-200 hover:bg-gray-50 transition-colors shadow-sm text-body"
+              onClick={() => navigate("/vote")}
+            >
+              To the Voting Page
+            </button>
             <button className="p-2 rounded-lg bg-white border border-gray-200 hover:bg-gray-50 transition-colors shadow-sm">
               <ArrowRightEndOnRectangleIcon className="size-6 sm:size-7 text-cdark-gray" onClick={logoutFunction}/>
             </button>

@@ -8,7 +8,7 @@ function UserManagementPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
 
-  const { data: students, isLoading, isError, error } = useQuery({
+  const { data: students, isError, error } = useQuery({
     queryKey: ["students"],
     queryFn: async () => {
       const res = await axios.get(`${import.meta.env.VITE_SERVER}/admin/selectAll`, {
@@ -17,6 +17,9 @@ function UserManagementPage() {
       return res.data.data;
     },
     staleTime: 12 * 60 * 60 * 1000,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 
   const roleMutation = useMutation({
@@ -40,10 +43,6 @@ function UserManagementPage() {
     onError: (context: any) => {
       // rollback to previous value if mutation fails
       queryClient.setQueryData(["students"], context.previousStudents);
-    },
-    onSettled: () => {
-      // optionally refetch to ensure data is synced with backend
-      queryClient.invalidateQueries({ queryKey: ["students"] });
     },
   });
 
@@ -70,7 +69,7 @@ function UserManagementPage() {
     return status === "active" ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800";
   };
 
-  if (isLoading) {
+  if (!students) {
     return <div className="flex items-center justify-center">Loading...</div>
   }
 

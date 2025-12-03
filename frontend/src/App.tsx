@@ -12,7 +12,7 @@ function App() {
     <Routes>
       <Route path="/" element={<MainPage />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/vote" element={<Vote />} />
+      <Route path="/vote" element={<ProtectedRoute role="student"><Vote /></ProtectedRoute>} />
 
       {/* Admin Protected Pages */}
       <Route

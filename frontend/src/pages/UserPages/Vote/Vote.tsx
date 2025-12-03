@@ -9,11 +9,10 @@ import { CandidateCarousel } from "../../../Components/UserComponents/Utils/Cand
 import type { voter } from "../../../Components/UserComponents/Texts/voterInfo";
 import { useState } from "react";
 import Modal from "../../../Components/UserComponents/Utils/Modal";
-
 import {motion} from "framer-motion";
 */
 import type { Variants } from "framer-motion";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import Container from "../../../Shared/Container";
 import { useState, useEffect } from "react";
@@ -22,32 +21,34 @@ import type { voter } from "../../../Components/UserComponents/Texts/voterInfo";
 import CandidateCarousel from "../../../Components/UserComponents/Utils/CandidateCarousel";
 import Modal from "../../../Components/UserComponents/Utils/Modal";
 import { motion } from "framer-motion";
-
+import { ArrowRightEndOnRectangleIcon } from "@heroicons/react/24/solid";
+import { useNavigate } from "react-router-dom";
 
 
 const Vote = () => {
   const { data: voterData, isLoading: voterIsLoading } = useUser();
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
-    // framer motion
+  // framer motion
   const containerVariants: Variants = {
-      hidden: {opacity: 0, y: 40},
-      visible: {opacity: 1, y: 0, 
-          transition: {
-              staggerChildren: 0.4,
-          }
-      }, 
+    hidden: {opacity: 0, y: 40},
+    visible: {opacity: 1, y: 0, 
+      transition: {
+        staggerChildren: 0.4,
+      }
+    }, 
   }
 
   const childVariants: Variants = {
-      hidden: {opacity: 0, y: 40},
-      visible: {opacity: 1, y: 0, 
-          transition: {
-              duration: 0.6,
-              ease: "easeInOut",
-          }
+    hidden: {opacity: 0, y: 40},
+    visible: {opacity: 1, y: 0, 
+      transition: {
+        duration: 0.6,
+        ease: "easeInOut",
       }
+    }
   }
-
 
   const { data: candidates, isLoading } = useQuery({
     queryKey: ['candidates'],
@@ -55,7 +56,10 @@ const Vote = () => {
       const res = await axios.get(`${import.meta.env.VITE_SERVER}/vote/selectCandidates`, { withCredentials: true });
       return res.data.data;
     },
-    staleTime: Infinity
+    staleTime: Infinity,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 
   const [voter, setVoter] = useState<voter | null>(null);
@@ -64,7 +68,7 @@ const Vote = () => {
     if (voterData) setVoter(voterData);
   }, [voterData]);
 
-  const handleVoteClick = async (candidateid: number) => {
+  const handleVoteClick = async (candidateid: string) => {
     if (!voter) return alert("User not loaded yet");
 
     if (voter.hasvoted) return alert("You already voted!");
@@ -78,9 +82,14 @@ const Vote = () => {
         },
         { withCredentials: true }
       );
-
+      
       if (res.status === 200) {
-        setVoter(prev => ({ ...prev!, hasvoted: true }));
+        console.log(res);
+        if (res.data.message === "Not about time") {
+          console.log("Not about time");
+        } else {
+          setVoter(prev => ({ ...prev!, hasvoted: true }));
+        }
       }
 
     } catch (error: any) {
@@ -88,6 +97,19 @@ const Vote = () => {
     }
   };
 
+  async function logoutFunction() {
+    queryClient.clear();
+
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_SERVER}/auth/logout`, {}, { withCredentials: true });
+
+      if (res.status == 200) {
+        navigate('/');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   if (isLoading) {
     return <div className="flex items-center justify-center">Loading...</div>
@@ -116,29 +138,29 @@ const Vote = () => {
   
   return ( !voter!.hasvoted ?
     <motion.div className="w-full h-screen bg-cwhite py-10"
-    variants={containerVariants}
-    initial="hidden"
-    whileInView={"visible"}
-    viewport={{once: true, amount: 0.5}}
+      variants={containerVariants}
+      initial="hidden"
+      whileInView={"visible"}
+      viewport={{once: true, amount: 0.5}}
     >
-        <Container>
-            <motion.div className="mb-3" 
-            variants={childVariants}
-            >
-                <h1 className="text-h1-lg font-heading-bold
-                mb-2">King & Queen Selection 2025</h1>
-                <h2>Cast your vote for next representative</h2>
-            </motion.div>
-            <motion.div className="h-[400px] sm:h-[500px] lg:h-[600px] mx-auto"
-            variants={childVariants}
-            >
-                
-                <CandidateCarousel candidates={voter!.gender==="male"? femaleCandidates: maleCandidates }  onVoteClick={handleVoteClick}  />
-            </motion.div>
+      <Container>
 
-        </Container>
-        
-        
+      <motion.div className="mb-3" variants={childVariants} >
+        <div>
+          <h1 className="text-h1-lg font-heading-bold mb-2">King & Queen Selection 2025</h1>
+          <h2>Cast your vote for next representative</h2>
+        </div>
+
+        <button className="p-2 rounded-lg bg-white border border-gray-200 hover:bg-gray-50 transition-colors shadow-sm">
+          <ArrowRightEndOnRectangleIcon className="size-6 sm:size-7 text-cdark-gray" onClick={logoutFunction}/>
+        </button>
+      </motion.div>
+
+      <motion.div className="h-[400px] sm:h-[500px] lg:h-[600px] mx-auto" variants={childVariants}>
+        <CandidateCarousel candidates={voter!.gender==="male"? femaleCandidates: maleCandidates }  onVoteClick={handleVoteClick}  />
+      </motion.div>
+
+      </Container>
     </motion.div> : <Modal hasVoted={voter!.hasvoted} />
   )
 

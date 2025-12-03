@@ -27,6 +27,7 @@ export default function Sidebar() {
     return location.pathname === path;
   };
 
+  // if anything went wrong, hover:w-64 is the problem
   return (
       <aside className={`
         h-screen z-50 transform bg-cwhite shadow-xl transition-all duration-300 ease-in-out
@@ -76,8 +77,6 @@ export default function Sidebar() {
                       <div className="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full"></div>
                     )}
                   </div>
-                  
-                  
                     <div className="min-w-0 flex-1 max-lg:hidden">
                       <p className="font-medium text-sm truncate">{item.name}</p>
                       <p className="text-xs text-cdark-gray truncate">{item.description}</p>
@@ -89,8 +88,5 @@ export default function Sidebar() {
 
         </div>
       </aside>
-
-
-
   );
 }

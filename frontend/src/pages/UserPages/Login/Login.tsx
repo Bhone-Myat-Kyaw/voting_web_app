@@ -24,7 +24,6 @@ const Login = () => {
           { withCredentials: true }
         );
         
-        console.log(response);
         if (response.status == 200) {
           //console.log(response.data.redirectUrl);
           navigate(response.data.redirectUrl);

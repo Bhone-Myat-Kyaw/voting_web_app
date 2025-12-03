@@ -1,6 +1,7 @@
-//import { useEffect } from "react";
 import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
+import Candidates from "../../../Components/AdminComponents/candidates";
+import VotingToggleWithConfirm from "../../../Components/AdminComponents/votingToogle";
 
 function VotesPage() {
   const { data: candidates, isLoading: candidateIsLoading } = useQuery({
@@ -18,7 +19,8 @@ function VotesPage() {
       const res = await axios.get(`${import.meta.env.VITE_SERVER}/vote/countVotes`, { withCredentials: true });
       return res.data.votes;
     },
-    refetchInterval: 10 * 1000 // 10 seconds
+    refetchInterval: 10 * 1000,
+    placeholderData: keepPreviousData
   });
 
   if (candidateIsLoading || votesIsLoading) {
@@ -26,6 +28,7 @@ function VotesPage() {
   }
 
   let totalVoters = 0;
+
   const voteMap = new Map();
   votes.forEach((v: any) => {
     totalVoters += v.vote_count;
@@ -33,10 +36,14 @@ function VotesPage() {
   });
 
   // Step 2: Combine
-  const combinedCandidates = candidates.map((candidate: any) => ({
-    ...candidate,
-    voteCount: voteMap.get(candidate.id) || 0,
-  }));
+  const combinedCandidates = candidates.map((candidate: any) => {
+    const newVotes = voteMap.get(candidate.id) || 0;
+
+    return ({
+      ...candidate,
+      voteCount: newVotes
+    })
+  });
 
   // Step 3: Separate king/queen
   const kingCandidates = combinedCandidates
@@ -46,7 +53,6 @@ function VotesPage() {
   const queenCandidates = combinedCandidates
     .filter((c: any) => c.students.gender === "female")
     .sort((a:any, b:any) => b.voteCount - a.voteCount);
-
 
   return (
     <section className="space-y-6">
@@ -91,113 +97,21 @@ function VotesPage() {
 
       {/* Live Vote Section */}
       <div className="bg-white rounded-2xl border border-gray-200 shadow-light overflow-hidden">
-        <div className="p-5 sm:p-6 border-b border-gray-200">
-          <h2 className="text-xl sm:text-2xl font-bold text-cextra-dark-gray">Live Vote Counts</h2>
-          <p className="text-cdark-gray text-sm mt-1">Real-time updates every 10 seconds</p>
+        <div className="p-5 sm:p-6 border-b border-gray-200 flex items-start justify-between">
+          <div>
+            <h2 className="text-xl sm:text-2xl font-bold text-cextra-dark-gray">Live Vote Counts</h2>
+            <p className="text-cdark-gray text-sm mt-1">Real-time updates every 10 seconds</p>
+          </div>
+
+          <VotingToggleWithConfirm />
         </div>
 
         <div className="grid grid-cols-1 xl:grid-cols-2 divide-x-0 xl:divide-x divide-y xl:divide-y-0 divide-gray-200">
           {/* King Candidates */}
-          <div className="p-5 sm:p-6">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-3 h-8 bg-primary rounded-full"></div>
-              <h3 className="text-lg sm:text-xl font-bold text-cextra-dark-gray">King Candidates</h3>
-            </div>
-            
-            <div className="space-y-4">
-              {kingCandidates.map((candidate: any, index:number) => (
-                <div 
-                  key={candidate.studentid}
-                  className="flex items-center gap-4 p-4 rounded-lg border border-gray-200 hover:border-blue-300 transition-colors hover:shadow-light"
-                >
-                  <div className="shrink-0">
-                    <div className="relative">
-                      <img 
-                        src={candidate.students.image} 
-                        alt={candidate.students.name}
-                        className="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover border-2 border-white shadow-light"
-                      />
-                      <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-primary rounded-full border-2 border-white flex items-center justify-center">
-                        <span className="text-white text-xs font-bold">{index + 1}</span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <p className="text-base sm:text-lg font-semibold text-gray-900 truncate">
-                        {candidate.students.name}
-                      </p>
-                      {candidate.trend === "up" ? (
-                        <span className="text-green-500 text-sm">↑</span>
-                      ) : (
-                        <span className="text-red-500 text-sm">↓</span>
-                      )}
-                    </div>
-                    <p className="text-cdark-gray text-sm">Roll No: {candidate.students.rollnum}</p>
-                  </div>
-                  
-                  <div className="text-right">
-                    <p className="text-lg sm:text-xl font-bold text-gray-900">
-                      {candidate.voteCount}
-                    </p>
-                    <p className="text-cdark-gray text-sm">Votes</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
+          <Candidates candidates={kingCandidates} category="male" />
+        
           {/* Queen Candidates */}
-          <div className="p-5 sm:p-6">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-3 h-8 bg-pink-500 rounded-full"></div>
-              <h3 className="text-lg sm:text-xl font-bold text-gray-900">Queen Candidates</h3>
-            </div>
-            
-            <div className="space-y-4">
-              {queenCandidates.map((candidate: any, index: number) => (
-                <div 
-                  key={candidate.studentid}
-                  className="flex items-center gap-4 p-4 rounded-lg border border-gray-200 hover:border-pink-300 transition-colors hover:shadow-light"
-                >
-                  <div className="shrink-0">
-                    <div className="relative">
-                      <img 
-                        src={candidate.students.image} 
-                        alt={candidate.students.name}
-                        className="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover border-2 border-white shadow-light"
-                      />
-                      <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-pink-500 rounded-full border-2 border-white flex items-center justify-center">
-                        <span className="text-white text-xs font-bold">{index + 1}</span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <p className="text-base sm:text-lg font-semibold text-gray-900 truncate">
-                        {candidate.students.name}
-                      </p>
-                      {candidate.trend === "up" ? (
-                        <span className="text-green-500 text-sm">↑</span>
-                      ) : (
-                        <span className="text-red-500 text-sm">↓</span>
-                      )}
-                    </div>
-                    <p className="text-gray-500 text-sm">Roll No: {candidate.students.rollnum}</p>
-                  </div>
-                  
-                  <div className="text-right">
-                    <p className="text-lg sm:text-xl font-bold text-gray-900">
-                      {candidate.voteCount}
-                    </p>
-                    <p className="text-gray-500 text-sm">Votes</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          <Candidates candidates={queenCandidates} category="female"/>
         </div>
       </div>
     </section>

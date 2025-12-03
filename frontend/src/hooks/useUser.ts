@@ -6,7 +6,7 @@ async function fetchUser() {
   const res = await axios.get(`${import.meta.env.VITE_SERVER}/auth/checkToken`, {
     withCredentials: true,
   });
-  console.log(res.data.payload);
+  
   return res.data.payload;
 }
 
@@ -16,7 +16,7 @@ export function useUser() {
     queryKey: ["authUser"],
     queryFn: fetchUser,
     staleTime: 1000 * 60 * 5, // cache for 5 minutes
-    retry: false, // optional, do not retry if token invalid
+    retry: false,
   });
 
   return { ...query };

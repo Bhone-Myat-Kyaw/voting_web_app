@@ -6,8 +6,10 @@ const cookieParser = require("cookie-parser");
 const authRouter = require("./routes/authRoute");
 const adminRouter = require("./routes/adminRoute");
 const voteRouter = require("./routes/voteRoute");
-const adminMiddleware = require("../src/middleware/adminMiddleware");
-const voteMiddleware = require("../src/middleware/voteMiddleware");
+const middleware = require("./middleware/middleware");
+const checkRole = require("./middleware/checkRole");
+const checkIsVotingOpen = require("./middleware/checkIsVotingOpen");
+
 
 app.use(
   cors({
@@ -19,8 +21,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/auth", authRouter);
-app.use("/admin", adminMiddleware, adminRouter);
-app.use("/vote", voteMiddleware, voteRouter);
+app.use("/admin", middleware, checkRole, adminRouter);
+app.use("/vote", middleware, voteRouter);
 
 app.listen(process.env.PORT || 5000, () => {
   console.log(`Server running on http://localhost:${process.env.PORT || 5000}`);

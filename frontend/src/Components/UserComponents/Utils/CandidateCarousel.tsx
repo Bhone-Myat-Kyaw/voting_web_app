@@ -1,5 +1,5 @@
-import {useState} from 'react'
-import {Button} from "flowbite-react"
+import { useState } from 'react';
+import { Button } from "flowbite-react";
 // import { candidates } from '../Texts/candidatesInfo'
 
 interface CandidateProps {
@@ -51,7 +51,7 @@ export default function CandidateCarousel({ candidates, onVoteClick }: Candidate
           }}>
 
           {candidates.map((candidate: any) => (
-          <div key={candidate.studentid}
+          <div key={candidate.id}
             
             className="flex justify-center px-4 py-6"
           >
@@ -83,14 +83,9 @@ export default function CandidateCarousel({ candidates, onVoteClick }: Candidate
 
         </div>
       </div>
-
-      
-
-      
-        
     </div>
        
-    </div>
+  </div>
     
   )
 }
