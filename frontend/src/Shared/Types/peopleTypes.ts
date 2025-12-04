@@ -1,8 +1,16 @@
-export enum People {
-    Freshmen= "freshmen",
-    Senior= "senior",
-    Teacher= "teacher",
-}
+// export enum People {
+//     Freshmen= "freshmen",
+//     Senior= "senior",
+//     Teacher= "teacher",
+// }
+
+export const People = {
+  Freshmen: "freshmen",
+  Senior: "senior",
+  Teacher: "teacher",
+} as const;
+
+export type People = typeof People[keyof typeof People];
 
 export interface Voter {
     id: number;
@@ -18,14 +26,16 @@ export interface Voter {
 export interface Candidate {
   id: number;
   name: string;
-  description: string;
-  imagepath: string;
+  hasvoted:true;
+  year: number;
   rollnum: number;
   gender: string; 
 }
 
 export interface SelectedCandidate {
-  id: number;
-  studentid: number;
+  id: string;
+  studentid: string;
   students: Candidate;
+  imagepath: string;
+  description: string;
 }

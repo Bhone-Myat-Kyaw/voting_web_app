@@ -1,22 +1,23 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom';
-import { getWithExpiry } from '../../../helpers/storage';
 import { isLightMode } from '../../../helpers/checkTheme';
-import type { Voter } from '../../Texts/voterInfo';
+import type { Voter } from '../../../Shared/Types';
 
 type Props = {
-    hasvoted: boolean;
+    // hasvoted: boolean;
     voter: Voter;
+    setShowVotedModal: (value: boolean)=> void;
 }
 
-const Modal = ({ hasvoted, voter}: Props) => {
-    const navigate = useNavigate()
+const Modal = ({ voter, setShowVotedModal}: Props) => {
+    // const navigate = useNavigate()
 
-    if(!hasvoted) return  ;
-    console.log("Modal is rendered and hasvoted=",hasvoted)
+    // if(!hasvoted) return  ;
+    // console.log("Modal is rendered and hasvoted=",hasvoted)
 
-    const redirectHome = () => navigate('/');
-    const voterData = getWithExpiry("voter");
+    const redirectHome = () => {
+
+        setShowVotedModal(false);
+    };
+    // const voterData = getWithExpiry("voter");
 
 
     const background = isLightMode? "bg-cwhite": "bg-dark-bg-base";
@@ -24,9 +25,10 @@ const Modal = ({ hasvoted, voter}: Props) => {
 
     
   return (
-    <div>
-        {!!hasvoted && (
-         <div className={`fixed inset-0 bg-transparent backdrop-blur-2xl flex items-center justify-center z-50 ${background}`} >
+
+    
+        
+    <div className={`fixed inset-0 bg-transparent backdrop-blur-2xl flex items-center justify-center z-50 ${background}`} >
         <div className= {`rounded-xl shadow-light py-7 px-9 w-[25%] min-w-80 ${modalBackground}`}>
             <div className='flex flex-col gap-2 mb-5'>
                 <h2 className='text-section font-heading text-primary text-center'>{voter?.name}</h2>
@@ -39,8 +41,8 @@ const Modal = ({ hasvoted, voter}: Props) => {
 
         </div>
     </div>
-    )}
-    </div>
+    
+    
     
    
   )

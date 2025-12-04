@@ -1,4 +1,4 @@
-  const checkMode = (currentMode: string) => {
+  const checkMode = (currentMode: string | null) => {
     console.log("checkMode=",checkMode)
     if(currentMode === "light") {
       return true

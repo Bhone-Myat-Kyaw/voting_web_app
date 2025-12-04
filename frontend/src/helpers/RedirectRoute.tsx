@@ -5,10 +5,10 @@ import type { JSX } from "react";
 
 type Props = {
     children: JSX.Element;
-    role: "student" | "admin";
+    // role: "student" | "admin";
 }
 
-const RedirectRoute = ({ children, role } : Props) => {
+const RedirectRoute = ({ children } : Props) => {
   const { data: user, isLoading } = useUser();
 
   // Show loading while checking authentication
@@ -28,9 +28,9 @@ const RedirectRoute = ({ children, role } : Props) => {
   }
 
   // Redirect to login if not authenticated or not admin
-  if (!user || user.role !== role) {
-    return <Navigate to="/login" replace />;
-  }
+  // if (!user || user.role !== role) {
+  //   return childern
+  // }
 
   return children;
 };

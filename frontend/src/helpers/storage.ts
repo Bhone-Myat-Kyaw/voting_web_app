@@ -1,4 +1,4 @@
-import type { Voter } from "../Components/Texts/voterInfo";
+import type { Voter } from "../Shared/Types";
 
 interface ItemWithExpiry {
     value: Voter; // set any for general purpose

@@ -1,11 +1,8 @@
-import {
-  firstSemSubjects,
-  secondSemSubjects,
-} from "../../../Components/Texts/subject";
+import { firstSemSubjects, secondSemSubjects } from "../../../Components/UserComponents/Texts/subject";
 import TableDataRow from "../../../Components/Utils/TableDataRow";
 import { Element } from "react-scroll";
 import { SelectedPage } from "../../../Shared/Types";
-import { SectionTitle } from "../../../Components";
+import { SectionTitle } from "../../../Components/UserComponents";
 import { motion } from "framer-motion";
 import { isLightMode } from "../../../helpers/checkTheme";
 import { containerVariants, childVariants } from "../../../Shared/framerVariants";
@@ -27,12 +24,12 @@ const Major = ({setSelectedPage}: Props) => {
         >
           
             {/* title */}
-            <SectionTitle customize title="Computer Engineering and Information Technology" subTitle="A brief, engaging paragraph defining the Computer Engineering major, its significance, and the fusion of hardware and software principles that prepares students for the future of technology. This field is at the heart of innovation, powering everything from smartphones to spacecraft." />
+            <SectionTitle customize title="C  E I T" subTitle="A brief, engaging paragraph defining the Computer Engineering major, its significance, and the fusion of hardware and software principles that prepares students for the future of technology. This field is at the heart of innovation, powering everything from smartphones to spacecraft." />
 
             {/* description */}
 
             
-            <motion.table className={`table-auto w-full md:table-fixed  text-left border border-gray-300 md:max-w-5xl md:mx-auto ${isLightMode? "": darkTable} `}
+            <motion.table className={`w-6/10 mx-auto table-auto sm:8/10 md:9/10 md:table-fixed  text-left border border-gray-300 md:max-w-5xl md:mx-auto ${isLightMode? "": darkTable} `}
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"

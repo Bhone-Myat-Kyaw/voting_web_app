@@ -1,7 +1,6 @@
-import React from 'react'
 import {motion} from "framer-motion"
 import { useNavigate } from 'react-router-dom'
-import { People } from '../../Texts/peopleInfo'
+import { People } from '../../../Shared/Types'
 
 type Props = {
     isOpen: boolean;

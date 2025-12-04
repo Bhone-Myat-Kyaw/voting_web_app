@@ -1,15 +1,15 @@
 export const firstSemSubjects = [
-  { id: 1, semester: 1, subject: "Myanmar", code: "2001" },
-  { id: 2, semester: 1, subject: "English", code: "2002" },
-  { id: 3, semester: 1, subject: "Mathematics", code: "2003" },
-  { id: 4, semester: 1, subject: "Chemistry", code: "2004" },
+  { id: 1, semester: 1, subject: "Myanmar I", code: "M 1001" },
+  { id: 2, semester: 1, subject: "English I", code: "E 1001" },
+  { id: 3, semester: 1, subject: "Engineering Mathematics I", code: "EM 1001" },
+  { id: 4, semester: 1, subject: "Engineering Chemistry", code: "Ech 1001" },
   {
     id: 5,
     semester: 1,
-    subject: "Introduction to computer system",
-    code: "2005",
+    subject: "Introduction to computer systems",
+    code: "CEIT 1001",
   },
-  { id: 6, semester: 1, subject: "Basic Engineering Drawing", code: "2006" },
+  { id: 6, semester: 1, subject: "Basic Engineering Drawing", code: "ME 1001" },
 ];
 
 export const secondSemSubjects = [

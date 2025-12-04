@@ -3,7 +3,9 @@ import MainPage from "./pages/UserPages/MainPage";
 import Login from "./pages/UserPages/Login/Login";
 import Vote from "./pages/UserPages/Vote/Vote";
 import ProtectedRoute from "./helpers/ProtectedRoute";
-import TestApp from "./pages/UserPages/Vote/TestApp";
+import AdminLayout from "./pages/AdminPages/AdminLayout";
+import VotesPage from "./pages/AdminPages/pages/VotePage";
+import UserManagementPage from "./pages/AdminPages/pages/UserManagementPage";
 import RedirectRoute from "./helpers/RedirectRoute";
 
 function App() {
@@ -12,7 +14,7 @@ function App() {
     <Routes>
       <Route path="/" element={<MainPage />} />
       <Route path="/login" element={
-        <RedirectRoute role="student" >
+        <RedirectRoute >
           <Login />
         </RedirectRoute>
       } />
@@ -21,10 +23,21 @@ function App() {
           <Vote />
         </ProtectedRoute>
       } />
-      {/* <Route path="/onBoarding" element={<OnboardingModal/>}/> */}
-      {/* <Route path="/modal" element={<Modal hasVoted={true} />} /> */}
-      <Route path="/carousel" element={<TestApp />} />
-      <Route path="/temp" element={<Vote />}/>
+
+      {/* Admin Protected Pages */}
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute role="admin"> {/* Wrap with protection */}
+            <AdminLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<VotesPage />} />
+        <Route path="userManagement" element={<UserManagementPage />} />
+      </Route>
+
+      
     </Routes>
   );
 }

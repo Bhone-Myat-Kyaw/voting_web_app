@@ -36,10 +36,9 @@ const ProtectedRoute = ({ children, role } : { children: React.ReactNode, role: 
     );
   }
 
+  console.log("user=",user)
+
   if (user && user.role == "admin") return children;
-  if (user && user.role == "student") {
-    return <Navigate to="/vote" replace />
-  }
 
   // Redirect to login if not authenticated or not admin
   if (!user || user.role !== role) {

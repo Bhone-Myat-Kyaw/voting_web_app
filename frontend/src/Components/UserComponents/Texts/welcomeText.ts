@@ -1,4 +1,4 @@
-import { People } from "./peopleInfo"
+import { People } from "../../../Shared/Types";
 
 export interface WelcomeText {
     status: string;

@@ -19,11 +19,12 @@ const Accordion = ({ name, title, children, imgPath }: Props) => {
   const darkTitle = "text-dark-text-primary";
   // const darkIcon = "text-white";
   // const darkCardDiv = "bg-dark-card-bg border-dark-card-border";
+  // object-contain
 
   return (
     <motion.details
       name={name}
-      open={undefined}
+      open={true}
       className={`group border-b  ${isLightMode? "bg-white border-gray-200" : darkDetails} rounded-lg  shadow-normal `}
       variants={childVariants}
     >
@@ -47,9 +48,9 @@ const Accordion = ({ name, title, children, imgPath }: Props) => {
           </svg>
         </span>
       </summary>
-      <div className={`p-5 rounded-lg border-t ${isLightMode? "border-gray-200" : "border-dark-card-border"}  `} >
-        <div className="w-full flex justify-around bg-red-300n h-52">
-          <img src={imgPath} alt="" className="flex-1 w-10 object-fit" />
+      <div className={`p-5   md:pb-2 rounded-lg border-t ${isLightMode? "border-gray-200" : "border-dark-card-border"}  `} >
+        <div className="w-full flex flex-col md:flex-row gap-5 justify-around  bg-red-300n h-auto min-h-52">
+          <img src={imgPath} alt="" className="flex-1 w-3xl md:w-10 object-contain rounded-3xl" />
           <p className="text-gray-500 dark:text-gray-400 flex-2">{children}</p>
         </div>
       </div>

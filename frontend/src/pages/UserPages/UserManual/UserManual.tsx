@@ -1,8 +1,7 @@
 import { Element } from "react-scroll";
-import { SelectedPage } from "../../../Components/Texts/pages";
-import SectionTitle from "../../../Components/Texts/SectionTitle";
+import { SelectedPage } from "../../../Shared/Types";
+import { SectionTitle } from "../../../Components/UserComponents";
 import { motion } from "framer-motion";
-import type { Variants } from "framer-motion";
 import { isLightMode } from "../../../helpers/checkTheme";
 import { containerVariants, childVariants } from "../../../Shared/framerVariants";
 
@@ -11,24 +10,6 @@ type Props = {
 }
 
 const UserManual = ({setSelectedPage}: Props) => {
-  // const containerVariants: Variants = {
-  //   hidden: {opacity: 0, y:40},
-  //   visible: {opacity: 1, y: 0,
-  //     transition: {
-  //       staggerChildren: 0.4
-  //     }
-  //   }
-  // }
-
-  // const listVariants: Variants = {
-  //   hidden: {opacity: 0, y: 40},
-  //   visible: {opacity: 1, y: 0,
-  //     transition: {
-  //       duration: 0.6,
-  //       ease: "easeInOut",
-  //     }
-  //   }
-  // }
 
   const darkListStyle = "text-dark-text-primary"
   return (
@@ -41,7 +22,7 @@ const UserManual = ({setSelectedPage}: Props) => {
           <SectionTitle title="User Manual" subTitle="A simple, step-by-step guide to get you started with our platform. Follow these instructions to navigate through the key features seamlessly." />
         </div>
         <div className="flex flex-col justify-around  w-full   ">
-          <motion.ul className={`list-none text-start w-full  md:max-w-5xl md:mx-auto ${isLightMode? "": darkListStyle} `}  
+          <motion.ul className={`list-none  text-start w-7/10 sm:w-9/10  mx-auto  md:max-w-5xl md:mx-auto ${isLightMode? "": darkListStyle} `}  
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"

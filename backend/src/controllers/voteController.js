@@ -26,7 +26,6 @@ async function vote(req, res) {
       return res.status(400).json({ message: "Vote error", error: voteError.message });
     }
 
-
     const { error: updateError } = await supabase
       .from("students")
       .update({ hasvoted: true })
@@ -45,27 +44,29 @@ async function vote(req, res) {
 
 async function selectCandidates(req, res) {
   try {
-    const { data, error } = await supabase
+    // Fetch candidates
+    const { data: candidateData, error: candidateError } = await supabase
       .from("candidates")
       .select(`
         id,
-        studentid,
+        description,
+        imagepath,
         students (
           name,
-          year,
           rollnum,
           gender,
           hasvoted
         )  
-      `)
+      `);
 
-    if (error) return res.status(400).json({ message: error.message });
+    if (candidateError) return res.status(400).json({ message: candidateError.message });
 
-    return res.status(200).json({ message: "Selected candidates", data });
+    return res.status(200).json({ message: "Selected candidates", data: candidateData });
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({ message: error.message });
   }
 }
+
 
 async function countVotes(req, res) {
   try {

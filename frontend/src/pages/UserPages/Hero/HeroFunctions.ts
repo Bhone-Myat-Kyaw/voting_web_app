@@ -1,5 +1,6 @@
-import type { People } from "../../../Components/Texts/peopleInfo";
-import { welcomeTexts, type WelcomeText } from "../../../Components/Texts/welcomeText";
+import type { People } from "../../../Shared/Types";
+import { welcomeTexts } from "../../../Components/UserComponents/Texts/welcomeText";
+import type { WelcomeText } from "../../../Shared/Types";
 
 
 

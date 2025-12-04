@@ -1,32 +1,34 @@
 import {useEffect, useState} from 'react'
-import {Button} from "flowbite-react"
 // import { candidates } from '../Texts/candidatesInfo'
-import type { SelectedCandidate } from '../Texts/candidatesInfo'
+import type { SelectedCandidate } from '../../Shared/Types';
 import { isLightMode } from '../../helpers/checkTheme';
 import Loading from './Loading';
-import type { Voter } from '../Texts/voterInfo';
-import axios from 'axios';
-import Modal from './Modal/Modal';
+import type { Voter } from '../../Shared/Types';
+// import axios from 'axios';
+// import Modal from './Modal/Modal';
+// import { ConfirmationModal } from '../UserComponents';
 
 
 interface CandidateProps {
   candidates : SelectedCandidate[]; 
   // onVoteClick: (candidateid: string) => void;
   voter: Voter;
-  showCountdown: boolean;
-  setVoter: (value:Voter | null)=> void;
-  setShowCountdown: (value: boolean)=>void;
-  setShowModal: (value:boolean)=>void;
+  
   setCandidateName: (value: string)=>void;
+  setShowVotedModal: (value: boolean)=>void;
+  setShowConfirmModal: (value: boolean)=>void;
+  setCandidateid: (value: string)=>void;
 }
 
 
-const CandidateCarousel = ({candidates, voter, showCountdown, setVoter, setShowModal, setShowCountdown, setCandidateName }: CandidateProps) => {
+const CandidateCarousel = ({candidates, voter, setCandidateName, setShowVotedModal,  setShowConfirmModal, setCandidateid }: CandidateProps) => {
+  
 
     const [currentIndex, setCurrentIndex] = useState(0);
     const [cardsToShow, setCardsToShow] = useState(3);
     const [isAnimating, setIsAnimating] = useState(false);
 
+    
     const title = candidates[0].students.gender === "male" ? "King Candidates": "Queen Candidates";
   
     // Calculate number of cards to show based on screen size
@@ -70,47 +72,46 @@ const CandidateCarousel = ({candidates, voter, showCountdown, setVoter, setShowM
       // alert(`Voted for candidate: ${candidateId}`);
       // Implement your voting logic here
     // };
-    const isCounting = () => {
-      // fetch data and setShowCountdown(true)
-      
-    }
 
-    const handleVoteClick = async (candidateid: string, candidateName) => {
-      const isAllowed = () => {
-        // fetch backend
+    const handleVoteClick = async (candidateid: string, candidateName:string) => {
+      // console.log("voteclick fn")
+      // console.log("hasvoted=", voter.hasvoted)
+     
 
-        // allow -> set(false)
-        //setShowCountdown()
-
-
-      }
-
-        if (showCountdown) {
-          return setShowCountdown(true)
-        } else {
-          setShowCountdown(false)
-        }
         if (!voter) return <Loading/>;
 
-        if (voter.hasvoted) return <Modal voter={voter} hasvoted={voter.hasvoted} />; // already voted model
+        if(voter.hasvoted) return setShowVotedModal(true)
 
-        try {
-            const res = await axios.post(
-                `${import.meta.env.VITE_SERVER}/vote/postVote`,
-                {
-                voterid: voter.id,
-                candidateid,
-                },
-                { withCredentials: true }
-            );
-            if (res.status === 200) {
-                setVoter(prev => ({ ...prev!, hasvoted: true }));
-            }
+        // if (voter.hasvoted) return <Modal voter={voter} setShowVotedModal={setShowVotedModal}  />; // already voted model
 
-        } catch (error: any) {
-            console.error("error from handleVoteClick catch block=",error);
-        }
+        // if(showCountdown) {
+        //   setShowCountdown(true)
+        // }
+        setCandidateid(candidateid);
         setCandidateName(candidateName);
+        setShowConfirmModal(true);
+        
+
+        // try {
+        //   console.log("try block")
+        //     const res = await axios.post(
+        //         `${import.meta.env.VITE_SERVER}/vote/postVote`,
+        //         {
+        //         voterid: voter.id,
+        //         candidateid,
+        //         },
+        //         { withCredentials: true }
+        //     );
+        //     if (res.status === 200) {
+        //         setVoter(prev => ({ ...prev!, hasvoted: true }));
+        //     }
+
+        // } catch (error: any) {
+        //     console.error("error from handleVoteClick catch block=",error);
+        // }
+        // setCandidateName(candidateName);
+        // setShowVotedModal(true)
+        
          
     };
 
@@ -192,7 +193,7 @@ const CandidateCarousel = ({candidates, voter, showCountdown, setVoter, setShowM
             }}
           >
             {candidates.map((candidate) =>{
-              console.log(candidate.students.rollnum)
+              // console.log(candidate.students.rollnum)
               return(
                 <div 
                   key={candidate.id}
@@ -208,7 +209,7 @@ const CandidateCarousel = ({candidates, voter, showCountdown, setVoter, setShowM
                           {candidate.department}
                         </span> */}
                         <img
-                          src={"../assets/STILLNESS.png"}
+                          src={candidate.imagepath}
                           alt={"name"}
                           className="w-full h-50 object-cover"
                         />
@@ -219,7 +220,7 @@ const CandidateCarousel = ({candidates, voter, showCountdown, setVoter, setShowM
                       </h3>
                       
                       <p className="text-gray-600 mb-6 leading-relaxed">
-                        {candidate.students.description}
+                        {candidate.description}
                       </p>
                       
                       <div className="flex items-center justify-between">
@@ -228,7 +229,7 @@ const CandidateCarousel = ({candidates, voter, showCountdown, setVoter, setShowM
                           {/* {console.log(candidate.rollnum)} */}
                         </span>
                         <button
-                          onClick={() => handleVoteClick(candidate.id)}
+                          onClick={() => handleVoteClick(candidate.id, candidate.students.name)}
                           className="bg-gradient-to-r from-purple-600 to-indigo-600 
                                   text-white px-5 py-2.5 rounded-lg font-medium
                                   hover:from-purple-700 hover:to-indigo-700 

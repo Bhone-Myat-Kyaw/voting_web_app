@@ -1,8 +1,9 @@
 import {motion} from "framer-motion";
 import { Element } from "react-scroll";
 import Card from "../../../Components/Utils/Card";
-import { SelectedPage } from "../../../Components/Texts/pages";
-import SectionTitle from "../../../Components/Texts/SectionTitle";import { useMediaQuery } from "../../../helpers/useMediaQuery";
+import { SelectedPage } from "../../../Shared/Types";
+import { SectionTitle } from "../../../Components/UserComponents";
+import { useMediaQuery } from "../../../helpers/useMediaQuery";
 import { containerVariants, childVariants } from "../../../Shared/framerVariants";
 import { schoolHistory } from "./HistoryData";
 
@@ -37,9 +38,9 @@ const History = ({setSelectedPage}: Props) => {
           whileInView="visible"
           viewport={{once: true, amount: 0.2}}
           >
-            {isAboveMediumScreen && (
+            {/* {isAboveMediumScreen && (
               <div className="col-start-2 w-px bg-gray-[300] rounded-full"></div>
-            )}
+            )} */}
             
 
             {schoolHistory.map((card, index) => {
@@ -60,12 +61,13 @@ const History = ({setSelectedPage}: Props) => {
                 className={`${isAboveMediumScreen? desktopScreen: smToMdScreen}`}
                 variants={childVariants}
                 >
-                  {!isLast ? (
-                    <Card year={card.year} title={card.title} about={card.about}/>
-                  ) : (
+                  {isLast && isAboveMediumScreen ? (
                     <div className="absolute left-1/2 -translate-x-1/2 ">
                       <Card year={card.year} title={card.title} about={card.about}/>
                     </div>
+                    
+                  ) : (
+                    <Card year={card.year} title={card.title} about={card.about}/>
                   ) }
 
                   {isLast && <div className="h-[250px]"></div>}

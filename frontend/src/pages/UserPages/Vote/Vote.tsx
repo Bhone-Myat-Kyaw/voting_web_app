@@ -1,26 +1,24 @@
-import { useLocation } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 // import {voters} from "../../Components/Texts/voterInfo";
 import Container from "../../../Shared/Container";
 // import {Button, Carousel} from "flowbite-react"
 import CandidateCarousel from "../../../Components/Utils/CandidateCarousel";
 // import CandidateCarousel from "../../Components/Utils/CandidateCarousel1";
 // import { candidates } from "../../../Components/Texts/candidatesInfo";
-import { candidates, type Candidate, type SelectedCandidate } from "../../../Components/Texts/candidatesInfo";
-import type { Voter } from "../../../Components/Texts/voterInfo";
+import type {  SelectedCandidate } from "../../../Shared/Types";
+import type { Voter } from "../../../Shared/Types";
 import { useEffect, useState } from "react";
 import Modal from "../../../Components/Utils/Modal/Modal";
-import type { Variants } from "framer-motion";
 import {motion} from "framer-motion"
-import { getWithExpiry } from "../../../helpers/storage"; 
-import { useAuthContext } from "../../../Shared/Context/AuthConstant";
 import ConfirmationModal from "../../../Components/Utils/Modal/ConfirmationModal";
 import { isLightMode } from "../../../helpers/checkTheme";
 import { containerVariants, childVariants } from "../../../Shared/framerVariants";
 import { useUser } from "../../../hooks/useUser";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import Loading from "../../../Components/Utils/Loading";
 import CountDownModal from "../../../Components/Utils/Modal/CountDownModal";
+import { ArrowRightEndOnRectangleIcon } from "@heroicons/react/24/solid";
 
 // type Props = {
 //     admissionID: string;
@@ -31,7 +29,9 @@ import CountDownModal from "../../../Components/Utils/Modal/CountDownModal";
 const Vote = () => {
     // fetching voterData;
      const { data: voterData, isLoading: voterIsLoading } = useUser();
-     console.log("voterData=",voterData);
+      const queryClient = useQueryClient();
+      const navigate = useNavigate();
+    //  console.log("voterData=",voterData);
     
 
     // fetching candidates data
@@ -45,13 +45,17 @@ const Vote = () => {
     });
     
 
-    console.log("candidates=",candidates);
+    // console.log("candidates=",candidates);
 
     // useStates
     const [voter, setVoter] = useState<Voter | null>(null);
-    const [showModal, setShowModal] = useState(false)
+    // const [showModal, setShowModal] = useState(false)
     const [showCountdown, setShowCountdown] = useState<boolean>(false)
     const [candidateName, setCandidateName] = useState<string|null>(null)
+    const [showVotedModal, setShowVotedModal] = useState<boolean>(false)
+    const [showConfirmModal, setShowConfirmModal] = useState<boolean>(false)
+    const [candidateid, setCandidateid] = useState<string| null>(null)
+
 
 
 
@@ -59,38 +63,21 @@ const Vote = () => {
         if (voterData) setVoter(voterData);
     }, [voterData]);
 
-    // const voterLoacl = getWithExpiry("voter")
+    async function logoutFunction() {
+        console.log("logout fn")
+        queryClient.clear();
 
+        try {
+        const res = await axios.post(`${import.meta.env.VITE_SERVER}/auth/logout`, {}, { withCredentials: true });
 
+        if (res.status == 200) {
+            navigate('/');
+        }
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
-
-
-
-
-    // const handleVoteClick = async (candidateid: string) => {
-    //     if (showCountdown) return <CountDownModal setShowCountdown={setShowCountdown} />
-    //     if (!voter) return alert("User not loaded yet");
-
-    //     if (voter.hasvoted) return alert("You already voted!"); // already voted model
-
-    //     try {
-    //         const res = await axios.post(
-    //             `${import.meta.env.VITE_SERVER}/vote/postVote`,
-    //             {
-    //             voterid: voter.id,
-    //             candidateid,
-    //             },
-    //             { withCredentials: true }
-    //         );
-    //         if (res.status === 200) {
-    //             setVoter(prev => ({ ...prev!, hasvoted: true }));
-    //         }
-
-    //     } catch (error: any) {
-    //         console.error("error from handleVoteClick catch block=",error);
-    //     }
-    //         setShowModal(true) 
-    // };
 
     if (isLoading) {
         return <Loading/>
@@ -120,10 +107,11 @@ const Vote = () => {
     // custom styles
     const containerBackground = `${isLightMode? "bg-cwhite":"bg-dark-bg-base"}`;
     const darkTitle = "text-dark-text-primary";
-    const darkTextSecondary = "text-dark-text-secondary"; 
+    const darkTextSecondary = "text-dark-text-secondary";
+    console.log("voter=",voter) 
     
     // if voter null -> show error page.
-    return ( !voter?.hasvoted ?
+    return ( 
     <motion.div className={`w-full h-screen ${containerBackground} py-10 `} 
     variants={containerVariants}
     initial="hidden"
@@ -132,12 +120,19 @@ const Vote = () => {
     >
         <Container>
             {/* title */}
-            <motion.div className="mb-3 " 
+            <motion.div className="mb-3 flex items-center justify-between " 
             variants={childVariants}
             >
-                <h1 className={`text-h1-lg font-heading-bold
-                mb-2 ${isLightMode? "": darkTitle}`}>{`${voter?.gender == 'male'? "Queen": "King" }`} Selection 2025</h1>
-                <h2 className={`${isLightMode? "": darkTextSecondary}`}>Cast your vote for 13th batch queen</h2>
+                <div>
+                    <h1 className={`text-h1-lg font-heading-bold
+                    mb-2 ${isLightMode? "": darkTitle}`}>{`${voter?.gender == 'male'? "Queen": "King" }`} Selection 2025</h1>
+                    <h2 className={`${isLightMode? "": darkTextSecondary}`}>Cast your vote for 13th batch queen</h2>
+                </div>
+                
+                <button className={`${isLightMode? "shadow-2xl bg-clight-gray hover:bg-gray-50 ": `bg-dark-bg-surface-2`} p-2 cursor-pointer rounded-lg  border border-gray-200 transition-colors shadow-sm flex items-center gap-1 p-3`}>
+                    <span className={`${isLightMode? "text-cdark-gray": darkTitle }`}>Logout</span>
+                    <ArrowRightEndOnRectangleIcon className={`size-6 sm:size-7 ${isLightMode? "text-cdark-gray": darkTitle} `} onClick={logoutFunction}/>
+                </button>
             </motion.div>
             {/* carousel */}
             <motion.div className="h-[400px] sm:h-[500px] lg:h-[600px] mx-auto"
@@ -146,22 +141,42 @@ const Vote = () => {
                 
                 <CandidateCarousel candidates={voter.gender==="male"? femaleCandidates: maleCandidates  } 
                 voter={voter}
-                showCountdown={showCountdown}
-                setShowCountdown={setShowCountdown}
-                setVoter={setVoter}
-                setShowModal={setShowModal}
+                
+                
+                
+                
                 setCandidateName={setCandidateName}
+                setShowVotedModal={setShowVotedModal}
+               
+                
+                setShowConfirmModal={setShowConfirmModal}
+                setCandidateid={setCandidateid}
                 />
             </motion.div>
 
 
         </Container>
 
-        <ConfirmationModal isOpen={showModal} setShowModal={setShowModal} candidateName={candidateName} />
-        <CountDownModal setShowCountdown= {setShowCountdown} />
+        {showConfirmModal && (
+            <ConfirmationModal 
+                isOpen={showConfirmModal} 
+                setShowModal={setShowConfirmModal} 
+                candidateName={candidateName} 
+                setShowVotedModal={setShowVotedModal}
+                candidateid={candidateid}
+                voter={voter}
+                setVoter={setVoter}
+                setShowCountdown={setShowCountdown}
+                />
+            )}
+        
+        {showCountdown && (<CountDownModal setShowCountdown= {setShowCountdown} />)}
+        
+        {showVotedModal && (<Modal voter={voter} setShowVotedModal={setShowVotedModal} />)}
         
         
-    </motion.div> : <Modal voter={voter} hasvoted={voter.hasvoted} />
+        
+    </motion.div> 
   )
 }
 

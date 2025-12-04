@@ -2,16 +2,15 @@ const bcrypt = require("bcrypt");
 const supabase = require("../config/supabase");
 const jwt = require("jsonwebtoken");
 const getUserData = require("../utils/getUserData");
+const { signAccessToken, signRefreshToken } = require("../utils/signToken");
 
-// Register student
 async function login(req, res) {
   try {
     const { admissionid, password } = req.body;
-    console.log("Hellow");
-    // Fetch student
+
     const { data, error } = await supabase
       .from("students")
-      .select("name, gender, admissionid, passwordhash, role")
+      .select("passwordhash, role, id")
       .eq("admissionid", admissionid);
 
     if (error) return res.status(400).json({ error: error.message });
@@ -22,53 +21,35 @@ async function login(req, res) {
 
     const student = data[0];
 
-    // Compare passwords
-    const isMatch = await bcrypt.compare(
-      String(password),
-      student.passwordhash
-    );
+    const isMatch = await bcrypt.compare(String(password), student.passwordhash);
     if (!isMatch) {
       return res.status(400).json({ error: "Wrong Password" });
     }
 
-    // JWT payload should identify the user
-    const accessToken = jwt.sign(
-      { admissionid: student.admissionid, role: student.role },
-      process.env.JWT_SECRET_KEY,
-      { expiresIn: "15m" }
-    );
+    // if anything goes wrong, this is the problem
+    const accessToken = signAccessToken({ id: student.id, role: student.role });
+    const refreshToken = signRefreshToken({ id: student.id, role: student.role });
 
-    const refreshToken = jwt.sign(
-      { admissionid: student.admissionid, role: student.role },
-      process.env.JWT_SECRET_KEY,
-      { expiresIn: "7d" }
-    );
-
-    // Set cookie
     return res
       .cookie("access_token", accessToken, {
         httpOnly: true,
         secure: false,
         sameSite: "lax",
         path: "/",
-        maxAge: 15 * 60 * 1000,
+        maxAge: 15 * 60 * 1000
       })
       .cookie("refresh_token", refreshToken, {
         httpOnly: true,
         secure: false,
         sameSite: "lax",
         path: "/",
-        maxAge: 7 * 24 * 60 * 60 * 1000,
+        maxAge: 7 * 24 * 60 * 60 * 1000
       })
       .json({
         message: "Login successful",
-        student: {
-          name: student.name,
-          gender: student.gender,
-          admissionid: student.admissionid,
-        },
-        redirectUrl: student.role == "student" ? "/vote" : "/admin",
+        redirectUrl: student.role == 'student' ? '/vote' : '/admin'
       });
+
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
@@ -76,20 +57,11 @@ async function login(req, res) {
 
 async function logout(req, res) {
   try {
-    return res
-      .clearCookie("access_token", {
-        httpOnly: true,
-        secure: true,
-        sameSite: "none",
-      })
-      .clearCookie("refresh_token", {
-        httpOnly: true,
-        secure: true,
-        sameSite: "none",
-      })
-      .status(200)
-      .json({ message: "Logged out successfully" });
-  } catch (error) {
+    return res.clearCookie("access_token", { httpOnly: true, secure: true, sameSite: "none" })
+              .clearCookie("refresh_token", { httpOnly: true, secure: true, sameSite: "none" })
+              .status(200)
+              .json({ message: "Logged out successfully" });
+  } catch(error) {
     return res.status(500).json({ error: error.message });
   }
 }
@@ -106,48 +78,37 @@ async function checkToken(req, res) {
       }
 
       try {
-        const refreshPayload = jwt.verify(
-          refreshToken,
-          process.env.JWT_SECRET_KEY
-        );
+        const refreshPayload = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
 
-        const newAccessToken = jwt.sign(
-          {
-            admissionid: refreshPayload.admissionid,
-            role: refreshPayload.role,
-          },
-          process.env.JWT_SECRET_KEY,
-          { expiresIn: "15m" }
-        );
+        // if anything goes wrong, this is the problem
+        const newAccessToken = signAccessToken({ id: refreshPayload.id, role: refreshPayload.role });
 
         res.cookie("access_token", newAccessToken, {
           httpOnly: true,
           secure: false,
           sameSite: "lax",
           path: "/",
-          maxAge: 15 * 60 * 1000,
+          maxAge: 15 * 60 * 1000
         });
 
-        const payload = await getUserData(refreshPayload.admissionid);
+        const payload = await getUserData(refreshPayload.id);
 
-        return res
-          .status(200)
-          .json({ message: "New access token issued", payload });
+        return res.status(200).json({ message: "New access token issued", payload });
       } catch (err) {
-        return res
-          .status(401)
-          .json({ error: "Refresh token expired, login again" });
+        return res.status(401).json({ error: "Refresh token expired, login again" });
       }
     }
 
     // 2. Access token exists
-    const accessPayload = jwt.verify(accessToken, process.env.JWT_SECRET_KEY);
-    const payload = await getUserData(accessPayload.admissionid);
+    const accessPayload = jwt.verify(accessToken, process.env.JWT_ACCESS_SECRET);
+    const payload = await getUserData(accessPayload.id);
 
     return res.status(200).json({ message: "success", payload });
   } catch (err) {
     return res.status(401).json({ error: "Token invalid or expired" });
   }
 }
+
+
 
 module.exports = { login, logout, checkToken };

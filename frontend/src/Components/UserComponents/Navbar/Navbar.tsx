@@ -1,14 +1,16 @@
 import { useNavigate } from "react-router-dom";
 import logo from "/src/assets/logo.png"
-import { useMediaQuery } from "../../helpers/useMediaQuery";
+import { useMediaQuery } from "../../../helpers/useMediaQuery";
 import { Bars3Icon, XMarkIcon, MoonIcon, SunIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
-import { SelectedPage } from "../Texts/pages";
+import { SelectedPage } from "../../../Shared/Types";
 import CustomLink from "./CustomLink";
 import {motion} from "framer-motion"
 import { voters, type Voter } from "../Texts/voterInfo";
-import { useTheme } from "../../helpers/useTheme";
-import { isLightMode } from "../../helpers/checkTheme";
+import { useTheme } from "../../../helpers/useTheme";
+import { isLightMode } from "../../../helpers/checkTheme";
+// import { useQueryClient } from "@tanstack/react-query";
+
 
 type Props = {
   selectedPage: SelectedPage;
@@ -19,6 +21,7 @@ export default function Navbar({selectedPage, setSelectedPage}:Props) {
   // hooks
   const navigate = useNavigate();
   const {theme, toggleTheme} = useTheme()
+  // const queryClient = useQueryClient()
 
   // media queries
   const isAboveMediumScreen = useMediaQuery("(min-width: 1024px)");
@@ -64,6 +67,23 @@ export default function Navbar({selectedPage, setSelectedPage}:Props) {
 
   const darkTextPrimary = "text-dark-text-primary";
 
+  // const location = useLocation();
+  // const data = location.state;
+  
+    // async function logoutFunction() {
+    //   queryClient.clear();
+
+    //   try {
+    //     const res = await axios.post(`${import.meta.env.VITE_SERVER}/auth/logout`, {}, { withCredentials: true });
+
+    //     if (res.status == 200) {
+    //       navigate('/');
+    //     }
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // }
+
 
   return (
     <nav>
@@ -90,6 +110,7 @@ export default function Navbar({selectedPage, setSelectedPage}:Props) {
                 <CustomLink page="Memorable Moments" selectedPage={selectedPage} setSelectedPage={setSelectedPage} />
               </li>
             </ul>
+            
             <motion.button
               className={`${buttonStyle} `}
               onClick={handleLogin}

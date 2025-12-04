@@ -2,7 +2,18 @@ import { useEffect, useState } from "react";
 
 export function useTheme() {
   // Load initial theme from localStorage or system preference
-  const [theme, setTheme] = useState<"light" | "dark">(() => {
+  // const [theme, setTheme] = useState<"light" | "dark">(() => {
+  //   const stored = localStorage.getItem("theme") as "light" | "dark" | null;
+
+  //   if (stored === "light" || stored === "dark") {
+  //     return stored;
+  //   }
+
+  //   const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  //   return prefersDark ? "dark" : "light";
+  // });
+
+    const [theme, setTheme] = useState<"light" | "dark">(() => {
     const stored = localStorage.getItem("theme") as "light" | "dark" | null;
 
     if (stored === "light" || stored === "dark") {
@@ -33,7 +44,8 @@ export function useTheme() {
     html.classList.add(nextTheme);
 
     // Save
-    localStorage.setItem("theme", nextTheme);
+    setTheme(nextTheme)
+    localStorage.setItem("theme", theme);
 
     // Force full app reload without re-triggering toggle
     window.location.replace(window.location.pathname);

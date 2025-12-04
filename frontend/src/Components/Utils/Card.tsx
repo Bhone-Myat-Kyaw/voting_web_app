@@ -15,7 +15,7 @@ const Card = ({ year, title, about }: Props) => {
   const cardStyle = isLightMode ? lightCardStyle: darkCardStyle;  
   const textPrimary = isLightMode? "text-cextra-dark-gray" : darkTextPrimary;
   return (
-    <div className={`${cardStyle} p-8 w-[450px] rounded-lg  shadow-normal my-3`} >
+    <div className={`${cardStyle} p-8 w-[80%] mx-auto self-center sm:w-[450px] rounded-lg  shadow-normal my-3`} >
       <h2 className="text-primary text-body-sm font-heading-bold">{year}</h2>
       <h1 className={`${textPrimary} text-section font-heading-bold`}  >
         {title}

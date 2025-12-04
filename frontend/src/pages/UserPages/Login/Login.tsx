@@ -1,20 +1,17 @@
 import { useNavigate } from "react-router-dom";
-import { voters } from "../../../Components/Texts/voterInfo";
-import type { Voter } from "../../../Components/Texts/voterInfo";
+// import type { Voter } from "../../../Shared/Types";
 import React, { useRef, useState } from "react";
-import type { Variants } from "framer-motion";
 import {motion} from "framer-motion"
-import { useAuthContext } from "../../../Shared/Context/AuthConstant";
 import { isLightMode } from "../../../helpers/checkTheme";
 import { containerVariants, childVariants } from "../../../Shared/framerVariants";
 import { EyeIcon, EyeSlashIcon, ExclamationCircleIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
 
-interface FormError {
-  general?: string;
-  admissionID?: string;
-  password?: string;
-}
+// interface FormError {
+//   general?: string;
+//   admissionID?: string;
+//   password?: string;
+// }
 
 const Login = () => {
   const navigate = useNavigate();
@@ -27,7 +24,7 @@ const Login = () => {
 
 
   // common styles 
-  const darkField = "";
+  // const darkField = "";
   const focusField = "transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent";
     // custom styles
   const background = isLightMode? "bg-cwhite":"bg-dark-bg-base";
@@ -38,7 +35,7 @@ const Login = () => {
   // const darkInputFocus = "focus-within:bg-dark-input-bg focus-within:border-dark-input-border"
 
   // getting data from authContext
-  const {login} = useAuthContext();
+  // const {login} = useAuthContext();
 
 
   // TODO: error - have to reload for login form to appears
@@ -46,11 +43,10 @@ const Login = () => {
 
 
 // type InputEvent = React.ChangeEvent<HTMLInputElement>;
-  type FormEvent = React.FormEvent<HTMLFormElement>;
+  // type FormEvent = React.FormEvent<HTMLFormElement>;
 
   const formRef = useRef<HTMLFormElement>(null);
-  const admissionRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
+
   
   
 
@@ -65,6 +61,7 @@ const Login = () => {
     const id = admissionid.split('/');
     if (id.length == 2 && !Number.isNaN(id[0]) && id[0].length == 2 && !Number.isNaN(id[1]) && id[1].length == 5) {
       try {
+        console.log("Trying post method")
         const response = await axios.post(
           `${import.meta.env.VITE_SERVER}/auth/login`,
           { admissionid, password },
@@ -89,14 +86,7 @@ const Login = () => {
       setIsLoading(false);
       setError("Please enter valid admission id.");
     }
-  }
-
-
-
-
-
-
-  
+  }  
 
   return (
     <motion.section className={`w-full h-screen ${background}  flex items-center justify-center  text-center`}
