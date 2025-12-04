@@ -10,11 +10,10 @@ const middleware = require("./middleware/middleware");
 const checkRole = require("./middleware/checkRole");
 const checkIsVotingOpen = require("./middleware/checkIsVotingOpen");
 
-
 app.use(
   cors({
-    origin: "http://localhost:5173", // React app URL
-    credentials: true,               // allows sending cookies
+    origin: "https://ceit-welcome-2025-ytu.netlify.app", // React app URL
+    credentials: true, // allows sending cookies
   })
 );
 app.use(express.json());
