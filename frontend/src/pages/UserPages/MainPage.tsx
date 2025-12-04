@@ -6,7 +6,7 @@ import { SelectedPage } from "../../Shared/Types";
 import OnBoardingModal from "../../Components/Utils/Modal/OnboardingModal";
 import { isLightMode } from "../../helpers/checkTheme";
 import Footer from "../../Components/UserComponents/Footer/Footer";
-import { useMediaQuery } from "../../helpers/useMediaQuery";
+// import { useMediaQuery } from "../../helpers/useMediaQuery";
 
 const MainPage = () => {
     const [selectedPage, setSelectedPage] = useState<SelectedPage>(SelectedPage.Home)
