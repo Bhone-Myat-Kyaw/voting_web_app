@@ -25,7 +25,7 @@ app.get("/health", (req, res) => {
 // );
 const corsOptions = {
   origin: function (origin, callback) {
-    // Allow requests with no origin (like health checks, curl, postman)
+    // Allow requests with no origin (like health checks, curl, postman, iOS Safari sometimes)
     if (!origin) return callback(null, true);
 
     const allowedOrigins = [
@@ -36,11 +36,63 @@ const corsOptions = {
     if (allowedOrigins.includes(origin)) {
       return callback(null, true);
     } else {
+      // iOS Safari sometimes sends different origin formats
+      if (
+        origin.includes("netlify.app") &&
+        process.env.NODE_ENV === "production"
+      ) {
+        return callback(null, true);
+      }
+      console.log("CORS blocked origin:", origin);
       return callback(new Error("Not allowed by CORS"), false);
     }
   },
   credentials: true,
+  // ADD THESE FOR IOS SAFARI:
+  allowedHeaders: [
+    "Content-Type",
+    "Authorization",
+    "Accept",
+    "Origin",
+    "X-Requested-With",
+  ],
+  exposedHeaders: ["Set-Cookie", "Date", "ETag"],
+  maxAge: 86400, // 24 hours - iOS needs this for preflight cache
+  optionsSuccessStatus: 204, // Some iOS clients prefer 204 instead of 200
 };
+
+// ADD THIS MIDDLEWARE FOR IOS SAFARI SPECIFIC HEADERS
+app.use((req, res, next) => {
+  const userAgent = req.headers["user-agent"] || "";
+  const isIOS = /iPhone|iPad|iPod/i.test(userAgent);
+  const isSafari =
+    userAgent.includes("Safari") && !userAgent.includes("Chrome");
+
+  if (isIOS && isSafari) {
+    console.log("iOS Safari detected, adding extra headers");
+
+    // iOS Safari needs these explicit headers
+    res.setHeader("Cross-Origin-Embedder-Policy", "credentialless");
+    res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+    res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+
+    // Prevent iOS from aggressively caching
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.setHeader("Pragma", "no-cache");
+    res.setHeader("Expires", "0");
+
+    // For Set-Cookie to work on iOS
+    res.setHeader("Access-Control-Expose-Headers", "Set-Cookie");
+  }
+
+  // Handle preflight (OPTIONS) requests explicitly
+  if (req.method === "OPTIONS") {
+    console.log("Preflight request from:", userAgent);
+    return res.status(200).end();
+  }
+
+  next();
+});
 
 app.use(cors(corsOptions));
 
