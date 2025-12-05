@@ -62,37 +62,37 @@ const corsOptions = {
 };
 
 // ADD THIS MIDDLEWARE FOR IOS SAFARI SPECIFIC HEADERS
-app.use((req, res, next) => {
-  const userAgent = req.headers["user-agent"] || "";
-  const isIOS = /iPhone|iPad|iPod/i.test(userAgent);
-  const isSafari =
-    userAgent.includes("Safari") && !userAgent.includes("Chrome");
+// app.use((req, res, next) => {
+//   const userAgent = req.headers["user-agent"] || "";
+//   const isIOS = /iPhone|iPad|iPod/i.test(userAgent);
+//   const isSafari =
+//     userAgent.includes("Safari") && !userAgent.includes("Chrome");
 
-  if (isIOS && isSafari) {
-    console.log("iOS Safari detected, adding extra headers");
+//   if (isIOS && isSafari) {
+//     console.log("iOS Safari detected, adding extra headers");
 
-    // iOS Safari needs these explicit headers
-    res.setHeader("Cross-Origin-Embedder-Policy", "credentialless");
-    res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
-    res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+//     // iOS Safari needs these explicit headers
+//     res.setHeader("Cross-Origin-Embedder-Policy", "credentialless");
+//     res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+//     res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
 
-    // Prevent iOS from aggressively caching
-    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-    res.setHeader("Pragma", "no-cache");
-    res.setHeader("Expires", "0");
+//     // Prevent iOS from aggressively caching
+//     res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+//     res.setHeader("Pragma", "no-cache");
+//     res.setHeader("Expires", "0");
 
-    // For Set-Cookie to work on iOS
-    res.setHeader("Access-Control-Expose-Headers", "Set-Cookie");
-  }
+//     // For Set-Cookie to work on iOS
+//     res.setHeader("Access-Control-Expose-Headers", "Set-Cookie");
+//   }
 
-  // Handle preflight (OPTIONS) requests explicitly
-  if (req.method === "OPTIONS") {
-    console.log("Preflight request from:", userAgent);
-    return res.status(200).end();
-  }
+//   // Handle preflight (OPTIONS) requests explicitly
+//   if (req.method === "OPTIONS") {
+//     console.log("Preflight request from:", userAgent);
+//     return res.status(200).end();
+//   }
 
-  next();
-});
+//   next();
+// });
 
 app.use(cors(corsOptions));
 
