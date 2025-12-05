@@ -3,7 +3,8 @@ const { signAccessToken } = require("../utils/signToken");
 
 async function middleware(req, res, next) {
   const accessToken = req.cookies.access_token;
-  const refreshToken  = req.cookies.refresh_token;
+  const refreshToken = req.cookies.refresh_token;
+  const isProduction = process.env.NODE_ENV === "production";
 
   try {
     const payload = jwt.verify(accessToken, process.env.JWT_ACCESS_SECRET);
@@ -14,22 +15,31 @@ async function middleware(req, res, next) {
     console.log(error.name);
     if (error.name === "TokenExpiredError" && refreshToken) {
       try {
-        const payload = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
+        const payload = jwt.verify(
+          refreshToken,
+          process.env.JWT_REFRESH_SECRET
+        );
 
-        const newAccessToken  = signAccessToken({ id: payload.id, role: payload.role });
+        const newAccessToken = signAccessToken({
+          id: payload.id,
+          role: payload.role,
+        });
 
-        res.cookies("access_token", newAccessToken, {
+        res.cookie("access_token", newAccessToken, {
           httpOnly: true,
-          secure: false,
-          sameSite: "lax",
+          secure: isProduction,
+          sameSite: isProduction ? "none" : "lax",
           path: "/",
-          maxAge: 15 * 60 * 1000
+          maxAge: 15 * 60 * 1000,
         });
 
         req.user = payload;
         return next();
       } catch {
-        return res.status(401).json({ error: "Refresh token expired, login again", redirectUrl: "/login" });
+        return res.status(401).json({
+          error: "Refresh token expired, login again",
+          redirectUrl: "/login",
+        });
       }
     } else {
       return res.status(400).json({ message: "Invalid token" });
