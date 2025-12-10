@@ -15,7 +15,7 @@ export default function AdminLayout() {
     queryClient.clear();
 
     try {
-      const res = await axios.post(`api/auth/logout`, {}, { withCredentials: true });
+      const res = await axios.post(`/api/auth/logout`, {}, { withCredentials: true });
 
       if (res.status == 200) {
         navigate('/');
