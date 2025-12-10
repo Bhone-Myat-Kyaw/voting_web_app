@@ -38,7 +38,7 @@ const Vote = () => {
     const { data: candidates, isLoading } = useQuery({
         queryKey: ['candidates'],
         queryFn: async () => {
-        const res = await axios.get(`${import.meta.env.VITE_SERVER}/vote/selectCandidates`, { withCredentials: true });
+        const res = await axios.get(`${import.meta.env.VITE_SERVER}/api/vote/selectCandidates`, { withCredentials: true });
         return res.data.data;
         },
         staleTime: Infinity
@@ -68,7 +68,7 @@ const Vote = () => {
         queryClient.clear();
 
         try {
-        const res = await axios.post(`${import.meta.env.VITE_SERVER}/auth/logout`, {}, { withCredentials: true });
+        const res = await axios.post(`${import.meta.env.VITE_SERVER}/api/auth/logout`, {}, { withCredentials: true });
 
         if (res.status == 200) {
             navigate('/');

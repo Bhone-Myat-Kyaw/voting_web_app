@@ -61,7 +61,7 @@ const Login = () => {
       try {
         console.log("Trying post method")
         const response = await axios.post(
-          `${import.meta.env.VITE_SERVER}/auth/login`,
+          `${import.meta.env.VITE_SERVER}/api/auth/login`,
           { admissionid, password },
           { withCredentials: true }
         );
