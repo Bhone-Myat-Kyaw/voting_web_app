@@ -10,7 +10,7 @@ export default function VotingToggleWithConfirm() {
 
   useEffect(() => {
     async function fetchFunction() {
-      const res = await axios.get(`${import.meta.env}/admin/getVotingStatus`, { withCredentials: true });
+      const res = await axios.get(`/api/admin/getVotingStatus`, { withCredentials: true });
       setIsVotingOpen(res.data.isVotingOpen);
     }
 
@@ -25,7 +25,7 @@ export default function VotingToggleWithConfirm() {
   const confirmChange = async () => {
     try {
       await axios.post(
-        `${import.meta.env.VITE_SERVER}/admin/setVotingStatus`,
+        `/api/admin/setVotingStatus`,
         { status: !isVotingOpen },
         { withCredentials: true }
       );
