@@ -90,7 +90,7 @@ const Vote = () => {
     if (!voter) return <Loading/>
     // TODO: alter database hasvoted value
 
-    let maleCandidates: SelectedCandidate[] = [], femaleCandidates: SelectedCandidate[] = [];
+    const maleCandidates: SelectedCandidate[] = [], femaleCandidates: SelectedCandidate[] = [];
     let maleCandidatesCount = 0, femaleCandidatesCount = 0;
   
     candidates.forEach((candidate: any) => {
@@ -123,15 +123,17 @@ const Vote = () => {
             <motion.div className="mb-3 flex items-center justify-between " 
             variants={childVariants}
             >
-                <div>
+                <div className="md:container">
                     <h1 className={`text-h1-lg font-heading-bold
                     mb-2 ${isLightMode? "": darkTitle}`}>{`${voter?.gender == 'male'? "Queen": "King" }`} Selection 2025</h1>
                     <h2 className={`${isLightMode? "": darkTextSecondary}`}>Cast your vote for 13th batch queen</h2>
                 </div>
                 
-                <button className={`${isLightMode? "shadow-2xl bg-clight-gray hover:bg-gray-50 ": `bg-dark-bg-surface-2`} p-2 cursor-pointer rounded-lg  border border-gray-200 transition-colors shadow-sm flex items-center gap-1 p-3`}>
+                <button className={`${isLightMode? "shadow-2xl bg-clight-gray hover:bg-gray-50 ": `bg-dark-bg-surface-2`} p-2 cursor-pointer rounded-lg  border border-gray-200 transition-colors shadow-sm flex items-center gap-1 p-3`}
+                onClick={logoutFunction}
+                >
                     <span className={`${isLightMode? "text-cdark-gray": darkTitle }`}>Logout</span>
-                    <ArrowRightEndOnRectangleIcon className={`size-6 sm:size-7 ${isLightMode? "text-cdark-gray": darkTitle} `} onClick={logoutFunction}/>
+                    <ArrowRightEndOnRectangleIcon className={`size-6 sm:size-7 ${isLightMode? "text-cdark-gray": darkTitle} `} />
                 </button>
             </motion.div>
             {/* carousel */}

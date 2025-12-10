@@ -17,7 +17,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [admissionid, setAdmissionid] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [showPassword, setShowPassword] = useState<boolean>(true);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -44,8 +44,6 @@ const Login = () => {
 
 // type InputEvent = React.ChangeEvent<HTMLInputElement>;
   // type FormEvent = React.FormEvent<HTMLFormElement>;
-
-  const formRef = useRef<HTMLFormElement>(null);
 
   
   
@@ -101,7 +99,7 @@ const Login = () => {
       >
         <motion.h2 className={`text-h1-lg font-heading-bold mt-3 ${title} `}
         >Login</motion.h2>
-        <motion.form ref={formRef} onSubmit={submitFunction} 
+        <form onSubmit={submitFunction} 
         autoComplete="off"
         className={`space-y-5 w-[95%] m-auto ${title}`}
         >
@@ -140,7 +138,9 @@ const Login = () => {
                type={`${showPassword? "text": "password"}`} 
                required 
                placeholder="Enter your password" 
-               className={`border rounded-3xl p-3 w-full ${isLightMode? "":darkInputField} ${focusField}`}
+               className={`border rounded-3xl p-3 w-full ${isLightMode? "":darkInputField} ${
+                  error ? 'border-red-500 shake' : 'border-gray-300'
+                } ${focusField}`}
                disabled={isLoading}
               />
               <button
@@ -182,7 +182,7 @@ const Login = () => {
            
           </button>
           
-        </motion.form>
+        </form>
       </motion.div>
     </motion.section>
   );

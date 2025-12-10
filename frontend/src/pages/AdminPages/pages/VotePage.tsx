@@ -2,7 +2,6 @@ import axios from "axios";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import Candidates from "../../../Components/AdminComponents/Candidates";
 import VotingToggleWithConfirm from "../../../Components/AdminComponents/votingToggle";
-
 function VotesPage() {
   const { data: candidates, isLoading: candidateIsLoading } = useQuery({
     queryKey: ["candidates"],
