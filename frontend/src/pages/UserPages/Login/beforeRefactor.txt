@@ -1,0 +1,33 @@
+// checking user
+
+ if(foundVoter.length == 0) {
+       setErrorMsg({admissionID: "User Not Found. Check your admission ID."})
+       return;
+    };
+
+
+// checking password
+if (foundVoter[0].password != userPassword) {
+      setErrorMsg({password: "Incorrect Password."})
+      return
+    }
+
+// storing in local storage
+      localStorage.setItem("voter",JSON.stringify(foundVoter[0]))
+
+// updated version below
+      const two_days = 2 * 24 * 60 * 60 * 1000;
+      setWithExpiry("voter", foundVoter[0], two_days )
+
+// encapsulated these fn in AuthContext file
+
+
+
+
+
+
+// filter returns an array
+    const foundVoter = voters.filter(voter => voter.admissionID == userAdmissionID)
+    //  since the returned array contains only on element(object),
+    //  we will retrieve that with index [0]
+    // console.log(foundVoter)

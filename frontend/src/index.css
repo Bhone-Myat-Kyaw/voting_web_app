@@ -1,0 +1,267 @@
+@import "tailwindcss";
+@import "flowbite";
+
+
+@theme {
+  /* primary colors */
+  --color-primary: #107eeb;
+  --color-clight-blue: #ccddf0;
+
+  /* neutral colors */
+  --color-cwhite: #fafbfb;
+  --color-clight-gray: #eaeaea;
+  --color-cmedium-gray: #a7a7a7;
+  --color-cdark-gray: #606162;
+  --color-cextra-dark-gray: #191d20;
+
+  /* semantic colors */
+  --color-success: #35c56a;
+  --color-warning: #f7b731;
+  --color-info: #107eeb;
+
+  /* box shadow */
+
+  --shadow-normal: 0px 4px 12px rgba(0, 0, 0, 0.06);
+  --shadow-light: 0px 4px 12px rgba(0, 0, 0, 0.03);
+
+  /* font sizes */
+  /* text-h1 or text-h1-lg */
+  --text-h1: 2rem; /* 32px */
+  --text-h1-lg: 2.25rem; /* 36px */
+
+  --text-h2: 1.5rem; /* 24px */
+  --text-h2-lg: 1.75rem; /* 28px */
+
+  --text-section: 1.25rem; /* 20px */
+  --text-section-lg: 1.375rem; /* 22px */
+
+  --text-body: 1rem; /* 16px */
+  --text-body-sm: 0.875rem; /* 14px */
+
+  --text-small: 0.8125rem; /* 13px */
+  --text-small-sm: 0.75rem; /* 12px */
+
+  --text-button: 1rem; /* 16px */
+  --text-button-sm: 0.875rem; /* 14px */
+
+  /* font weight */
+  /* font-heading or font-heading-bold (exclude "weight")  */
+  --font-weight-heading: 600;
+  --font-weight-heading-bold: 700;
+
+  --font-weight-body: 400;
+  --font-weight-body-medium: 500;
+
+  --font-weight-button: 500;
+  --font-weight-button-bold: 600;
+
+  /* letter spacing  */
+  --tracking-tight: -0.01em;
+  --tracking-default: 0em;
+
+  /* ---------------------------------
+     SPACING SCALE
+  ---------------------------------- */
+  --spacing-xs: 0.25rem;    /* 4px */
+  --spacing-s: 0.5rem;      /* 8px */
+  --spacing-m: 0.75rem;     /* 12px */
+  --spacing-m2: 1rem;       /* 16px */
+  --spacing-l: 1.5rem;      /* 24px */
+  --spacing-xl: 2rem;       /* 32px */
+  --spacing-2xl: 3rem;      /* 48px */
+
+  /* ---------------------------------
+     PADDING PATTERNS
+  ---------------------------------- */
+  --spacing-card: 1rem;        /* 16px */
+  --spacing-card-lg: 1.25rem;  /* 20px */
+
+  --spacing-button-y: 0.75rem; /* 12px */
+  --spacing-button-x: 1rem;    /* 16px */
+  --spacing-button-x-lg: 1.25rem;
+
+  --spacing-input: 0.875rem;   /* 14px */
+  --spacing-input-lg: 1rem;
+
+  /* ---------------------------------
+     GRID + LAYOUT
+  ---------------------------------- */
+  --size-container: 72rem;
+  --size-container-max: 75rem;
+
+  --spacing-mobile: 1rem;
+  --spacing-mobile-lg: 1.25rem;
+
+  --spacing-section: 3rem;
+  --spacing-section-lg: 4rem;
+
+  /* ---------------------------------
+     BUTTON
+  ---------------------------------- */
+  --radius-button: 0.625rem;
+
+  --font-weight-button: 500;
+
+  --color-button-primary: var(--color-primary);
+  --color-button-secondary: #ffffff;
+  --color-button-secondary-border: #d0d5dd;
+
+  --color-button-danger: #e54848;
+
+  /* ---------------------------------
+     INPUT FIELD
+  ---------------------------------- */
+
+  --radius-input: 0.5rem;
+
+  --color-input-border: #d0d5dd;
+  --shadow-input-focus: 0 0 0 3px rgba(16, 126, 235, 0.25);
+
+
+  /* ---------------------------------
+     CARD
+  ---------------------------------- */
+  --radius-card: 0.75rem;
+  --radius-card-lg: 1rem;
+
+  --color-card-bg: #ffffff;
+
+
+
+  /* ---------------------------------
+     TAB
+  ---------------------------------- */
+  --color-tab-active: var(--color-primary);
+  --size-tab-underline: 2px;
+
+
+  /* ---------------------------------
+     TABLE
+  ---------------------------------- */
+  --color-table-border: #e5e7eb;
+  --color-table-row-alt: #fafafa;
+
+  /* ---------------------------------
+     TABLE
+  ---------------------------------- */
+  --radius-modal: 0.75rem;
+  --color-modal-bg: #ffffff;
+  --spacing-modal: 1.5rem;
+
+
+
+
+  /* ---------------------------------
+     NAVBAR
+  ---------------------------------- */
+  --navbar-shadow: var(--shadow-soft);
+
+  /* ---------------------------------
+     SIDEBAR
+  ---------------------------------- */
+   --size-sidebar: 16rem;
+  --color-sidebar-bg: #ffffff;
+  --color-sidebar-active-bg: #f0f7ff;
+
+  /* ---------------------------------
+     ICON & IMAGE
+  ---------------------------------- */
+  --size-icon: 1.25rem;
+  --stroke-icon: 1.75px;
+
+  --color-icon: #6b7280;
+  --color-icon-active: var(--color-primary);
+
+
+  --radius-image: 0.75rem;
+  --radius-image-lg: 1rem;
+
+
+    /* ---------------------------------------------------
+       1. COLOR SYSTEM — DARK THEME
+    ---------------------------------------------------- */
+
+    /* Primary */
+   --color-dark-primary: #107EEB;
+   --color-dark-primary-hover: color-mix(in srgb, #107EEB 85%, #76a9f5);
+    
+   /* Background Levels */
+   /* original base 191D20 */
+   --color-dark-bg-base: #101922;
+   --color-dark-bg-surface-1: #1F2529;
+   --color-dark-bg-surface-2: #23292E;
+   --color-dark-bg-surface-3: #2B3137;
+   --color-dark-login-form-bg: #151f2b;
+   --color-dark-login-bg: #101922;
+
+    /* Neutral Text Colors */
+   --color-dark-text-primary: #FAFBFB;
+   --color-dark-text-secondary: #A7A7A7;
+   --color-dark-text-disabled: #606162;
+
+    /* Borders */
+   --color-dark-border: #2F363B;
+   --color-dark-input-field-border: #213245;
+    /* Overlay (missing) */
+
+    /* Shadows – minimal in dark mode */
+   --shadow-dark-none: none;
+   --shadow-dark-border: 0 0 0 1px var(--color-dark-border);
+
+
+   --color-dark-placeholder: var(--color-clight-blue);
+
+   /* ---------------------------------------------------
+       4. COMPONENTS — DARK THEME
+    ---------------------------------------------------- */
+
+    /* Buttons */
+   --color-dark-button-primary-bg: var(--color-dark-primary);
+   --color-dark-button-secondary-bg: transparent;
+   --color-dark-button-secondary-border: var(--color-dark-border);
+
+   /* Inputs */
+   --color-dark-input-bg: #192633;
+   --color-dark-input-border: var(--color-dark-input-field-border);
+
+   /* Cards */
+   --color-dark-card-bg: var(--color-dark-bg-surface-1);
+   --color-dark-card-border: var(--color-dark-border);
+
+   /* Modals */
+   --color-dark-modal-bg: var(--color-dark-bg-surface-3);
+
+   /* Tabs */
+   --color-dark-tab-active: var(--color-dark-primary);
+
+   /* Tables */
+   --color-dark-table-border: var(--color-dark-border);
+   --color-dark-table-row: #1A1F23;
+   --color-dark-table-row-alt: #202529;
+
+   --color-dark-icon: #E6E6E6;
+   --color-dark-icon-secondary: #A7A7A7;
+   --color-dark-icon-active: var(--color-dark-primary);
+
+
+}
+
+html,
+body,
+#root,
+.app {
+  height: 100%;
+  width: 100%;
+  @apply text-cextra-dark-gray ;
+  @apply bg-cwhite  ;
+}
+
+.dark {
+ @apply bg-dark-bg-base
+}
+/* dark:bg-dark-bg-base */
+/* dark:bg-dark-text-primary */
+
+html {
+  scroll-behavior: smooth;
+}
