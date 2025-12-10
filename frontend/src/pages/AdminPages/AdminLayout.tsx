@@ -15,7 +15,7 @@ export default function AdminLayout() {
     queryClient.clear();
 
     try {
-      const res = await axios.post(`${import.meta.env.VITE_SERVER}/auth/logout`, {}, { withCredentials: true });
+      const res = await axios.post(`api/auth/logout`, {}, { withCredentials: true });
 
       if (res.status == 200) {
         navigate('/');
@@ -24,9 +24,6 @@ export default function AdminLayout() {
       console.log(error);
     }
   }
-
-  // This component will only render if user is authenticated and is admin
-  // due to the ProtectedRoute wrapper
   
   if (isLoading) {
     return (
@@ -38,12 +35,10 @@ export default function AdminLayout() {
 
   return (
     <div className="flex min-h-screen relative">
-      {/* Sidebar */}
       <div className="fixed top-0 left-0 h-screen">
         <Sidebar />
       </div>
 
-      {/* Content */}
       <main className="flex-1 p-6 bg-clight-gray max-lg:ml-20 ml-64">
         <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
           <div className="flex flex-col items-start justify-center">
