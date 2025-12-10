@@ -3,7 +3,7 @@ import axios from "axios";
 
 // Function to fetch current user
 async function fetchUser() {
-  const res = await axios.get(`${import.meta.env.VITE_SERVER}/auth/checkToken`, {
+  const res = await axios.get(`api/auth/checkToken`, {
     withCredentials: true,
   });
   // console.log("Payload=",import.meta.env.VITE_SERVER);
