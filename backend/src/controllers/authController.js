@@ -45,7 +45,6 @@ async function login(req, res) {
         sameSite: isProduction ? "none" : "lax",
         path: "/",
         maxAge: 15 * 60 * 1000,
-        ...(isProduction && { domain: ".netlify.app" }),
       })
       .cookie("refresh_token", refreshToken, {
         httpOnly: true,
@@ -53,7 +52,6 @@ async function login(req, res) {
         sameSite: isProduction ? "none" : "lax",
         path: "/",
         maxAge: 7 * 24 * 60 * 60 * 1000,
-        ...(isProduction && { domain: ".netlify.app" }),
       })
       .json({
         message: "Login successful",
@@ -115,7 +113,6 @@ async function checkToken(req, res) {
           sameSite: isProduction ? "none" : "lax",
           path: "/",
           maxAge: 15 * 60 * 1000,
-          ...(isProduction && { domain: ".netlify.app" }),
         });
 
         const payload = await getUserData(refreshPayload.id);
