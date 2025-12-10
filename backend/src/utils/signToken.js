@@ -4,7 +4,7 @@ function signAccessToken(payload) {
   const accessToken = jwt.sign(
     {...payload}, 
     process.env.JWT_ACCESS_SECRET, 
-    { expiresIn: "15m" }
+    { expiresIn: "3m" }
   );
   return accessToken;
 }

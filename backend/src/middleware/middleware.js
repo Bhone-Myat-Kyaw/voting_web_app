@@ -12,8 +12,7 @@ async function middleware(req, res, next) {
 
     return next();
   } catch (error) {
-    console.log(error.name);
-    if (error.name === "TokenExpiredError" && refreshToken) {
+    if (refreshToken) {
       try {
         const payload = jwt.verify(
           refreshToken,
@@ -31,6 +30,7 @@ async function middleware(req, res, next) {
           sameSite: isProduction ? "none" : "lax",
           path: "/",
           maxAge: 15 * 60 * 1000,
+          ...(isProduction && { domain: "https://ceit-welcome-2025-ytu.netlify.app" })
         });
 
         req.user = payload;

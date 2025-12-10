@@ -158,3 +158,6 @@ dist-ssr
 *.sln
 *.sw?
 >>>>>>> 50508db (first commit)
+
+# Local Netlify folder
+.netlify

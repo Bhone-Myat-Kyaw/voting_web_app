@@ -45,6 +45,7 @@ async function login(req, res) {
         sameSite: isProduction ? "none" : "lax",
         path: "/",
         maxAge: 15 * 60 * 1000,
+        ...(isProduction && { domain: "https://ceit-welcome-2025-ytu.netlify.app" })
       })
       .cookie("refresh_token", refreshToken, {
         httpOnly: true,
@@ -52,6 +53,7 @@ async function login(req, res) {
         sameSite: isProduction ? "none" : "lax",
         path: "/",
         maxAge: 7 * 24 * 60 * 60 * 1000,
+        ...(isProduction && { domain: "https://ceit-welcome-2025-ytu.netlify.app" })
       })
       .json({
         message: "Login successful",
@@ -69,12 +71,12 @@ async function logout(req, res) {
       .clearCookie("access_token", {
         httpOnly: true,
         secure: isProduction,
-        sameSite: "none",
+        sameSite: isProduction ? "none" : "lax",
       })
       .clearCookie("refresh_token", {
         httpOnly: true,
         secure: isProduction,
-        sameSite: "none",
+        sameSite: isProduction ? "none" : "lax",
       })
       .status(200)
       .json({ message: "Logged out successfully" });
@@ -113,6 +115,7 @@ async function checkToken(req, res) {
           sameSite: isProduction ? "none" : "lax",
           path: "/",
           maxAge: 15 * 60 * 1000,
+          ...(isProduction && { domain: "https://ceit-welcome-2025-ytu.netlify.app" })
         });
 
         const payload = await getUserData(refreshPayload.id);
