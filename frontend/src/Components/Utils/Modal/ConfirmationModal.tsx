@@ -28,7 +28,7 @@ const ConfirmationModal = ({isOpen, setShowModal, candidateName,setShowVotedModa
         try {
             console.log("handle confirm try block")
             const res = await axios.post(
-                `${import.meta.env.VITE_SERVER}/vote/postVote`,
+                `/api/vote/postVote`,
                 {
                 voterid: voter.id,
                 candidateid
