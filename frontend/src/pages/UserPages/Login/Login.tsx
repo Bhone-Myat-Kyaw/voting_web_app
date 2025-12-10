@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 // import type { Voter } from "../../../Shared/Types";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import {motion} from "framer-motion"
 import { isLightMode } from "../../../helpers/checkTheme";
 import { containerVariants, childVariants } from "../../../Shared/framerVariants";
