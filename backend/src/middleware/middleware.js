@@ -30,7 +30,7 @@ async function middleware(req, res, next) {
           sameSite: isProduction ? "none" : "lax",
           path: "/",
           maxAge: 15 * 60 * 1000,
-          ...(isProduction && { domain: "https://ceit-welcome-2025-ytu.netlify.app" })
+          ...(isProduction && { domain: ".netlify.app" }),
         });
 
         req.user = payload;
