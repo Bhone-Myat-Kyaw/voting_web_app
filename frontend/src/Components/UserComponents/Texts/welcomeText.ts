@@ -9,21 +9,20 @@ export interface WelcomeText {
 export const welcomeTexts: WelcomeText[] = [
   {
     status: `${People.Freshmen}`,
-    title: "Welcome, New Students!",
-    body: "A heartfelt welcome to the newest members of our university community! You are embarking on an exciting journey of discovery, growth, and connection. This next chapter is yours to write, and we are thrilled to support you every step of the way. Explore the opportunities, connect with your peers, and get ready for an incredible experience!",
+    title: "Welcome to the CEIT Family!",
+    body: "As this new academic year begins, we are delighted to welcome you — our incoming batch of CEIT students.May your journey with us be filled with knowledge, growth, and countless opportunities to learn, create, and thrive.Let’s begin this chapter together, with enthusiasm and hope for all that lies ahead.",
     
   },
   {
     status: `${People.Senior}`,
-    title: "Welcome Back, Seniors!",
-    body: "It's great to have you back! As seasoned members of our community, you bring invaluable experience, spirit, and leadership to our campus. Whether you are returning for your final year or continuing your studies, we look forward to your contributions. Set a great example for our new students and make this year your best one yet!",
+    title: "Inviting All Seniors – Your Guidance Matters!",
+    body: "As we embark on a new academic year, we invite our senior CEIT students to join us in welcoming the newest members of our major.Your experience, support, and leadership will help shape their first days — and strengthen the bonds of our department.Together, let’s build a thriving CEIT community.",
     
   },
   {
     status: `${People.Teacher}`,
-    title: "Welcome Back, Teachers",
-    body: "Welcome back to another dynamic academic year. Your dedication, expertise, and passion are the core of our institution's success. We appreciate all the hard work you put into shaping the minds of future generations. We look forward to a productive and inspiring year of collaboration and learning.",
-    
+    title: "Esteemed Teachers of CEIT — Your Presence Is Requested",
+    body: "We warmly invite all CEIT teachers and staff to attend our Annual Freshers’ Welcome Ceremony.Your wisdom, mentorship, and encouragement play a vital role as we usher in the new batch of students.Please join us in extending a warm greeting to the newcomers and supporting the unity of our department.", 
   },
   
 ]
