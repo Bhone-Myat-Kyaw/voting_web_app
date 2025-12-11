@@ -90,7 +90,7 @@ const Vote = () => {
     if (!voter) return <Loading/>
     // TODO: alter database hasvoted value
 
-    const maleCandidates: SelectedCandidate[] = [], femaleCandidates: SelectedCandidate[] = [];
+    let maleCandidates: SelectedCandidate[] = [], femaleCandidates: SelectedCandidate[] = [];
     let maleCandidatesCount = 0, femaleCandidatesCount = 0;
   
     candidates.forEach((candidate: any) => {
