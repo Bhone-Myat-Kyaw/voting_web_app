@@ -30,6 +30,7 @@ const corsOptions = {
 
     const allowedOrigins = [
       "https://ceit-welcome-2025-ytu.netlify.app",
+      "https://ceit-welcome-2025-ytu.vercel.app",
       "http://localhost:5173", // Keep for local development
       "http://localhost:8888",
       "http://localhost:13092",
