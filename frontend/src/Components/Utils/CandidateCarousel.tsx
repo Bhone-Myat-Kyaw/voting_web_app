@@ -194,6 +194,7 @@ const CandidateCarousel = ({candidates, voter, setCandidateName, setShowVotedMod
           >
             {candidates.map((candidate) =>{
               // console.log(candidate.students.rollnum)
+              const imagePath = new URL(`../../assets/${candidate.imagepath}`,import.meta.url).href;
               return(
                 <div 
                   key={candidate.id}
@@ -209,7 +210,7 @@ const CandidateCarousel = ({candidates, voter, setCandidateName, setShowVotedMod
                           {candidate.department}
                         </span> */}
                         <img
-                          src={`../../assets/${candidate.imagepath}`}
+                          src={imagePath}
                           alt={"name"}
                           className="w-full h-50 object-cover"
                         />
