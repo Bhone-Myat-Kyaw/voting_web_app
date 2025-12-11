@@ -32,7 +32,7 @@ const corsOptions = {
       "https://ceit-welcome-2025-ytu.netlify.app",
       "http://localhost:5173", // Keep for local development
       "http://localhost:8888",
-      "http://localhost:13092"
+      "http://localhost:13092",
     ];
 
     if (allowedOrigins.includes(origin)) {
@@ -101,10 +101,9 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
-
 app.use("/api/auth", authRouter);
 app.use("/api/admin", middleware, checkRole, adminRouter);
-app.use("/api/vote", middleware, voteRouter);
+app.use("/api/vote", middleware, checkIsVotingOpen, voteRouter);
 
 app.listen(process.env.PORT || 5000, () => {
   console.log(`Server running on http://localhost:${process.env.PORT || 5000}`);
