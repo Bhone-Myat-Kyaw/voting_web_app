@@ -1,2 +1,2 @@
-/api/* https://voting-web-app-0kbp.onrender.com/api/:splat 200
-/* /index.html 200
+/api/*    https://voting-web-app-0kbp.onrender.com/api/:splat    200
+/*        /index.html                                             200
