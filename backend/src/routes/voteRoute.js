@@ -7,8 +7,8 @@ const {
 } = require("../controllers/voteController");
 const checkIsVotingOpen = require("../middleware/checkIsVotingOpen");
 
-voteRouter.post("/postVote", checkIsVotingOpen, vote);
-voteRouter.get("/countVotes", checkIsVotingOpen, countVotes);
-voteRouter.get("/selectCandidates", checkIsVotingOpen, selectCandidates);
+voteRouter.post("/postVote", vote);
+voteRouter.get("/countVotes", countVotes);
+voteRouter.get("/selectCandidates", selectCandidates);
 
 module.exports = voteRouter;
