@@ -10,10 +10,8 @@ export default function VotingToggleWithConfirm() {
 
   useEffect(() => {
     async function fetchFunction() {
-      console.log("fetching fn from useEffect working")
       const res = await axios.get(`/api/admin/getVotingStatus`, { withCredentials: true });
       setIsVotingOpen(res.data.isVotingOpen);
-      console.log("isVotingOpen=",isVotingOpen);
     }
 
     fetchFunction();

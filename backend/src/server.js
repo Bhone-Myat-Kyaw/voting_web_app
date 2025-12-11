@@ -103,7 +103,7 @@ app.use(cookieParser());
 
 app.use("/api/auth", authRouter);
 app.use("/api/admin", middleware, checkRole, adminRouter);
-app.use("/api/vote", middleware, checkIsVotingOpen, voteRouter);
+app.use("/api/vote", middleware, voteRouter);
 
 app.listen(process.env.PORT || 5000, () => {
   console.log(`Server running on http://localhost:${process.env.PORT || 5000}`);
