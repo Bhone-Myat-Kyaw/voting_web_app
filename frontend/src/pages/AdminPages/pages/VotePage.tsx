@@ -7,7 +7,7 @@ function VotesPage() {
   const { data: candidates, isLoading: candidateIsLoading } = useQuery({
     queryKey: ["candidates"],
     queryFn: async () => {
-      const res = await axios.get(`api/vote/selectCandidates`, { withCredentials: true });
+      const res = await axios.get(`/api/vote/selectCandidates`, { withCredentials: true });
       return res.data.data;
     },
     staleTime: Infinity
@@ -16,7 +16,7 @@ function VotesPage() {
   const { data: votes, isLoading: votesIsLoading} = useQuery({
     queryKey: ["votes"],
     queryFn: async () => {
-      const res = await axios.get(`api/vote/countVotes`, { withCredentials: true });
+      const res = await axios.get(`/api/vote/countVotes`, { withCredentials: true });
       return res.data.votes;
     },
     refetchInterval: 10 * 1000,
