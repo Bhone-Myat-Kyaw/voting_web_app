@@ -2,7 +2,8 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://your-backend-on-render.com/:path*"
+      "destination": "https://voting-web-app-0kbp.onrender.com/:path*"
+      
     },
     {
       "source": "/(.*)",
