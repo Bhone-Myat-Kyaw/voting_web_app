@@ -1,16 +1,13 @@
 {
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "https://voting-web-app-0kbp.onrender.com/api/$1"
+      "source": "/api/:path*",
+      "destination": "https://voting-web-app-0kbp.onrender.com/:path*"
+      
     },
     {
-      "src": "/assets/(.*)",
-      "dest": "/assets/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
