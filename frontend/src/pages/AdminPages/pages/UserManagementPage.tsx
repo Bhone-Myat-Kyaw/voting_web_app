@@ -11,7 +11,7 @@ function UserManagementPage() {
   const { data: students, isError, error } = useQuery({
     queryKey: ["students"],
     queryFn: async () => {
-      const res = await axios.get(`api/admin/selectAll`, {
+      const res = await axios.get(`/api/admin/selectAll`, {
         withCredentials: true,
       });
       return res.data.data;
@@ -23,7 +23,7 @@ function UserManagementPage() {
   });
 
   const roleMutation = useMutation({
-    mutationFn: ({ admissionid, role }: { admissionid: string; role: string }) => axios.post(`api/admin/changeRole`, { admissionid, role }, { withCredentials: true }),
+    mutationFn: ({ admissionid, role }: { admissionid: string; role: string }) => axios.post(`/api/admin/changeRole`, { admissionid, role }, { withCredentials: true }),
     
     // optimistic update
     onMutate: async ({ admissionid, role }) => {
