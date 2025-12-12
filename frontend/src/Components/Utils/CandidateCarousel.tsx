@@ -212,7 +212,7 @@ const CandidateCarousel = ({candidates, voter, setCandidateName, setShowVotedMod
                         <img
                           src={imagePath}
                           alt={"name"}
-                          className="w-full h-50 object-cover"
+                          className="w-full h-50 object-cover rounded-lg"
                         />
                       </div>
                       
