@@ -10,7 +10,7 @@ export const SelectedPage = {
   Home: "home",
   History: "history",
   Curriculum: "curriculum",
-  UserManual: "userManual",
+  UserManual: "usermanual",
   MemorableMoment: "memorablemoments"
 } as const;
 

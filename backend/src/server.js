@@ -9,12 +9,28 @@ const voteRouter = require("./routes/voteRoute");
 const middleware = require("./middleware/middleware");
 const checkRole = require("./middleware/checkRole");
 const checkIsVotingOpen = require("./middleware/checkIsVotingOpen");
+const supabase = require("./config/supabase");
 
 app.get("/health", (req, res) => {
   console.log("Health check OK");
   res
     .status(200)
     .json({ status: "healthy", timestamp: new Date().toISOString() });
+});
+
+app.get("/load-test", async (req, res) => {
+  const start = Date.now();
+
+  const { error } = await supabase.from("students").select("id").limit(1);
+
+  const dbTime = Date.now() - start;
+
+  res.json({
+    status: "ok",
+    dbConnected: !error,
+    dbResponseTime: dbTime,
+    timestamp: new Date().toISOString,
+  });
 });
 
 // app.use(

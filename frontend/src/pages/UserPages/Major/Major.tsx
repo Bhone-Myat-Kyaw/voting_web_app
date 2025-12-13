@@ -24,7 +24,7 @@ const Major = ({setSelectedPage}: Props) => {
         >
           
             {/* title */}
-            <SectionTitle customize title="C  E I T" subTitle="A brief, engaging paragraph defining the Computer Engineering major, its significance, and the fusion of hardware and software principles that prepares students for the future of technology. This field is at the heart of innovation, powering everything from smartphones to spacecraft." />
+            <SectionTitle title="C  E I T" subTitle="Computer Engineering and Information Technology (CEIT) is a multidisciplinary field that integrates computer hardware, software, and information systems to design, build, and manage modern digital solutions. The following tables is what you will learn in your first year of your bachelor degree in CEIT." />
 
             {/* description */}
 
@@ -58,10 +58,6 @@ const Major = ({setSelectedPage}: Props) => {
                 ))}
               </motion.tbody>
             </motion.table>
-            
-            
-          
-          
         </motion.section>
     </Element>
     

@@ -54,7 +54,7 @@ const Login = () => {
   async function submitFunction(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setIsLoading(true);
-    console.log(import.meta.env.VITE_SERVER)
+    // console.log(import.meta.env.VITE_SERVER)
 
     const id = admissionid.split('/');
     if (id.length == 2 && !Number.isNaN(id[0]) && id[0].length == 2 && !Number.isNaN(id[1]) && id[1].length == 5) {
