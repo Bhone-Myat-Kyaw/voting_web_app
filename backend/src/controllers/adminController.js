@@ -33,7 +33,7 @@ async function selectAllData(req, res) {
   try {
     const { data, error } = await supabase
       .from("students")
-      .select("name, admissionid, gender, year, rollnum, role")
+      .select("name, admissionid, gender, year, rollnum, role");
 
     if (error) return res.status(400).json({ message: error.message });
 
@@ -55,7 +55,7 @@ async function getVotingStatus(req, res) {
 
     const isVotingOpen = data[0];
 
-    return res.status(400).json({ isVotingOpen })
+    return res.status(400).json({ isVotingOpen });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -73,12 +73,16 @@ async function setVotingStatus(req, res) {
       .eq("studentid", id);
 
     if (error) return res.status(400).json({ error: error.message });
-    
+
     return res.status(200).json({ message: "success" });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
 }
 
-
-module.exports = { changeRole, selectAllData, getVotingStatus, setVotingStatus };
+module.exports = {
+  changeRole,
+  selectAllData,
+  getVotingStatus,
+  setVotingStatus,
+};

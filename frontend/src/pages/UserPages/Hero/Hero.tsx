@@ -18,7 +18,8 @@ export default function Hero({setSelectedPage}: Props) {
 
   // props from model
   const location = useLocation();
-  const personStatus: People = location.state;
+  const personStatus: People = localStorage.getItem('status') ?? location.state;
+
 
   const displayText: WelcomeText = checkPersonStatus(personStatus);
 

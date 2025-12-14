@@ -30,19 +30,21 @@ const UserManual = ({setSelectedPage}: Props) => {
           >
             <motion.li className="mb-10 xl:pl-10"
             variants={childVariants}
-            >ahfoowaheofohef</motion.li>
+            >
+              If you are on mobile, click the toggle button on the navbar to see login button
+            </motion.li>
             <motion.li className="mb-10 xl:pl-10"
             variants={childVariants}
-            >afahfwehffh</motion.li>
+            >We will provide you with login credentials the day before the Fresher Welcome Party</motion.li>
             <motion.li className="mb-10 xl:pl-10"
             variants={childVariants}
-            >oahhfohwehfw</motion.li>
+            >If you are seeing blank page, we request you to refresh the page to see the contents</motion.li>
             <motion.li className="mb-10 xl:pl-10"
             variants={childVariants}
-            >ajhfeohaweofhowe</motion.li>
+            >Due to the fact that our server being deployed on a free hosting service, some data fetching process might be a bit slow. We humbly request you to wait rather than "clicking" a button multiple times</motion.li>
             <motion.li className="mb-10 xl:pl-10"
             variants={childVariants}
-            >ahhhfowefj</motion.li>
+            >Though we've tested with multiple browsers, we strongly recommend chrome or firefox for both android and ios.</motion.li>
           </motion.ul>
         </div>
         
