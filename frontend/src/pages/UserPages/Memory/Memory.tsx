@@ -36,7 +36,7 @@ const Memory = ({setSelectedPage}: Props) => {
             title="CEIT Gathering"
             imgPath={img_1}
           >
-             For the 12th batch, we had 2 major gatherings within our first year - one for each semester. For first semester, we went to "Yangon Zoo", KandawGyi lake, Yegu Pumping Station. For second semester, we went to National Races Village, National Museum, "Pyi Thu Yin Pyin" public park. Each gathering event took only a day. Apart from gatherings, the whole CEIT students took an excursion to MWD Media Center under the name of "Industrial Training" too.
+             For the CEIT 12th batch, we had 2 major gatherings within our first year - one for each semester. For first semester, we went to "Yangon Zoo", KandawGyi lake, Yegu Pumping Station. For second semester, we went to National Races Village, National Museum, "Pyi Thu Yin Pyin" public park. Each gathering event took only a day. Apart from gatherings, the whole CEIT students took an excursion to MWD Media Center under the name of "Industrial Training" too.
           </Accordion>
           <Accordion
             name={accordionGpName}
